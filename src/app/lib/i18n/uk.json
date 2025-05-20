@@ -1,0 +1,14 @@
+{
+    "login": "Вхід",
+    "register": "Реєстрація",
+    "dashboard": "Панель керування",
+    "menuManagement": "Управління меню",
+    "designSettings": "Налаштування дизайну",
+    "qrCode": "QR-код",
+    "backToRestaurants": "Назад до списку закладів",
+    "restaurantMenu": "Меню закладу",
+    "editMenuItem": "Редагування пункту меню",
+    "designForRestaurant": "Дизайн для закладу",
+    "qrCodeForRestaurant": "QR-код для закладу",
+    "allRightsReserved": "Всі права захищено"
+  }

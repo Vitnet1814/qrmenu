@@ -1,0 +1,186 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  padding: 20px;
+  display: flex;
+  justify-content: flex-end;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #eee;
+}
+
+.dashboardButton {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.main {
+  flex-grow: 1;
+}
+
+.heroSection {
+  background-color: white;
+  color: #333;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroSection h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.heroSection p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.primaryButton {
+  padding: 15px 30px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  text-decoration: none;
+}
+
+.featureSection {
+  background-color: #343a40;
+  color: white;
+  padding: 80px 20px;
+}
+
+.featureContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.featureSection h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.featureSection p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.featureSection ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.featureSection li {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.designSection {
+  background-color: white;
+  color: #333;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.designContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.designSection h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.designSection p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.qrCodeSection {
+  background-color: #343a40;
+  color: white;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.qrCodeContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.qrCodeSection h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.qrCodeSection p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.ctaSection {
+  background-color: white;
+  color: #333;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.ctaContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.ctaSection h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.ctaSection p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.secondaryButton {
+  padding: 15px 30px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  text-decoration: none;
+}
+
+.footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9rem;
+  border-top: 1px solid #555;
+}

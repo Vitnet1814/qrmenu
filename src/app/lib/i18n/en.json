@@ -1,0 +1,14 @@
+{
+    "login": "Login",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "menuManagement": "Menu Management",
+    "designSettings": "Design Settings",
+    "qrCode": "QR Code",
+    "backToRestaurants": "Back to Restaurants",
+    "restaurantMenu": "Restaurant Menu",
+    "editMenuItem": "Edit Menu Item",
+    "designForRestaurant": "Design for Restaurant",
+    "qrCodeForRestaurant": "QR Code for Restaurant",
+    "allRightsReserved": "All rights reserved"
+  }
