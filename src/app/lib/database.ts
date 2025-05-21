@@ -21,13 +21,7 @@ export async function connectDatabase() {
   }
 
    // Підключення до MongoDB через TLS 1.2
-   const client = await MongoClient.connect(uri!, {
-    // useNewUrlParser: true,
-    // useUnifiedTopology: true,
-    ssl: true,  // Включаємо SSL
-    tls: true,  // Включаємо TLS
-    tlsAllowInvalidCertificates: false,  // Підтверджуємо правильність сертифікатів
-  });
+   const client = await MongoClient.connect(uri!,);
   const db = client.db(dbName);
 
   cachedClient = client;

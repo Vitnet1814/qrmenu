@@ -49,123 +49,53 @@ export const authOptions: AuthOptions = { // Використовуємо без
   session: {
     strategy: 'jwt' as SessionStrategy, // Явне приведення типу до SessionStrategy
   }, 
-  // callbacks: {
-  //   async signIn({ account, profile, user }: { account: Account | null; profile?: Profile | undefined; user: User }) {
-  //     if (account?.provider === 'google') {
-  //       console.log("Google profile:", profile);
-  //       if (!profile?.email) {
-  //         return false; // Відхилити вхід, якщо немає email у профілі
-  //       }
-
-  //       const { db } = await connectDatabase();
-  //       const usersCollection = db.collection('users');
-
-  //       const existingUser = await usersCollection.findOne({ email: profile.email });
-
-  //       if (!existingUser) {
-  //         // Автоматична реєстрація нового користувача Google
-  //         const result = await usersCollection.insertOne({
-  //           email: profile.email,
-  //           name: profile.name,
-  //           googleId: account.providerAccountId,
-  //           createdAt: new Date(),
-  //         });
-  //         user.id = result.insertedId.toString(); // Оновлюємо ID користувача для подальших колбеків
-  //       } else {
-  //         user.id = existingUser._id.toString(); // Встановлюємо ID існуючого користувача
-  //       }
-  //       return true;
-  //     }
-  //     // Для CredentialsProvider (логін через email/пароль) дозвіл вже визначено в authorize
-  //     return true;
-  //   },
-  //   async jwt({ token, user }: { token: JWT; user?: User | undefined }) {
-  //     // Додаємо ID користувача до JWT
-  //     if (user?.id) {
-  //       token.userId = user.id;
-  //     }
-  //     return token;
-  //   },
-  //   async session({ session, token }: { session: Session; token: JWT }) {
-  //     // Додаємо ID користувача з JWT до сесії
-  //     if (token?.userId) {
-  //       session.user = session.user || {};
-  //       session.user.id = token.userId as string;
-  //     }
-  //     return session;
-  //   },
-  // },
-
-
   callbacks: {
     async signIn({ account, profile, user }: { account: Account | null; profile?: Profile | undefined; user: User }) {
-      console.log("Sign-in callback initiated.");
-      
       if (account?.provider === 'google') {
         console.log("Google profile:", profile);
-  
         if (!profile?.email) {
-          console.log("No email in profile, rejecting sign-in.");
           return false; // Відхилити вхід, якщо немає email у профілі
         }
-  
-        try {
-          const { db } = await connectDatabase();
-          const usersCollection = db.collection('users');
-  
-          console.log("Searching for user in database:", profile.email);
-          const existingUser = await usersCollection.findOne({ email: profile.email });
-  
-          if (!existingUser) {
-            console.log("User not found, registering new user...");
-            // Автоматична реєстрація нового користувача Google
-            const result = await usersCollection.insertOne({
-              email: profile.email,
-              name: profile.name,
-              googleId: account.providerAccountId,
-              createdAt: new Date(),
-            });
-            user.id = result.insertedId.toString(); // Оновлюємо ID користувача для подальших колбеків
-            console.log("New user registered with ID:", user.id);
-          } else {
-            user.id = existingUser._id.toString(); // Встановлюємо ID існуючого користувача
-            console.log("Existing user found with ID:", user.id);
-          }
-          return true;
-        } catch (error) {
-          console.error("Error during sign-in callback:", error);
-          return false; // Якщо є помилка, відхиляємо вхід
+
+        const { db } = await connectDatabase();
+        const usersCollection = db.collection('users');
+
+        const existingUser = await usersCollection.findOne({ email: profile.email });
+
+        if (!existingUser) {
+          // Автоматична реєстрація нового користувача Google
+          const result = await usersCollection.insertOne({
+            email: profile.email,
+            name: profile.name,
+            googleId: account.providerAccountId,
+            createdAt: new Date(),
+          });
+          user.id = result.insertedId.toString(); // Оновлюємо ID користувача для подальших колбеків
+        } else {
+          user.id = existingUser._id.toString(); // Встановлюємо ID існуючого користувача
         }
+        return true;
       }
+      // Для CredentialsProvider (логін через email/пароль) дозвіл вже визначено в authorize
       return true;
     },
-  
     async jwt({ token, user }: { token: JWT; user?: User | undefined }) {
-      console.log("JWT callback initiated.");
       // Додаємо ID користувача до JWT
       if (user?.id) {
         token.userId = user.id;
-        console.log("User ID added to JWT:", user.id);
       }
       return token;
     },
-  
     async session({ session, token }: { session: Session; token: JWT }) {
-      console.log("Session callback initiated.");
       // Додаємо ID користувача з JWT до сесії
       if (token?.userId) {
         session.user = session.user || {};
         session.user.id = token.userId as string;
-        console.log("User ID added to session:", token.userId);
       }
       return session;
     },
-  }
+  },
 
-  
-
-  
- 
 };
 
 export default NextAuth(authOptions);
