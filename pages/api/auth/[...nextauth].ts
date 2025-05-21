@@ -48,10 +48,11 @@ export const authOptions: AuthOptions = { // Використовуємо без
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt' as SessionStrategy, // Явне приведення типу до SessionStrategy
-  },
+  }, 
   callbacks: {
     async signIn({ account, profile, user }: { account: Account | null; profile?: Profile | undefined; user: User }) {
       if (account?.provider === 'google') {
+        console.log("Google profile:", profile);
         if (!profile?.email) {
           return false; // Відхилити вхід, якщо немає email у профілі
         }
@@ -94,6 +95,7 @@ export const authOptions: AuthOptions = { // Використовуємо без
       return session;
     },
   },
+ 
 };
 
 export default NextAuth(authOptions);
