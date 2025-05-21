@@ -20,11 +20,13 @@ export async function connectDatabase() {
     return { client: cachedClient, db: cachedDb };
   }
 
-  // Підключення без параметрів useNewUrlParser і useUnifiedTopology
-  const client = await MongoClient.connect(uri!, {
-    ssl: true, // Включення SSL
-    // sslValidate: true, // Вимога перевірки сертифікатівx
-    tlsAllowInvalidCertificates: false, // Забезпечуємо правильний сертифікат
+   // Підключення до MongoDB через TLS 1.2
+   const client = await MongoClient.connect(uri!, {
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true,
+    ssl: true,  // Включаємо SSL
+    tls: true,  // Включаємо TLS
+    tlsAllowInvalidCertificates: false,  // Підтверджуємо правильність сертифікатів
   });
   const db = client.db(dbName);
 
