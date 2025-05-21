@@ -20,7 +20,12 @@ export async function connectDatabase() {
     return { client: cachedClient, db: cachedDb };
   }
 
-  const client = await MongoClient.connect(uri!);
+  // Підключення без параметрів useNewUrlParser і useUnifiedTopology
+  const client = await MongoClient.connect(uri!, {
+    ssl: true, // Включення SSL
+    // sslValidate: true, // Вимога перевірки сертифікатівx
+    tlsAllowInvalidCertificates: false, // Забезпечуємо правильний сертифікат
+  });
   const db = client.db(dbName);
 
   cachedClient = client;
