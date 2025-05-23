@@ -17,7 +17,7 @@ const DesignSettingsPage = () => {
 
   return (
     <div>
-      <h1>Дизайн закладу: {restaurantId}</h1>
+      <h1>Дизайн закладу : {restaurantId}</h1>
     </div>
   );
 };
