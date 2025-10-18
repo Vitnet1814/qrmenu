@@ -155,8 +155,8 @@ const DesignSystemDemo: React.FC = () => {
             <CardBody>
               <div className="ds-grid ds-grid-cols-1 ds-md:grid-cols-2 ds-gap-6">
                 <div>
-                  <label className="ds-form-label">Ім'я</label>
-                  <input type="text" className="ds-form-input" placeholder="Введіть ваше ім'я" />
+                  <label className="ds-form-label">Ім&apos;я</label>
+                  <input type="text" className="ds-form-input" placeholder="Введіть ваше ім&apos;я" />
                 </div>
                 
                 <div>
