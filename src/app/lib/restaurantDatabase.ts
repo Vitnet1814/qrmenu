@@ -1,11 +1,12 @@
 // src/app/lib/restaurantDatabase.ts - Допоміжні функції для роботи з новою структурою БД
 import { Db, ObjectId } from 'mongodb';
 import { connectDatabase } from './database';
+import slugify from 'slugify';
 
 export interface RestaurantData {
   _id?: ObjectId;
   type: 'restaurant-info' | 'category' | 'menu-item' | 'theme' | 'photo' | 'settings';
-  data: any;
+  data: Record<string, unknown>;
   order?: number;
   createdAt: Date;
   updatedAt: Date;
@@ -26,7 +27,7 @@ export class RestaurantDatabase {
   }
 
   // Створити новий запис
-  async create(type: RestaurantData['type'], data: any, order?: number) {
+  async create(type: RestaurantData['type'], data: Record<string, unknown>, order?: number) {
     const collection = this.getCollection();
     
     const newItem: RestaurantData = {
@@ -54,7 +55,7 @@ export class RestaurantDatabase {
   }
 
   // Оновити запис
-  async update(id: string, data: any) {
+  async update(id: string, data: Record<string, unknown>) {
     const collection = this.getCollection();
     return await collection.updateOne(
       { _id: new ObjectId(id) },
@@ -123,7 +124,7 @@ export class RestaurantManager {
     const { db } = await connectDatabase();
     const restaurantsCollection = db.collection('restaurants');
     
-    const slug = require('slugify')(name, { lower: true });
+    const slug = slugify(name, { lower: true });
     
     // Перевіряємо унікальність slug
     const existingRestaurant = await restaurantsCollection.findOne({ slug });
