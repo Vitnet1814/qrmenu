@@ -52,7 +52,7 @@ export const authOptions: AuthOptions = { // Використовуємо без
   callbacks: {
     async signIn({ account, profile, user }: { account: Account | null; profile?: Profile | undefined; user: User }) {
       if (account?.provider === 'google') {
-        console.log("Google profile:", profile);
+        // console.log("Google profile:", profile);
         if (!profile?.email) {
           return false; // Відхилити вхід, якщо немає email у профілі
         }
