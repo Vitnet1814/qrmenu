@@ -1,0 +1,222 @@
+/* ===========================================
+   ДОДАТКОВІ АНІМАЦІЇ ТА ЕФЕКТИ ДЛЯ СТОРІНКИ РЕСТОРАНУ
+   =========================================== */
+
+/* Плавні анімації для карток */
+.ds-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ds-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Анімація появи карток */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ds-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Затримка для кожної картки */
+.ds-card:nth-child(1) { animation-delay: 0.1s; }
+.ds-card:nth-child(2) { animation-delay: 0.2s; }
+.ds-card:nth-child(3) { animation-delay: 0.3s; }
+.ds-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* Пульсація для кнопок */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.ds-btn-primary:hover {
+  animation: pulse 2s infinite;
+}
+
+/* Градієнтні ефекти для кнопок швидких дій */
+.bg-blue-500 {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+}
+
+.bg-purple-500 {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+}
+
+.bg-green-500 {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.bg-orange-500 {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+}
+
+/* Ефект блиску при наведенні */
+.ds-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.ds-card:hover::before {
+  left: 100%;
+}
+
+/* Стилі для статистичних карток */
+.stat-card-icon {
+  transition: transform 0.3s ease;
+}
+
+.ds-card:hover .stat-card-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Анімація для чисел */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stat-number {
+  animation: countUp 0.8s ease-out;
+}
+
+/* Ефект хвилі для кнопок */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ds-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.ds-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.ds-btn:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Плавна прокрутка */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Стилі для завантажувача */
+.ds-spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Ефект для іконок активності */
+.activity-icon {
+  transition: all 0.3s ease;
+}
+
+.activity-item:hover .activity-icon {
+  transform: scale(1.2);
+}
+
+/* Градієнтний фон для header */
+.header-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Тіні для глибини */
+.depth-shadow {
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.depth-shadow-lg {
+  box-shadow: 
+    0 3px 6px rgba(0, 0, 0, 0.16),
+    0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+/* Responsive анімації */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Темна тема (опціонально) */
+@media (prefers-color-scheme: dark) {
+  .ds-card {
+    background-color: #1f2937;
+    color: #f9fafb;
+  }
+  
+  .ds-card:hover {
+    background-color: #374151;
+  }
+  
+  .bg-gray-50 {
+    background-color: #111827;
+  }
+  
+  .text-gray-900 {
+    color: #f9fafb;
+  }
+  
+  .text-gray-600 {
+    color: #d1d5db;
+  }
+}
