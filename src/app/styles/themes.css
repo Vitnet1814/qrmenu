@@ -1,0 +1,548 @@
+/* ===========================================
+   QR MENU DESIGN SYSTEM - ТЕМИ
+   Готові теми для різних типів закладів
+   =========================================== */
+
+/* ===========================================
+   ТЕМА 1: КЛАСИЧНИЙ РЕСТОРАН
+   =========================================== */
+[data-theme="classic-restaurant"] {
+  --color-primary: #8b4513;
+  --color-primary-hover: #a0522d;
+  --color-primary-light: #f5e6d3;
+  --color-primary-dark: #654321;
+  
+  --color-secondary: #d2691e;
+  --color-secondary-hover: #cd853f;
+  --color-secondary-light: #fdf5e6;
+  --color-secondary-dark: #b8860b;
+  
+  --color-accent: #daa520;
+  --color-accent-hover: #b8860b;
+  --color-accent-light: #fff8dc;
+  --color-accent-dark: #996f00;
+  
+  --gradient-primary: linear-gradient(135deg, #8b4513 0%, #daa520 100%);
+  --gradient-secondary: linear-gradient(135deg, #d2691e 0%, #cd853f 100%);
+  
+  --font-family-heading: 'Playfair Display', serif;
+}
+
+/* ===========================================
+   ТЕМА 2: ЗАТИШНЕ КАФЕ
+   =========================================== */
+[data-theme="cozy-cafe"] {
+  --color-primary: #6b4423;
+  --color-primary-hover: #8b4513;
+  --color-primary-light: #f4f1eb;
+  --color-primary-dark: #4a2c1a;
+  
+  --color-secondary: #d4af37;
+  --color-secondary-hover: #b8860b;
+  --color-secondary-light: #faf8f0;
+  --color-secondary-dark: #996f00;
+  
+  --color-accent: #c9a96e;
+  --color-accent-hover: #b8860b;
+  --color-accent-light: #f5f2e8;
+  --color-accent-dark: #8b7355;
+  
+  --gradient-primary: linear-gradient(135deg, #6b4423 0%, #c9a96e 100%);
+  --gradient-secondary: linear-gradient(135deg, #d4af37 0%, #f4e4bc 100%);
+  
+  --font-family-heading: 'Crimson Text', serif;
+}
+
+/* ===========================================
+   ТЕМА 3: ФАСТ-ФУД
+   =========================================== */
+[data-theme="fast-food"] {
+  --color-primary: #ff6b35;
+  --color-primary-hover: #e55a2b;
+  --color-primary-light: #ffe8e0;
+  --color-primary-dark: #cc5529;
+  
+  --color-secondary: #ffd23f;
+  --color-secondary-hover: #ffcc02;
+  --color-secondary-light: #fff9e6;
+  --color-secondary-dark: #e6b800;
+  
+  --color-accent: #ff1744;
+  --color-accent-hover: #d50000;
+  --color-accent-light: #ffebee;
+  --color-accent-dark: #b71c1c;
+  
+  --gradient-primary: linear-gradient(135deg, #ff6b35 0%, #ffd23f 100%);
+  --gradient-secondary: linear-gradient(135deg, #ff1744 0%, #ff6b35 100%);
+  
+  --font-family-heading: 'Oswald', sans-serif;
+}
+
+/* ===========================================
+   ТЕМА 4: СУШІ-БАР
+   =========================================== */
+[data-theme="sushi-bar"] {
+  --color-primary: #2c5530;
+  --color-primary-hover: #1e3a21;
+  --color-primary-light: #e8f5e8;
+  --color-primary-dark: #1a331d;
+  
+  --color-secondary: #ff6b6b;
+  --color-secondary-hover: #ff5252;
+  --color-secondary-light: #ffebee;
+  --color-secondary-dark: #d32f2f;
+  
+  --color-accent: #4ecdc4;
+  --color-accent-hover: #26a69a;
+  --color-accent-light: #e0f2f1;
+  --color-accent-dark: #00695c;
+  
+  --gradient-primary: linear-gradient(135deg, #2c5530 0%, #4ecdc4 100%);
+  --gradient-secondary: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+  
+  --font-family-heading: 'Noto Sans JP', sans-serif;
+}
+
+/* ===========================================
+   ТЕМА 5: ПІЦЕРІЯ
+   =========================================== */
+[data-theme="pizzeria"] {
+  --color-primary: #d32f2f;
+  --color-primary-hover: #b71c1c;
+  --color-primary-light: #ffebee;
+  --color-primary-dark: #8d1a1a;
+  
+  --color-secondary: #ff9800;
+  --color-secondary-hover: #f57c00;
+  --color-secondary-light: #fff3e0;
+  --color-secondary-dark: #e65100;
+  
+  --color-accent: #4caf50;
+  --color-accent-hover: #388e3c;
+  --color-accent-light: #e8f5e8;
+  --color-accent-dark: #2e7d32;
+  
+  --gradient-primary: linear-gradient(135deg, #d32f2f 0%, #ff9800 100%);
+  --gradient-secondary: linear-gradient(135deg, #ff9800 0%, #4caf50 100%);
+  
+  --font-family-heading: 'Roboto Slab', serif;
+}
+
+/* ===========================================
+   ТЕМА 6: МОДЕРН
+   =========================================== */
+[data-theme="modern"] {
+  --color-primary: #1976d2;
+  --color-primary-hover: #1565c0;
+  --color-primary-light: #e3f2fd;
+  --color-primary-dark: #0d47a1;
+  
+  --color-secondary: #424242;
+  --color-secondary-hover: #303030;
+  --color-secondary-light: #f5f5f5;
+  --color-secondary-dark: #212121;
+  
+  --color-accent: #ff4081;
+  --color-accent-hover: #f50057;
+  --color-accent-light: #fce4ec;
+  --color-accent-dark: #c2185b;
+  
+  --gradient-primary: linear-gradient(135deg, #1976d2 0%, #ff4081 100%);
+  --gradient-secondary: linear-gradient(135deg, #424242 0%, #1976d2 100%);
+  
+  --font-family-heading: 'Roboto', sans-serif;
+}
+
+/* ===========================================
+   ТЕМА 7: ТЕМНА ТЕМА
+   =========================================== */
+[data-theme="dark"] {
+  --color-primary: #bb86fc;
+  --color-primary-hover: #985eff;
+  --color-primary-light: #2d1b69;
+  --color-primary-dark: #3700b3;
+  
+  --color-secondary: #03dac6;
+  --color-secondary-hover: #018786;
+  --color-secondary-light: #1a1a1a;
+  --color-secondary-dark: #00a896;
+  
+  --color-accent: #cf6679;
+  --color-accent-hover: #b00020;
+  --color-accent-light: #2d1b1b;
+  --color-accent-dark: #8e0000;
+  
+  --color-white: #121212;
+  --color-gray-50: #1e1e1e;
+  --color-gray-100: #2d2d2d;
+  --color-gray-200: #3d3d3d;
+  --color-gray-300: #4d4d4d;
+  --color-gray-400: #6d6d6d;
+  --color-gray-500: #8d8d8d;
+  --color-gray-600: #adadad;
+  --color-gray-700: #cdcdcd;
+  --color-gray-800: #ededed;
+  --color-gray-900: #ffffff;
+  
+  --gradient-primary: linear-gradient(135deg, #bb86fc 0%, #03dac6 100%);
+  --gradient-secondary: linear-gradient(135deg, #cf6679 0%, #bb86fc 100%);
+  
+  --font-family-heading: 'Inter', sans-serif;
+}
+
+/* ===========================================
+   ТЕМА 8: ВЕСНЯНА ТЕМА
+   =========================================== */
+[data-theme="spring"] {
+  --color-primary: #4caf50;
+  --color-primary-hover: #388e3c;
+  --color-primary-light: #e8f5e8;
+  --color-primary-dark: #2e7d32;
+  
+  --color-secondary: #81c784;
+  --color-secondary-hover: #66bb6a;
+  --color-secondary-light: #f1f8e9;
+  --color-secondary-dark: #4caf50;
+  
+  --color-accent: #ffb74d;
+  --color-accent-hover: #ff9800;
+  --color-accent-light: #fff8e1;
+  --color-accent-dark: #f57c00;
+  
+  --gradient-primary: linear-gradient(135deg, #4caf50 0%, #81c784 100%);
+  --gradient-secondary: linear-gradient(135deg, #ffb74d 0%, #4caf50 100%);
+  
+  --font-family-heading: 'Dancing Script', cursive;
+}
+
+/* ===========================================
+   ТЕМА 9: ПРЕМІУМ
+   =========================================== */
+[data-theme="premium"] {
+  --color-primary: #1a1a1a;
+  --color-primary-hover: #000000;
+  --color-primary-light: #f5f5f5;
+  --color-primary-dark: #000000;
+  
+  --color-secondary: #c9a96e;
+  --color-secondary-hover: #b8860b;
+  --color-secondary-light: #faf8f0;
+  --color-secondary-dark: #996f00;
+  
+  --color-accent: #d4af37;
+  --color-accent-hover: #b8860b;
+  --color-accent-light: #fff8dc;
+  --color-accent-dark: #996f00;
+  
+  --gradient-primary: linear-gradient(135deg, #1a1a1a 0%, #c9a96e 100%);
+  --gradient-secondary: linear-gradient(135deg, #c9a96e 0%, #d4af37 100%);
+  
+  --font-family-heading: 'Playfair Display', serif;
+}
+
+/* ===========================================
+   ДОДАТКОВІ СТИЛІ ДЛЯ ТЕМ
+   =========================================== */
+
+/* Спеціальні стилі для темної теми */
+[data-theme="dark"] .ds-card {
+  background-color: var(--color-gray-100);
+  border: 1px solid var(--color-gray-200);
+}
+
+[data-theme="dark"] .ds-card:hover {
+  background-color: var(--color-gray-200);
+}
+
+[data-theme="dark"] .ds-form-input,
+[data-theme="dark"] .ds-form-textarea,
+[data-theme="dark"] .ds-form-select {
+  background-color: var(--color-gray-100);
+  border-color: var(--color-gray-300);
+  color: var(--color-gray-800);
+}
+
+[data-theme="dark"] .ds-form-input:focus,
+[data-theme="dark"] .ds-form-textarea:focus,
+[data-theme="dark"] .ds-form-select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+[data-theme="dark"] .ds-modal {
+  background-color: var(--color-gray-100);
+}
+
+[data-theme="dark"] .ds-modal-header,
+[data-theme="dark"] .ds-modal-footer {
+  border-color: var(--color-gray-200);
+}
+
+/* Спеціальні стилі для весняної теми */
+[data-theme="spring"] .ds-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 255, 248, 0.9) 100%);
+  backdrop-filter: blur(10px);
+}
+
+[data-theme="spring"] .ds-btn-primary {
+  background: var(--gradient-primary);
+  border: none;
+}
+
+[data-theme="spring"] .ds-btn-primary:hover:not(:disabled) {
+  background: var(--gradient-secondary);
+}
+
+/* Спеціальні стилі для преміум теми */
+[data-theme="premium"] .ds-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 248, 240, 0.95) 100%);
+  border: 1px solid var(--color-secondary-light);
+}
+
+[data-theme="premium"] .ds-card:hover {
+  box-shadow: 0 20px 40px rgba(201, 169, 110, 0.2);
+}
+
+[data-theme="premium"] .ds-btn-primary {
+  background: var(--gradient-primary);
+  border: 2px solid var(--color-secondary);
+}
+
+[data-theme="premium"] .ds-btn-primary:hover:not(:disabled) {
+  background: var(--gradient-secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(201, 169, 110, 0.3);
+}
+
+/* Спеціальні стилі для суші-бару */
+[data-theme="sushi-bar"] .ds-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(232, 245, 232, 0.95) 100%);
+}
+
+[data-theme="sushi-bar"] .ds-btn-primary {
+  background: var(--gradient-primary);
+}
+
+[data-theme="sushi-bar"] .ds-btn-secondary {
+  background: var(--gradient-secondary);
+}
+
+/* Спеціальні стилі для фаст-фуду */
+[data-theme="fast-food"] .ds-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 232, 224, 0.95) 100%);
+}
+
+[data-theme="fast-food"] .ds-btn-primary {
+  background: var(--gradient-primary);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Спеціальні стилі для піцерії */
+[data-theme="pizzeria"] .ds-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 235, 238, 0.95) 100%);
+}
+
+[data-theme="pizzeria"] .ds-btn-primary {
+  background: var(--gradient-primary);
+}
+
+[data-theme="pizzeria"] .ds-btn-accent {
+  background: var(--gradient-secondary);
+}
+
+/* Спеціальні стилі для модерн теми */
+[data-theme="modern"] .ds-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(227, 242, 253, 0.95) 100%);
+}
+
+[data-theme="modern"] .ds-btn-primary {
+  background: var(--gradient-primary);
+}
+
+[data-theme="modern"] .ds-btn-secondary {
+  background: var(--gradient-secondary);
+}
+
+/* Спеціальні стилі для класичного ресторану */
+[data-theme="classic-restaurant"] .ds-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 230, 211, 0.95) 100%);
+}
+
+[data-theme="classic-restaurant"] .ds-btn-primary {
+  background: var(--gradient-primary);
+}
+
+[data-theme="classic-restaurant"] .ds-btn-secondary {
+  background: var(--gradient-secondary);
+}
+
+/* Спеціальні стилі для затишного кафе */
+[data-theme="cozy-cafe"] .ds-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(244, 241, 235, 0.95) 100%);
+}
+
+[data-theme="cozy-cafe"] .ds-btn-primary {
+  background: var(--gradient-primary);
+}
+
+[data-theme="cozy-cafe"] .ds-btn-secondary {
+  background: var(--gradient-secondary);
+}
+
+/* ===========================================
+   АДАПТАЦІЯ ШРИФТІВ ДЛЯ ТЕМ
+   =========================================== */
+
+/* Підключення Google Fonts для різних тем */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap');
+
+/* ===========================================
+   ДОДАТКОВІ АНІМАЦІЇ ДЛЯ ТЕМ
+   =========================================== */
+
+/* Анімація для весняної теми */
+[data-theme="spring"] .ds-card {
+  animation: spring-bounce 3s ease-in-out infinite;
+}
+
+@keyframes spring-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Анімація для модерн теми */
+[data-theme="modern"] .ds-btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="modern"] .ds-btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+[data-theme="modern"] .ds-btn-primary:hover::before {
+  left: 100%;
+}
+
+/* Анімація для темної теми */
+[data-theme="dark"] .ds-card {
+  animation: dark-glow 4s ease-in-out infinite alternate;
+}
+
+@keyframes dark-glow {
+  from {
+    box-shadow: 0 0 20px rgba(187, 134, 252, 0.1);
+  }
+  to {
+    box-shadow: 0 0 30px rgba(187, 134, 252, 0.2);
+  }
+}
+
+/* ===========================================
+   RESPONSIVE АДАПТАЦІЯ ДЛЯ ТЕМ
+   =========================================== */
+
+@media (max-width: 768px) {
+  [data-theme="spring"] .ds-card {
+    animation: none;
+  }
+  
+  [data-theme="fast-food"] .ds-btn-primary {
+    animation: none;
+  }
+  
+  [data-theme="dark"] .ds-card {
+    animation: none;
+  }
+}
+
+/* ===========================================
+   ДОДАТКОВІ УТИЛІТИ ДЛЯ ТЕМ
+   =========================================== */
+
+/* Класи для швидкого перемикання тем */
+.theme-classic-restaurant { --theme: classic-restaurant; }
+.theme-cozy-cafe { --theme: cozy-cafe; }
+.theme-fast-food { --theme: fast-food; }
+.theme-sushi-bar { --theme: sushi-bar; }
+.theme-pizzeria { --theme: pizzeria; }
+.theme-modern { --theme: modern; }
+.theme-dark { --theme: dark; }
+.theme-spring { --theme: spring; }
+.theme-premium { --theme: premium; }
+
+/* Утиліти для градієнтних фонів */
+.ds-bg-gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.ds-bg-gradient-secondary {
+  background: var(--gradient-secondary);
+}
+
+.ds-bg-gradient-accent {
+  background: var(--gradient-accent);
+}
+
+.ds-bg-gradient-warm {
+  background: var(--gradient-warm);
+}
+
+.ds-bg-gradient-cool {
+  background: var(--gradient-cool);
+}
+
+.ds-bg-gradient-dark {
+  background: var(--gradient-dark);
+}
+
+/* Утиліти для тексту з градієнтом */
+.ds-text-gradient-primary {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ds-text-gradient-secondary {
+  background: var(--gradient-secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ds-text-gradient-accent {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
