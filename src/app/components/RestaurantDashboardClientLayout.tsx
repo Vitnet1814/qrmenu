@@ -1,7 +1,7 @@
 // app/components/RestaurantDashboardClientLayout.tsx
 'use client';
 
-import React, { ReactNode, useState, CSSProperties, useEffect } from 'react';
+import React, { ReactNode, CSSProperties, useEffect } from 'react';
 import { usePathname} from 'next/navigation';
 import {
   SquaresPlusIcon,
@@ -28,31 +28,6 @@ interface NavItem {
 
 const RestaurantDashboardClientLayout = ({ children, restaurantId }: RestaurantDashboardClientLayoutProps) => {
   const pathname = usePathname();
-  const [restaurantSlug, setRestaurantSlug] = useState<string | null>(null);
-  // const [isLoadingSlug, setIsLoadingSlug] = useState(true);
-  // const router = useRouter();
-useEffect(() => {
-      const fetchRestaurantSlug = async () => {
-        // setIsLoadingSlug(true);
-        try {
-          const response = await fetch(`/api/restaurants/id/${restaurantId}`);
-          if (response.ok) {
-            const data = await response.json();
-            setRestaurantSlug(data?.slug || null);
-          } else {
-            console.error('Failed to fetch restaurant slug');
-          }
-        } catch (error) {
-          console.error('Error fetching restaurant slug:', error);
-        } finally {
-          // setIsLoadingSlug(false);
-        }
-      };
-  
-      if (restaurantId) {
-        fetchRestaurantSlug();
-      }
-    }, [restaurantId]);
   const navigation: NavItem[] = [
     { name: 'Меню', href: `/dashboard/${restaurantId}/menu`, icon: SquaresPlusIcon },
     { name: 'Дизайн', href: `/dashboard/${restaurantId}/design`, icon: PaintBrushIcon },
