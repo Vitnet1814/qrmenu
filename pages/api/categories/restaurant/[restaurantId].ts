@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { connectDatabase } from '../../../../src/app/lib/database';
-import { ObjectId } from 'mongodb';
+import { RestaurantManager } from '../../../../src/app/lib/restaurantDatabase';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { restaurantId } = req.query;
@@ -11,15 +10,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'GET') {
     try {
-      const { db } = await connectDatabase();
-      const categoriesCollection = db.collection('categories');
+      const restaurantDb = await RestaurantManager.getRestaurantDatabase(restaurantId);
+      const categories = await restaurantDb.getByType('category');
 
-      const categories = await categoriesCollection.find({ restaurantId: new ObjectId(restaurantId) }).sort({ order: 1 }).toArray();
+      // Перетворюємо дані в формат, сумісний з фронтендом
+      const formattedCategories = categories.map(category => ({
+        _id: category._id?.toString(),
+        name: category.data.name,
+        description: category.data.description,
+        image: category.data.image,
+        order: category.order,
+        createdAt: category.createdAt,
+        updatedAt: category.updatedAt
+      }));
 
-      return res.status(200).json(categories);
+      return res.status(200).json(formattedCategories);
     } catch (error) {
       console.error('Помилка отримання категорій:', error);
-      return res.status(500).json({ error: 'Не вдалося отримати категорії' });
+      return res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Не вдалося отримати категорії' 
+      });
     }
   } else {
     res.setHeader('Allow', ['GET']);

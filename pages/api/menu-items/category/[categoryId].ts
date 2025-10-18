@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { connectDatabase } from '../../../../src/app/lib/database';
-import { ObjectId } from 'mongodb';
+import { RestaurantManager } from '../../../../src/app/lib/restaurantDatabase';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { categoryId } = req.query;
@@ -11,18 +10,39 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ message: 'Необхідно надати ID категорії' });
       }
 
-      const { db } = await connectDatabase();
-      const menuItemsCollection = db.collection('menuItems');
+      // Знаходимо ресторан, якому належить ця категорія
+      const restaurantId = await RestaurantManager.findRestaurantByCategory(categoryId);
+      
+      if (!restaurantId) {
+        return res.status(404).json({ message: 'Категорію не знайдено' });
+      }
 
-      const items = await menuItemsCollection.find({ categoryId: new ObjectId(categoryId) }).toArray();
+      const restaurantDb = await RestaurantManager.getRestaurantDatabase(restaurantId);
+      const menuItems = await restaurantDb.getMenuItemsByCategory(categoryId);
 
-      res.status(200).json(items);
+      // Перетворюємо дані в формат, сумісний з фронтендом
+      const formattedItems = menuItems.map(item => ({
+        _id: item._id?.toString(),
+        categoryId: item.data.categoryId,
+        name: item.data.name,
+        description: item.data.description,
+        price: item.data.price,
+        image: item.data.image,
+        order: item.order,
+        createdAt: item.createdAt,
+        updatedAt: item.updatedAt
+      }));
+
+      return res.status(200).json(formattedItems);
+      
     } catch (error) {
       console.error('Помилка при отриманні страв за категорією:', error);
-      res.status(500).json({ message: 'Помилка сервера при отриманні страв' });
+      return res.status(500).json({ 
+        message: error instanceof Error ? error.message : 'Помилка сервера при отриманні страв' 
+      });
     }
   } else {
     res.setHeader('Allow', ['GET']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }

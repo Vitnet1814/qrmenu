@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { connectDatabase } from '../../../src/app/lib/database';
-import { ObjectId } from 'mongodb';
+import { RestaurantManager } from '../../../src/app/lib/restaurantDatabase';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
@@ -11,33 +10,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ message: 'Необхідно надати restaurantId, categoryId, name та price' });
       }
 
-      const { db } = await connectDatabase();
-      const menuItemsCollection = db.collection('menuItems');
+      const restaurantDb = await RestaurantManager.getRestaurantDatabase(restaurantId);
 
-      const newItem = {
-        restaurantId: new ObjectId(restaurantId),
-        categoryId: new ObjectId(categoryId),
+      const menuItemData = {
+        categoryId,
         name,
         description: description || '',
         price: parseFloat(price),
         image: image || null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
-      const result = await menuItemsCollection.insertOne(newItem);
+      const result = await restaurantDb.create('menu-item', menuItemData);
 
-      if (result.insertedId) {
-        res.status(201).json({ message: 'Страву успішно створено', itemId: result.insertedId });
-      } else {
-        res.status(500).json({ message: 'Не вдалося створити страву' });
-      }
+      return res.status(201).json({ 
+        message: 'Страву успішно створено', 
+        itemId: result._id?.toString(),
+        data: result.data,
+        order: result.order,
+        createdAt: result.createdAt,
+        updatedAt: result.updatedAt
+      });
     } catch (error) {
       console.error('Помилка при створенні страви:', error);
-      res.status(500).json({ message: 'Помилка сервера при створенні страви' });
+      return res.status(500).json({ 
+        message: error instanceof Error ? error.message : 'Помилка сервера при створенні страви' 
+      });
     }
   } else {
     res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
