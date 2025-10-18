@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { signIn } from 'next-auth/react';
-import Link from 'next/link';
 import styles from './LoginForm.module.css';
 
 const LoginForm = () => {
