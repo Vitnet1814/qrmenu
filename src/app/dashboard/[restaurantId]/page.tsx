@@ -1,22 +1,14 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import {
-  ChartBarIcon,
   Squares2X2Icon,
   PaintBrushIcon,
   QrCodeIcon,
   EyeIcon,
   ClockIcon,
-  CalendarIcon,
-  ArrowPathIcon,
-  ExclamationTriangleIcon,
-  CheckCircleIcon,
-  PlusIcon,
-  Cog6ToothIcon,
   DocumentTextIcon,
-  PhotoIcon,
 } from '@heroicons/react/24/outline';
 import { LoadingSpinner, ErrorState } from '../../components/ui/LoadingStates';
 import { StatCard, QuickActionCard, ActivityItem } from '../../components/ui/Cards';
@@ -40,7 +32,6 @@ interface RestaurantInfo {
 
 const RestaurantDashboardPage = () => {
   const params = useParams<{ restaurantId: string }>();
-  const router = useRouter();
   const restaurantId = params?.restaurantId;
   
   const [restaurantInfo, setRestaurantInfo] = useState<RestaurantInfo | null>(null);
