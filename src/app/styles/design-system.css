@@ -1058,3 +1058,62 @@ body {
 .ds-toast-info {
   border-left: 4px solid var(--color-info);
 }
+
+/* ===========================================
+   ТЕМНА ТЕМА
+   =========================================== */
+@media (prefers-color-scheme: dark) {
+  .ds-card {
+    background-color: #1f2937;
+    color: #f9fafb;
+  }
+  
+  .ds-card:hover {
+    background-color: #374151;
+  }
+  
+  .bg-gray-50 {
+    background-color: #111827;
+  }
+  
+  .bg-white {
+    background-color: #1f2937;
+  }
+  
+  .text-gray-900 {
+    color: #f9fafb !important;
+  }
+  
+  .text-gray-600 {
+    color: #d1d5db !important;
+  }
+  
+  .ds-text-gray-900 {
+    color: #f9fafb !important;
+  }
+  
+  .ds-text-gray-600 {
+    color: #d1d5db !important;
+  }
+  
+  .ds-text-gray-500 {
+    color: #9ca3af !important;
+  }
+  
+  .ds-text-gray-700 {
+    color: #e5e7eb !important;
+  }
+  
+  body {
+    background-color: #111827;
+    color: #f9fafb;
+  }
+  
+  .border-b {
+    border-bottom-color: #374151;
+  }
+  
+  .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  }
+}

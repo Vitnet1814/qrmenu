@@ -7,7 +7,7 @@ import {
   SquaresPlusIcon,
   PaintBrushIcon,
   QrCodeIcon,
-  EllipsisHorizontalIcon, // Можемо використовувати цю іконку для "Ще"
+  ArrowRightStartOnRectangleIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react'; // Імпортуємо signOut
@@ -21,10 +21,9 @@ interface RestaurantDashboardClientLayoutProps {
 
 interface NavItem {
   name: string;
-  href: string;
+  href?: string;
   icon: React.ComponentType<React.ComponentProps<'svg'>>;
-  hasSubMenu?: boolean;
-  subMenu?: { name: string; onClick?: () => void; href?: string }[]; // onClick для дій
+  onClick?: () => void;
 }
 
 const RestaurantDashboardClientLayout = ({ children, restaurantId }: RestaurantDashboardClientLayoutProps) => {
@@ -32,7 +31,6 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId }: RestaurantD
   const [restaurantSlug, setRestaurantSlug] = useState<string | null>(null);
   // const [isLoadingSlug, setIsLoadingSlug] = useState(true);
   // const router = useRouter();
-  const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
 useEffect(() => {
       const fetchRestaurantSlug = async () => {
         // setIsLoadingSlug(true);
@@ -59,66 +57,107 @@ useEffect(() => {
     { name: 'Меню', href: `/dashboard/${restaurantId}/menu`, icon: SquaresPlusIcon },
     { name: 'Дизайн', href: `/dashboard/${restaurantId}/design`, icon: PaintBrushIcon },
     { name: 'QR код', href: `/dashboard/${restaurantId}/qr-code`, icon: QrCodeIcon },
-    {
-      name: 'Ще',
-      href: '#',
-      icon: EllipsisHorizontalIcon,
-      hasSubMenu: true,
-      subMenu: [
-        { name: 'Переглянути меню', href: `/menu/${restaurantSlug}` },
-        { name: 'Вийти', onClick: async () => await signOut({ redirect: true, callbackUrl: '/' }) }, // Додаємо onClick для виходу
-      ],
-    },
+    { name: 'Вийти', onClick: async () => await signOut({ redirect: true, callbackUrl: '/' }), icon: ArrowRightStartOnRectangleIcon },
   ];
 
-  const toggleSubMenu = () => {
-    setIsSubMenuOpen(!isSubMenuOpen);
-  };
+
+  // Додаємо CSS стилі для темної теми
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const styleSheet = document.createElement('style');
+      styleSheet.textContent = `
+        /* Темна тема */
+        @media (prefers-color-scheme: dark) {
+          .nav-container-dark {
+            background-color: #111827 !important;
+          }
+          
+          .nav-bottom-dark {
+            background-color: #1f2937 !important;
+            border-top-color: #374151 !important;
+          }
+          
+          .nav-link-dark {
+            color: #d1d5db !important;
+          }
+          
+          .nav-link-dark:hover {
+            background-color: #374151 !important;
+            color: #d1d5db !important;
+          }
+          
+          .nav-link-active-dark {
+            color: #60a5fa !important;
+            background-color: #1e3a8a !important;
+          }
+          
+          .sub-menu-dark {
+            background-color: #1f2937 !important;
+            border-color: #374151 !important;
+          }
+          
+          .sub-menu-item-dark {
+            color: #e5e7eb !important;
+          }
+          
+          .sub-menu-item-dark:hover {
+            background-color: #374151 !important;
+            color: #60a5fa !important;
+          }
+          
+          /* Виправляємо колір іконок в темній темі */
+          .nav-link-dark svg {
+            color: inherit !important;
+          }
+        }
+      `;
+      document.head.appendChild(styleSheet);
+
+      return () => {
+        document.head.removeChild(styleSheet);
+      };
+    }
+  }, []);
 
   return (
-    <div style={styles.container}>
+    <div style={styles.container} className="nav-container-dark">
       <main style={styles.mainContent}>{children}</main>
 
-      <nav style={styles.bottomNav}>
+      <nav style={styles.bottomNav} className="nav-bottom-dark">
         <ul style={styles.navList}>
           {navigation.map((item) => (
             <li key={item.name} style={styles.navItem}>
-              {item.hasSubMenu && item.subMenu ? (
-                <div style={styles.subMenuContainer}>
-                 <button
-                    onClick={toggleSubMenu}
-                    style={pathname === '#' ? { ...styles.navLink, color: 'red' } : styles.navLink} // Adjust styles based on condition
-                  >
-                    <item.icon style={styles.navIcon} />
-                    <span style={styles.navText}>{item.name}</span>
-                  </button>
-
-                  {isSubMenuOpen && (
-                    <div style={styles.subMenu}>
-                      {item.subMenu.map((subItem) => (
-                        <React.Fragment key={subItem.name}>
-                          {subItem.onClick ? (
-                            <button onClick={subItem.onClick} style={styles.subMenuItem}>
-                              {subItem.name}
-                            </button>
-                          ) : (
-                            <Link href={subItem.href!} style={styles.subMenuItem}>
-                              {subItem.name}
-                            </Link>
-                          )}
-                        </React.Fragment>
-                      ))}
-                    </div>
-                  )}
-                </div>
+              {item.onClick ? (
+                <button
+                  onClick={item.onClick}
+                  className="nav-link-dark"
+                  style={{
+                    ...styles.navLink,
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    width: '100%',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#e5e7eb';
+                    e.currentTarget.style.color = '#374151';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.color = '#6b7280';
+                  }}
+                >
+                  <item.icon style={styles.navIcon} />
+                  <span style={styles.navText}>{item.name}</span>
+                </button>
               ) : (
                 <Link
-                      href={item.href}
-                      style={pathname === item.href ? { ...styles.navLink, color: 'blue' } : styles.navLink} // Apply conditional styles
-                    >
-                      <item.icon style={styles.navIcon} />
-                      <span style={styles.navText}>{item.name}</span>
-                    </Link>
+                  href={item.href!}
+                  className={`nav-link-dark ${pathname === item.href ? 'nav-link-active-dark' : ''}`}
+                  style={pathname === item.href ? { ...styles.navLink, color: '#60a5fa', backgroundColor: '#1e3a8a' } : styles.navLink}
+                >
+                  <item.icon style={styles.navIcon} />
+                  <span style={styles.navText}>{item.name}</span>
+                </Link>
               )}
             </li>
           ))}
@@ -133,7 +172,7 @@ const styles: { [key: string]: CSSProperties } = {
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
-    backgroundColor: 'white',
+    backgroundColor: '#f8fafc', // bg-gray-50
     alignItems: 'center',
   },
   mainContent: {
@@ -143,11 +182,12 @@ const styles: { [key: string]: CSSProperties } = {
     width: '100%',
   },
   bottomNav: {
-    backgroundColor: '#f8f8f8',
-    borderTop: '1px solid #e0e0e0',
+    backgroundColor: '#ffffff', // білий фон з тінню
+    borderTop: '1px solid #e5e7eb',
     padding: '10px 0',
     maxWidth: '600px',
     width: '100%',
+    boxShadow: '0 -1px 3px 0 rgba(0, 0, 0, 0.1)', // тінь
   },
   navList: {
     display: 'flex',
@@ -158,17 +198,19 @@ const styles: { [key: string]: CSSProperties } = {
   },
   navItem: {
     textAlign: 'center',
-    position: 'relative', // Для абсолютно позиціонованого підменю
+    position: 'relative',
   },
   navLink: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     textDecoration: 'none',
-    // You can add other static styles here
+    color: '#6b7280',
+    padding: '8px',
+    borderRadius: '12px', // красиві закруглення
+    transition: 'all 0.3s ease', // плавні переходи
+    cursor: 'pointer',
   },
-  // other styles...
-
   navIcon: {
     width: '24px',
     height: '24px',
@@ -177,6 +219,7 @@ const styles: { [key: string]: CSSProperties } = {
   },
   navText: {
     fontSize: '0.8rem',
+    fontWeight: '500',
   },
   subMenuContainer: {
     display: 'flex',
@@ -185,30 +228,31 @@ const styles: { [key: string]: CSSProperties } = {
   },
   subMenu: {
     position: 'absolute',
-    bottom: '60px', // Розміщуємо над нижньою навігацією
+    bottom: '60px',
     left: '50%',
     transform: 'translateX(-50%)',
-    backgroundColor: 'white',
-    border: '1px solid #e0e0e0',
-    borderRadius: '5px',
-    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+    backgroundColor: '#ffffff', // білий фон
+    border: '1px solid #e5e7eb',
+    borderRadius: '12px', // красиві закруглення
+    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', // тінь
     zIndex: 10,
-    padding: '10px',
+    padding: '8px',
+    minWidth: '160px',
   },
   subMenuItem: {
     display: 'block',
-    padding: '8px 15px',
+    padding: '8px 12px',
     textDecoration: 'none',
-    color: '#333',
-    fontSize: '0.9rem',
-    // '&:hover': {
-    //   backgroundColor: '#f0f0f0',
-    // },
+    color: '#374151',
+    fontSize: '0.875rem',
+    fontWeight: '500',
     border: 'none',
     background: 'none',
     textAlign: 'left',
     cursor: 'pointer',
     width: '100%',
+    borderRadius: '6px', // красиві закруглення
+    transition: 'all 0.2s ease', // плавні переходи
   },
 };
 
