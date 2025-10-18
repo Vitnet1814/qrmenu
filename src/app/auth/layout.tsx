@@ -10,7 +10,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
       <header>
         {/* Можна додати логотип або заголовок для сторінок аутентифікації */}
-        <h1>QR Menu Сервіс</h1>
+        <h1></h1>
       </header>
       <main style={{ padding: '20px' }}>
         {children}
