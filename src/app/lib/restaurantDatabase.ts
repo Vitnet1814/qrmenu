@@ -2,10 +2,11 @@
 import { Db, ObjectId } from 'mongodb';
 import { connectDatabase } from './database';
 import slugify from 'slugify';
+import sharp from 'sharp';
 
 export interface RestaurantData {
   _id?: ObjectId;
-  type: 'restaurant-info' | 'category' | 'menu-item' | 'theme' | 'photo' | 'settings';
+  type: 'restaurant-info' | 'category' | 'menu-item' | 'theme' | 'photo' | 'settings' | 'banner';
   data: Record<string, unknown>;
   order?: number;
   createdAt: Date;
@@ -107,6 +108,109 @@ export class RestaurantDatabase {
     const collection = this.getCollection();
     return await collection.find({ type: 'menu-item' }).sort({ order: 1 }).toArray();
   }
+
+  // ===== МЕТОДИ ДЛЯ РОБОТИ З БАНЕРОМ =====
+
+  // Отримати банер ресторану
+  async getBanner() {
+    const collection = this.getCollection();
+    return await collection.findOne({ type: 'banner' });
+  }
+
+  // Оптимізувати зображення через Sharp (конвертація в WebP)
+  private async optimizeImageToWebP(base64Image: string): Promise<string> {
+    try {
+      // Витягуємо Base64 без префіксу
+      const base64Data = base64Image.replace(/^data:image\/[a-z]+;base64,/, '');
+      const buffer = Buffer.from(base64Data, 'base64');
+      
+      // Оптимізуємо зображення та конвертуємо в WebP
+      const webpBuffer = await sharp(buffer)
+        .resize(1200, 400, { 
+          fit: 'inside',
+          withoutEnlargement: true 
+        })
+        .webp({ 
+          quality: 80,        // Якість WebP
+          lossless: false,   // Втратне стиснення для меншого розміру
+          nearLossless: false
+        })
+        .toBuffer();
+      
+      // Повертаємо оптимізоване WebP зображення як Base64
+      return `data:image/webp;base64,${webpBuffer.toString('base64')}`;
+    } catch (error) {
+      console.error('Помилка оптимізації зображення:', error);
+      throw new Error('Не вдалося оптимізувати зображення');
+    }
+  }
+
+  // Створити/оновити банер ресторану
+  async setBanner(base64Image: string, alt?: string) {
+    try {
+      // Оптимізуємо зображення перед збереженням
+      const optimizedWebP = await this.optimizeImageToWebP(base64Image);
+      
+      const collection = this.getCollection();
+      
+      // Перевіряємо чи є вже банер
+      const existingBanner = await this.getBanner();
+      
+      if (existingBanner) {
+        // Оновлюємо існуючий банер
+        return await collection.updateOne(
+          { _id: existingBanner._id },
+          { 
+            $set: { 
+              data: {
+                image: optimizedWebP,
+                alt: alt || '',
+                format: 'webp',
+                optimized: true,
+                originalSize: base64Image.length,
+                optimizedSize: optimizedWebP.length
+              },
+              updatedAt: new Date() 
+            } 
+          }
+        );
+      } else {
+        // Створюємо новий банер
+        const newBanner: RestaurantData = {
+          type: 'banner',
+          data: {
+            image: optimizedWebP,
+            alt: alt || '',
+            format: 'webp',
+            optimized: true,
+            originalSize: base64Image.length,
+            optimizedSize: optimizedWebP.length
+          },
+          order: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+
+        const result = await collection.insertOne(newBanner);
+        return { ...newBanner, _id: result.insertedId };
+      }
+    } catch (error) {
+      console.error('Помилка збереження банера:', error);
+      throw new Error('Не вдалося зберегти банер');
+    }
+  }
+
+  // Видалити банер ресторану
+  async removeBanner() {
+    const collection = this.getCollection();
+    const banner = await this.getBanner();
+    
+    if (banner) {
+      return await collection.deleteOne({ _id: banner._id });
+    }
+    
+    return { deletedCount: 0 };
+  }
 }
 
 // Статичні функції для роботи з ресторанами
@@ -192,5 +296,25 @@ export class RestaurantManager {
     }
     
     return null;
+  }
+
+  // ===== СТАТИЧНІ МЕТОДИ ДЛЯ РОБОТИ З БАНЕРОМ =====
+
+  // Отримати банер ресторану за ID
+  static async getRestaurantBanner(restaurantId: string) {
+    const restaurantDb = await this.getRestaurantDatabase(restaurantId);
+    return await restaurantDb.getBanner();
+  }
+
+  // Встановити банер ресторану за ID
+  static async setRestaurantBanner(restaurantId: string, base64Image: string, alt?: string) {
+    const restaurantDb = await this.getRestaurantDatabase(restaurantId);
+    return await restaurantDb.setBanner(base64Image, alt);
+  }
+
+  // Видалити банер ресторану за ID
+  static async removeRestaurantBanner(restaurantId: string) {
+    const restaurantDb = await this.getRestaurantDatabase(restaurantId);
+    return await restaurantDb.removeBanner();
   }
 }
