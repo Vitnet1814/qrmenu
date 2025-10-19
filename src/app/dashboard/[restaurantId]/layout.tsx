@@ -35,7 +35,13 @@ async function RestaurantDashboardLayout({ children, params }: RestaurantDashboa
     }
 
     return (
-      <RestaurantDashboardClientLayout restaurantId={restaurantId}>
+      <RestaurantDashboardClientLayout 
+        restaurantId={restaurantId}
+        restaurantInfo={{
+          name: restaurant.name,
+          slug: restaurant.slug
+        }}
+      >
         {children}
       </RestaurantDashboardClientLayout>
     );

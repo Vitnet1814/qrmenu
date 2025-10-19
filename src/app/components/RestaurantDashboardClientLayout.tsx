@@ -8,15 +8,22 @@ import {
   PaintBrushIcon,
   QrCodeIcon,
   ArrowRightStartOnRectangleIcon,
+  EyeIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react'; // Імпортуємо signOut
 
 
 
+interface RestaurantInfo {
+  name: string;
+  slug: string;
+}
+
 interface RestaurantDashboardClientLayoutProps {
   children: ReactNode;
   restaurantId: string;
+  restaurantInfo?: RestaurantInfo;
 }
 
 interface NavItem {
@@ -26,7 +33,7 @@ interface NavItem {
   onClick?: () => void;
 }
 
-const RestaurantDashboardClientLayout = ({ children, restaurantId }: RestaurantDashboardClientLayoutProps) => {
+const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInfo }: RestaurantDashboardClientLayoutProps) => {
   const pathname = usePathname();
   const navigation: NavItem[] = [
     { name: 'Меню', href: `/dashboard/${restaurantId}/menu`, icon: SquaresPlusIcon },
@@ -41,6 +48,39 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId }: RestaurantD
     if (typeof window !== 'undefined') {
       const styleSheet = document.createElement('style');
       styleSheet.textContent = `
+        /* Адаптивний хедер */
+        @media (min-width: 640px) {
+          .header-content-responsive {
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+          }
+          
+          .header-right-responsive {
+            width: auto !important;
+          }
+          
+          .preview-button-responsive {
+            width: auto !important;
+          }
+          
+          .preview-button-text-responsive {
+            display: inline !important;
+          }
+          
+          .preview-button-text-mobile {
+            display: none !important;
+          }
+        }
+        
+        .preview-button-text-responsive {
+          display: none;
+        }
+        
+        .preview-button-text-mobile {
+          display: inline;
+        }
+        
         /* Темна тема */
         @media (prefers-color-scheme: dark) {
           .nav-container-dark {
@@ -96,6 +136,32 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId }: RestaurantD
 
   return (
     <div style={styles.container} className="nav-container-dark">
+      {/* Header */}
+      <header style={styles.header}>
+        <div style={styles.headerContent} className="header-content-responsive">
+          <div style={styles.headerLeft}>
+            <h1 style={styles.headerTitle}>
+              {restaurantInfo?.name || 'Ресторан'}
+            </h1>
+            <p style={styles.headerSubtitle}>
+              Панель управління рестораном
+            </p>
+          </div>
+          <div style={styles.headerRight} className="header-right-responsive">
+            <Link
+              href={`/menu/${restaurantInfo?.slug}`}
+              target="_blank"
+              style={styles.previewButton}
+              className="preview-button-responsive"
+            >
+              <EyeIcon style={styles.buttonIcon} />
+              <span style={styles.buttonText} className="preview-button-text-responsive">Попередній перегляд</span>
+              <span style={styles.buttonText} className="preview-button-text-mobile">Перегляд</span>
+            </Link>
+          </div>
+        </div>
+      </header>
+
       <main style={styles.mainContent}>{children}</main>
 
       <nav style={styles.bottomNav} className="nav-bottom-dark">
@@ -149,10 +215,75 @@ const styles: { [key: string]: CSSProperties } = {
     minHeight: '100vh',
     backgroundColor: '#f8fafc', // bg-gray-50
     alignItems: 'center',
+    position: 'relative',
+  },
+  header: {
+    backgroundColor: '#ffffff',
+    borderBottom: '1px solid #e5e7eb',
+    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+    width: '100%',
+    maxWidth: '600px',
+    position: 'fixed',
+    top: 0,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: 1000,
+  },
+  headerContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    padding: '24px 20px',
+  },
+  headerLeft: {
+    flex: 1,
+  },
+  headerTitle: {
+    fontSize: '1.875rem', // text-3xl
+    fontWeight: '700',
+    color: '#111827',
+    margin: 0,
+    lineHeight: '1.2',
+  },
+  headerSubtitle: {
+    fontSize: '0.875rem',
+    color: '#6b7280',
+    margin: '4px 0 0 0',
+  },
+  headerRight: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+  },
+  previewButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '8px',
+    padding: '8px 16px',
+    backgroundColor: 'transparent',
+    border: '1px solid #d1d5db',
+    borderRadius: '6px',
+    color: '#374151',
+    textDecoration: 'none',
+    fontSize: '0.875rem',
+    fontWeight: '500',
+    width: '100%',
+    transition: 'all 0.2s ease',
+    cursor: 'pointer',
+  },
+  buttonIcon: {
+    width: '20px',
+    height: '20px',
+  },
+  buttonText: {
+    fontSize: '0.875rem',
   },
   mainContent: {
     flexGrow: 1,
     padding: '20px',
+    paddingTop: '120px', // Додаємо відступ зверху для хедера
+    paddingBottom: '100px', // Додаємо відступ знизу для футера
     maxWidth: '600px',
     width: '100%',
   },
@@ -163,6 +294,11 @@ const styles: { [key: string]: CSSProperties } = {
     maxWidth: '600px',
     width: '100%',
     boxShadow: '0 -1px 3px 0 rgba(0, 0, 0, 0.1)', // тінь
+    position: 'fixed',
+    bottom: 0,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: 1000,
   },
   navList: {
     display: 'flex',

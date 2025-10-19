@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import Link from 'next/link';
 import {
   Squares2X2Icon,
   PaintBrushIcon,
@@ -195,32 +194,6 @@ const RestaurantDashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="ds-text-3xl ds-font-bold ds-text-gray-900">
-                {restaurantInfo?.name || 'Ресторан'}
-              </h1>
-              <p className="ds-text-gray-600 mt-1">
-                Панель управління рестораном
-              </p>
-            </div>
-            <div className="flex items-center space-x-3">
-              <Link
-                href={`/menu/${restaurantInfo?.slug}`}
-                target="_blank"
-                className="ds-btn ds-btn-outline"
-              >
-                <EyeIcon className="w-5 h-5" />
-                Попередній перегляд
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Статистичні картки */}
         <div className="mb-8">
