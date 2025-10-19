@@ -81,6 +81,11 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
           display: inline;
         }
         
+        /* Hover ефект для заголовка */
+        .header-title-link:hover {
+          opacity: 0.7;
+        }
+        
         /* Темна тема */
         @media (prefers-color-scheme: dark) {
           .nav-container-dark {
@@ -140,9 +145,11 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
       <header style={styles.header}>
         <div style={styles.headerContent} className="header-content-responsive">
           <div style={styles.headerLeft}>
-            <h1 style={styles.headerTitle}>
-              {restaurantInfo?.name || 'Ресторан'}
-            </h1>
+            <Link href="/dashboard" style={styles.headerTitleLink} className="header-title-link">
+              <h1 style={styles.headerTitle}>
+                {restaurantInfo?.name || 'Ресторан'}
+              </h1>
+            </Link>
             <p style={styles.headerSubtitle}>
               Панель управління рестораном
             </p>
@@ -156,7 +163,7 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
             >
               <EyeIcon style={styles.buttonIcon} />
               <span style={styles.buttonText} className="preview-button-text-responsive">Попередній перегляд</span>
-              <span style={styles.buttonText} className="preview-button-text-mobile">Перегляд</span>
+              <span style={styles.buttonText} className="preview-button-text-mobile">Попередній перегляд</span>
             </Link>
           </div>
         </div>
@@ -237,6 +244,12 @@ const styles: { [key: string]: CSSProperties } = {
   },
   headerLeft: {
     flex: 1,
+  },
+  headerTitleLink: {
+    textDecoration: 'none',
+    color: 'inherit',
+    cursor: 'pointer',
+    transition: 'opacity 0.2s ease',
   },
   headerTitle: {
     fontSize: '1.875rem', // text-3xl
