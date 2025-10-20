@@ -11,6 +11,7 @@ import {
   EyeIcon,
   SunIcon,
   MoonIcon,
+  ChevronUpIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react'; // Імпортуємо signOut
@@ -38,6 +39,7 @@ interface NavItem {
 const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInfo }: RestaurantDashboardClientLayoutProps) => {
   const pathname = usePathname();
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
   
   const navigation: NavItem[] = [
     { name: 'Меню', href: `/dashboard/${restaurantId}/menu`, icon: SquaresPlusIcon },
@@ -63,6 +65,14 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
     
     // Відправити кастомну подію для синхронізації з іншими сторінками
     window.dispatchEvent(new CustomEvent('themeChanged'));
+  };
+
+  // Функція для прокрутки до початку сторінки
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
 
   // Завантажуємо збережену тему при завантаженні компонента
@@ -99,6 +109,20 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
     return () => {
       window.removeEventListener('storage', handleThemeChange);
       window.removeEventListener('themeChanged', handleThemeChange);
+    };
+  }, []);
+
+  // Слухач події scroll для показу/приховування кнопки Scroll to Top
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      setShowScrollToTop(scrollTop > 300); // Показуємо кнопку після прокрутки на 300px
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -582,6 +606,34 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
         .dark .menu-list-grid-dark {
           background: transparent !important;
         }
+        
+        /* Стилі для Scroll to Top кнопки в темній темі */
+        .dark .scroll-to-top-button {
+          background-color: #1d4ed8 !important;
+          box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4) !important;
+        }
+        
+        .dark .scroll-to-top-button:hover {
+          background-color: #3b82f6 !important;
+          box-shadow: 0 6px 16px rgba(59, 130, 246, 0.5) !important;
+          transform: translateY(-2px) !important;
+        }
+        
+        .dark .scroll-to-top-button:active {
+          transform: translateY(0) scale(0.95) !important;
+        }
+        
+        /* Hover ефект для Scroll to Top кнопки */
+        .scroll-to-top-button:hover {
+          background-color: #1d4ed8 !important;
+          box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4) !important;
+          transform: translateY(-2px);
+          opacity: 1 !important;
+        }
+        
+        .scroll-to-top-button:active {
+          transform: translateY(0) scale(0.95);
+        }
       `;
       document.head.appendChild(styleSheet);
 
@@ -675,6 +727,18 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
           ))}
         </ul>
       </nav>
+
+      {/* Scroll to Top кнопка */}
+      {showScrollToTop && (
+        <button
+          onClick={scrollToTop}
+          style={styles.scrollToTopButton}
+          className="scroll-to-top-button"
+          title="Повернутися на початок"
+        >
+          <ChevronUpIcon style={styles.scrollToTopIcon} />
+        </button>
+      )}
     </div>
   );
 };
@@ -858,6 +922,29 @@ const styles: { [key: string]: CSSProperties } = {
     width: '100%',
     borderRadius: '6px', // красиві закруглення
     transition: 'all 0.2s ease', // плавні переходи
+  },
+  scrollToTopButton: {
+    position: 'fixed',
+    bottom: '120px', // Розміщуємо вище навігації
+    right: '20px',
+    width: '50px',
+    height: '50px',
+    backgroundColor: '#3b82f6',
+    border: 'none',
+    borderRadius: '50%',
+    color: '#ffffff',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+    transition: 'all 0.3s ease',
+    zIndex: 1000,
+    opacity: 0.9,
+  },
+  scrollToTopIcon: {
+    width: '24px',
+    height: '24px',
   },
 };
 
