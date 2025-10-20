@@ -12,32 +12,31 @@ const MenuBanner = ({ restaurantId }: MenuBannerProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Отримати банер ресторану з сервера
-  const fetchBanner = async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch(`/api/restaurants/${restaurantId}/banner`);
-      
-      if (response.ok) {
-        const data = await response.json();
-        if (data.banner?.data?.image) {
-          setBannerUrl(data.banner.data.image);
-        }
-      } else if (response.status === 404) {
-        // Банер не знайдено - це нормально
-        setBannerUrl(null);
-      } else {
-        throw new Error('Помилка завантаження банера');
-      }
-    } catch (error) {
-      console.error('Error fetching banner:', error);
-      setError('Не вдалося завантажити банер');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchBanner = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`/api/restaurants/${restaurantId}/banner`);
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data.banner?.data?.image) {
+            setBannerUrl(data.banner.data.image);
+          }
+        } else if (response.status === 404) {
+          // Банер не знайдено - це нормально
+          setBannerUrl(null);
+        } else {
+          throw new Error('Помилка завантаження банера');
+        }
+      } catch (error) {
+        console.error('Error fetching banner:', error);
+        setError('Не вдалося завантажити банер');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     if (restaurantId) {
       fetchBanner();
     }
