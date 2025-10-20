@@ -21,7 +21,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   return (
     <div className={`flex flex-col items-center justify-center ${className}`}>
       <div className={`ds-spinner ${sizeClasses[size]} mb-2`}></div>
-      {text && <p className="text-gray-600 text-sm">{text}</p>}
+      {text && <p className="text-gray-600 dark:text-gray-400 text-sm">{text}</p>}
     </div>
   );
 };
@@ -40,10 +40,10 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
   className = ''
 }) => {
   return (
-    <div className={`ds-card ds-card-body text-center max-w-md mx-auto ${className}`}>
-      <ArrowPathIcon className="w-16 h-16 text-red-500 mx-auto mb-4" />
-      <h2 className="ds-text-2xl ds-font-bold ds-text-gray-900 mb-2">{title}</h2>
-      <p className="ds-text-gray-600 mb-6">{message}</p>
+    <div className={`ds-card ds-card-body text-center max-w-md mx-auto dark:bg-gray-800 dark:border-gray-700 ${className}`}>
+      <ArrowPathIcon className="w-16 h-16 text-red-500 dark:text-red-400 mx-auto mb-4" />
+      <h2 className="ds-text-2xl ds-font-bold ds-text-gray-900 dark:ds-text-gray-100 mb-2">{title}</h2>
+      <p className="ds-text-gray-600 dark:ds-text-gray-400 mb-6">{message}</p>
       {onRetry && (
         <button
           onClick={onRetry}
@@ -76,10 +76,10 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   className = ''
 }) => {
   return (
-    <div className={`ds-card ds-card-body text-center max-w-md mx-auto ${className}`}>
-      {Icon && <Icon className="w-16 h-16 text-gray-400 mx-auto mb-4" />}
-      <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 mb-2">{title}</h2>
-      <p className="ds-text-gray-600 mb-6">{message}</p>
+    <div className={`ds-card ds-card-body text-center max-w-md mx-auto dark:bg-gray-800 dark:border-gray-700 ${className}`}>
+      {Icon && <Icon className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />}
+      <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 dark:ds-text-gray-100 mb-2">{title}</h2>
+      <p className="ds-text-gray-600 dark:ds-text-gray-400 mb-6">{message}</p>
       {action && (
         <button
           onClick={action.onClick}

@@ -25,20 +25,20 @@ export const StatCard: React.FC<StatCardProps> = ({
   className = ''
 }) => {
   return (
-    <div className={`ds-card ds-card-body ds-hover-lift ds-transition ${className}`}>
+    <div className={`ds-card ds-card-body ds-hover-lift ds-transition dark:bg-gray-800 dark:border-gray-700 ${className}`}>
       <div className="flex items-center">
-        <div className={`p-3 rounded-lg ${bgColor}`}>
-          <Icon className={`w-6 h-6 ${color}`} />
+        <div className={`p-3 rounded-lg ${bgColor} dark:bg-gray-700`}>
+          <Icon className={`w-6 h-6 ${color} dark:text-gray-300`} />
         </div>
         <div className="ml-4 flex-1">
-          <p className="ds-text-sm ds-text-gray-600">{title}</p>
+          <p className="ds-text-sm ds-text-gray-600 dark:ds-text-gray-400">{title}</p>
           <div className="flex items-center">
-            <p className="ds-text-2xl ds-font-bold ds-text-gray-900">{value}</p>
+            <p className="ds-text-2xl ds-font-bold ds-text-gray-900 dark:ds-text-gray-100">{value}</p>
             {trend && (
               <span className={`ml-2 text-xs px-2 py-1 rounded-full ${
                 trend.isPositive 
-                  ? 'bg-green-100 text-green-800' 
-                  : 'bg-red-100 text-red-800'
+                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
+                  : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
               }`}>
                 {trend.isPositive ? '+' : ''}{trend.value}%
               </span>
@@ -47,7 +47,7 @@ export const StatCard: React.FC<StatCardProps> = ({
         </div>
       </div>
       {description && (
-        <p className="ds-text-xs ds-text-gray-500 mt-2">{description}</p>
+        <p className="ds-text-xs ds-text-gray-500 dark:ds-text-gray-400 mt-2">{description}</p>
       )}
     </div>
   );
@@ -79,10 +79,10 @@ export const QuickActionCard: React.FC<QuickActionCardProps> = ({
       <div className={`w-16 h-16 ${color} ${hoverColor} rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200`}>
         <Icon className="w-8 h-8 text-white" />
       </div>
-      <h3 className="ds-text-lg ds-font-semibold ds-text-gray-900 mb-2">
+      <h3 className="ds-text-lg ds-font-semibold ds-text-gray-900 dark:ds-text-gray-100 mb-2">
         {title}
       </h3>
-      <p className="ds-text-sm ds-text-gray-600">
+      <p className="ds-text-sm ds-text-gray-600 dark:ds-text-gray-400">
         {description}
       </p>
     </div>
@@ -94,7 +94,7 @@ export const QuickActionCard: React.FC<QuickActionCardProps> = ({
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className={`ds-card ds-card-body ds-hover-lift ds-transition group block ${className}`}
+        className={`ds-card ds-card-body ds-hover-lift ds-transition group block dark:bg-gray-800 dark:border-gray-700 ${className}`}
       >
         <CardContent />
       </a>
@@ -104,7 +104,7 @@ export const QuickActionCard: React.FC<QuickActionCardProps> = ({
   return (
     <a
       href={href}
-      className={`ds-card ds-card-body ds-hover-lift ds-transition group block ${className}`}
+      className={`ds-card ds-card-body ds-hover-lift ds-transition group block dark:bg-gray-800 dark:border-gray-700 ${className}`}
     >
       <CardContent />
     </a>
@@ -156,13 +156,13 @@ export const ActivityItem: React.FC<ActivityItemProps> = ({
   const { icon, bgColor, textColor } = getIconAndColor();
 
   return (
-    <div className={`flex items-center p-4 ${bgColor} rounded-lg ${className}`}>
-      <span className={`text-2xl mr-3 ${textColor}`}>{icon}</span>
+    <div className={`flex items-center p-4 ${bgColor} dark:bg-gray-700 dark:border dark:border-gray-600 rounded-lg ${className}`}>
+      <span className={`text-2xl mr-3 ${textColor} dark:text-gray-300`}>{icon}</span>
       <div>
-        <p className="ds-text-sm ds-font-medium ds-text-gray-900">
+        <p className="ds-text-sm ds-font-medium ds-text-gray-900 dark:ds-text-gray-100">
           {title}
         </p>
-        <p className="ds-text-xs ds-text-gray-600">
+        <p className="ds-text-xs ds-text-gray-600 dark:ds-text-gray-400">
           {timeAgo}
         </p>
       </div>

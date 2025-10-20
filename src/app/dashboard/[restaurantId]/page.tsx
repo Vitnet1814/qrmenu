@@ -9,6 +9,20 @@ import {
   ClockIcon,
   DocumentTextIcon,
 } from '@heroicons/react/24/outline';
+
+// Іконки для перемикання теми
+const SunIcon = ({ style }: { style?: React.CSSProperties }) => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={style}>
+    <circle cx="12" cy="12" r="5"/>
+    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+  </svg>
+);
+
+const MoonIcon = ({ style }: { style?: React.CSSProperties }) => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={style}>
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+);
 import { LoadingSpinner, ErrorState } from '../../components/ui/LoadingStates';
 import { StatCard, QuickActionCard, ActivityItem } from '../../components/ui/Cards';
 
@@ -37,6 +51,57 @@ const RestaurantDashboardPage = () => {
   const [stats, setStats] = useState<RestaurantStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Завантажити тему з localStorage та синхронізувати з глобальною темою
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      setIsDarkMode(true);
+      document.documentElement.classList.add('dark');
+    } else {
+      setIsDarkMode(false);
+      document.documentElement.classList.remove('dark');
+    }
+
+    // Слухач для змін теми з інших сторінок
+    const handleThemeChange = () => {
+      const currentTheme = localStorage.getItem('theme');
+      const isDark = currentTheme === 'dark';
+      setIsDarkMode(isDark);
+      
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    };
+
+    // Додати слухач подій
+    window.addEventListener('storage', handleThemeChange);
+    window.addEventListener('themeChanged', handleThemeChange);
+
+    return () => {
+      window.removeEventListener('storage', handleThemeChange);
+      window.removeEventListener('themeChanged', handleThemeChange);
+    };
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = !isDarkMode;
+    setIsDarkMode(newTheme);
+    
+    if (newTheme) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+    
+    // Відправити кастомну подію для синхронізації з іншими сторінками
+    window.dispatchEvent(new CustomEvent('themeChanged'));
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -171,7 +236,7 @@ const RestaurantDashboardPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <LoadingSpinner 
           size="lg" 
           text="Завантаження даних ресторану..." 
@@ -182,7 +247,7 @@ const RestaurantDashboardPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
         <ErrorState 
           title="Помилка завантаження"
           message={error}
@@ -193,11 +258,11 @@ const RestaurantDashboardPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Статистичні картки */}
         <div className="mb-8">
-          <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 mb-6">Статистика</h2>
+          <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 dark:ds-text-gray-100 mb-6">Статистика</h2>
           <div className="ds-grid ds-grid-cols-1 ds-sm:grid-cols-2  ds-gap-6">
             {statsCards.map((card, index) => (
               <StatCard
@@ -215,7 +280,7 @@ const RestaurantDashboardPage = () => {
 
         {/* Швидкі дії */}
         <div className="mb-8">
-          <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 mb-6">Швидкі дії</h2>
+          <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 dark:ds-text-gray-100 mb-6">Швидкі дії</h2>
           <div className="ds-grid ds-grid-cols-1 ds-sm:grid-cols-2  ds-gap-6">
             {quickActions.map((action, index) => (
               <QuickActionCard
@@ -235,8 +300,8 @@ const RestaurantDashboardPage = () => {
         {/* Остання активність */}
         {stats && (stats.recentActivity.lastCategoryAdded || stats.recentActivity.lastMenuItemAdded) && (
           <div className="mb-8">
-            <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 mb-6">Остання активність</h2>
-            <div className="ds-card ds-card-body">
+            <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 dark:ds-text-gray-100 mb-6">Остання активність</h2>
+            <div className="ds-card ds-card-body dark:bg-gray-800 dark:border-gray-700">
               <div className="space-y-4">
                 {stats.recentActivity.lastMenuItemAdded && (
                   <ActivityItem
@@ -258,18 +323,18 @@ const RestaurantDashboardPage = () => {
         )}
 
         {/* Інформація про ресторан */}
-        <div className="ds-card ds-card-body">
-          <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 mb-4">Інформація про ресторан</h2>
+        <div className="ds-card ds-card-body dark:bg-gray-800 dark:border-gray-700">
+          <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 dark:ds-text-gray-100 mb-4">Інформація про ресторан</h2>
           <div className="ds-grid ds-grid-cols-1 ds-md:grid-cols-2 ds-gap-6">
             <div>
-              <p className="ds-text-sm ds-text-gray-600">Дата створення</p>
-              <p className="ds-text-lg ds-font-medium ds-text-gray-900">
+              <p className="ds-text-sm ds-text-gray-600 dark:ds-text-gray-400">Дата створення</p>
+              <p className="ds-text-lg ds-font-medium ds-text-gray-900 dark:ds-text-gray-100">
                 {stats?.createdAt ? formatDate(stats.createdAt) : 'Невідомо'}
               </p>
             </div>
             <div>
-              <p className="ds-text-sm ds-text-gray-600">Останнє оновлення</p>
-              <p className="ds-text-lg ds-font-medium ds-text-gray-900">
+              <p className="ds-text-sm ds-text-gray-600 dark:ds-text-gray-400">Останнє оновлення</p>
+              <p className="ds-text-lg ds-font-medium ds-text-gray-900 dark:ds-text-gray-100">
                 {stats?.lastUpdated ? formatDate(stats.lastUpdated) : 'Невідомо'}
               </p>
             </div>

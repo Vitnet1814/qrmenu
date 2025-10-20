@@ -1,0 +1,210 @@
+/* Додаткові стилі для темної теми */
+.dark .ds-card-body {
+  background-color: #1f2937 !important;
+  color: #f9fafb !important;
+}
+
+.dark .ds-card-header {
+  background-color: #1f2937 !important;
+  border-bottom-color: #374151 !important;
+}
+
+.dark .ds-card-footer {
+  background-color: #374151 !important;
+  border-top-color: #374151 !important;
+}
+
+.dark .ds-modal {
+  background-color: #1f2937 !important;
+  color: #f9fafb !important;
+}
+
+.dark .ds-modal-header {
+  border-bottom-color: #374151 !important;
+}
+
+.dark .ds-modal-footer {
+  border-top-color: #374151 !important;
+}
+
+.dark .ds-form-input {
+  background-color: #374151 !important;
+  border-color: #4b5563 !important;
+  color: #f9fafb !important;
+}
+
+.dark .ds-form-input:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+.dark .ds-form-textarea {
+  background-color: #374151 !important;
+  border-color: #4b5563 !important;
+  color: #f9fafb !important;
+}
+
+.dark .ds-form-textarea:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+.dark .ds-form-select {
+  background-color: #374151 !important;
+  border-color: #4b5563 !important;
+  color: #f9fafb !important;
+}
+
+.dark .ds-form-select:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+.dark .ds-form-label {
+  color: #d1d5db !important;
+}
+
+.dark .ds-form-error {
+  color: #f87171 !important;
+}
+
+.dark .ds-form-help {
+  color: #9ca3af !important;
+}
+
+.dark .ds-nav-item {
+  color: #d1d5db !important;
+}
+
+.dark .ds-nav-item:hover {
+  color: #3b82f6 !important;
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+.dark .ds-nav-item.active {
+  color: #3b82f6 !important;
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+.dark .ds-alert-success {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  border-color: #10b981 !important;
+  color: #34d399 !important;
+}
+
+.dark .ds-alert-warning {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+  border-color: #f59e0b !important;
+  color: #fbbf24 !important;
+}
+
+.dark .ds-alert-error {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  border-color: #ef4444 !important;
+  color: #f87171 !important;
+}
+
+.dark .ds-alert-info {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+  border-color: #3b82f6 !important;
+  color: #60a5fa !important;
+}
+
+.dark .ds-badge-primary {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+  color: #60a5fa !important;
+}
+
+.dark .ds-badge-success {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  color: #34d399 !important;
+}
+
+.dark .ds-badge-warning {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+  color: #fbbf24 !important;
+}
+
+.dark .ds-badge-error {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  color: #f87171 !important;
+}
+
+.dark .ds-progress {
+  background-color: #374151 !important;
+}
+
+.dark .ds-progress-bar {
+  background-color: #3b82f6 !important;
+}
+
+.dark .ds-progress-bar-success {
+  background-color: #10b981 !important;
+}
+
+.dark .ds-progress-bar-warning {
+  background-color: #f59e0b !important;
+}
+
+.dark .ds-progress-bar-error {
+  background-color: #ef4444 !important;
+}
+
+.dark .ds-spinner {
+  border-color: #4b5563 !important;
+  border-top-color: #3b82f6 !important;
+}
+
+.dark .ds-toast {
+  background-color: #1f2937 !important;
+  color: #f9fafb !important;
+}
+
+.dark .ds-toast-success {
+  border-left-color: #10b981 !important;
+}
+
+.dark .ds-toast-warning {
+  border-left-color: #f59e0b !important;
+}
+
+.dark .ds-toast-error {
+  border-left-color: #ef4444 !important;
+}
+
+.dark .ds-toast-info {
+  border-left-color: #3b82f6 !important;
+}
+
+/* Додаткові стилі для ActivityItem */
+.dark .bg-blue-50 {
+  background-color: #1e3a8a !important;
+}
+
+.dark .bg-green-50 {
+  background-color: #14532d !important;
+}
+
+.dark .bg-orange-50 {
+  background-color: #9a3412 !important;
+}
+
+.dark .bg-gray-50 {
+  background-color: #374151 !important;
+}
+
+.dark .text-blue-600 {
+  color: #60a5fa !important;
+}
+
+.dark .text-green-600 {
+  color: #4ade80 !important;
+}
+
+.dark .text-orange-600 {
+  color: #fb923c !important;
+}
+
+.dark .text-gray-600 {
+  color: #9ca3af !important;
+}

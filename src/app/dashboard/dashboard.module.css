@@ -83,6 +83,34 @@
   backdrop-filter: blur(10px);
 }
 
+.themeToggle {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.themeToggle:hover {
+  background: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.7);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.themeToggle:active {
+  transform: scale(0.95);
+}
+
 .main {
   flex-grow: 1;
   padding: 40px 24px;
@@ -370,4 +398,119 @@
   .formCard {
     padding: 24px 16px;
   }
+}
+
+/* ===========================================
+   DARK THEME STYLES
+   =========================================== */
+
+.dark .container {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+}
+
+.dark .container::before {
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(55, 65, 81, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(75, 85, 99, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(31, 41, 55, 0.2) 0%, transparent 50%);
+}
+
+.dark .header {
+  background: rgba(31, 41, 55, 0.8);
+  border-bottom-color: rgba(75, 85, 99, 0.3);
+}
+
+.dark .welcomeCard {
+  background: rgba(31, 41, 55, 0.8);
+  border-color: rgba(75, 85, 99, 0.3);
+}
+
+.dark .welcomeCard::before {
+  background: linear-gradient(135deg, rgba(55, 65, 81, 0.2) 0%, rgba(31, 41, 55, 0.1) 100%);
+}
+
+.dark .welcomeTitle {
+  background: linear-gradient(135deg, #f9fafb 0%, #d1d5db 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dark .welcomeSubtitle {
+  color: rgba(209, 213, 219, 0.9);
+}
+
+.dark .formCard {
+  background: rgba(31, 41, 55, 0.8);
+  border-color: rgba(75, 85, 99, 0.3);
+}
+
+.dark .formCard::before {
+  background: linear-gradient(135deg, rgba(55, 65, 81, 0.2) 0%, rgba(31, 41, 55, 0.1) 100%);
+}
+
+.dark .formTitle {
+  color: #f9fafb;
+}
+
+.dark .formLabel {
+  color: rgba(209, 213, 219, 0.9);
+}
+
+.dark .formInput {
+  background: rgba(55, 65, 81, 0.5);
+  border-color: rgba(75, 85, 99, 0.5);
+  color: #f9fafb;
+}
+
+.dark .formInput::placeholder {
+  color: rgba(156, 163, 175, 0.6);
+}
+
+.dark .formInput:focus {
+  border-color: rgba(79, 172, 254, 0.8);
+  background: rgba(55, 65, 81, 0.7);
+}
+
+.dark .submitButton {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+.dark .submitButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
+  box-shadow: 0 12px 35px rgba(59, 130, 246, 0.4);
+}
+
+.dark .errorAlert {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #fecaca;
+}
+
+.dark .successAlert {
+  background: rgba(16, 185, 129, 0.3);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #a7f3d0;
+}
+
+.dark .loadingCard {
+  background: rgba(31, 41, 55, 0.8);
+  border-color: rgba(75, 85, 99, 0.3);
+}
+
+.dark .loadingText {
+  color: rgba(209, 213, 219, 0.9);
+}
+
+.dark .themeToggle {
+  background: rgba(55, 65, 81, 0.8);
+  border-color: rgba(75, 85, 99, 0.7);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.dark .themeToggle:hover {
+  background: rgba(75, 85, 99, 0.9);
+  border-color: rgba(107, 114, 128, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }

@@ -60,6 +60,9 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
     } else {
       document.documentElement.classList.remove('dark');
     }
+    
+    // Відправити кастомну подію для синхронізації з іншими сторінками
+    window.dispatchEvent(new CustomEvent('themeChanged'));
   };
 
   // Завантажуємо збережену тему при завантаженні компонента
@@ -75,6 +78,28 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
     } else {
       document.documentElement.classList.remove('dark');
     }
+
+    // Слухач для змін теми з інших сторінок
+    const handleThemeChange = () => {
+      const currentTheme = localStorage.getItem('theme');
+      const isDark = currentTheme === 'dark';
+      setIsDarkMode(isDark);
+      
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    };
+
+    // Додати слухач подій
+    window.addEventListener('storage', handleThemeChange);
+    window.addEventListener('themeChanged', handleThemeChange);
+
+    return () => {
+      window.removeEventListener('storage', handleThemeChange);
+      window.removeEventListener('themeChanged', handleThemeChange);
+    };
   }, []);
 
 
@@ -209,6 +234,66 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
         .dark .preview-button-dark:hover {
           background-color: #4b5563 !important;
           border-color: #6b7280 !important;
+        }
+        
+        /* Додаткові стилі для хедера в темній темі */
+        .dark header {
+          background-color: #1f2937 !important;
+          border-bottom-color: #374151 !important;
+        }
+        
+        .dark header h1 {
+          color: #f9fafb !important;
+        }
+        
+        .dark header p {
+          color: #9ca3af !important;
+        }
+        
+        .dark header a {
+          color: #d1d5db !important;
+        }
+        
+        /* Більш специфічні стилі для хедера */
+        .dark .nav-container-dark header {
+          background-color: #1f2937 !important;
+          border-bottom-color: #374151 !important;
+        }
+        
+        .dark .nav-container-dark header h1 {
+          color: #f9fafb !important;
+        }
+        
+        .dark .nav-container-dark header p {
+          color: #9ca3af !important;
+        }
+        
+        .dark .nav-container-dark header a {
+          color: #d1d5db !important;
+        }
+        
+        .dark .nav-container-dark header button {
+          background-color: #374151 !important;
+          border-color: #4b5563 !important;
+          color: #d1d5db !important;
+        }
+        
+        .dark .nav-container-dark header button:hover {
+          background-color: #4b5563 !important;
+          border-color: #6b7280 !important;
+        }
+        
+        /* Стилі для іконок у кнопках хедера */
+        .dark .nav-container-dark header button svg {
+          color: #d1d5db !important;
+          fill: #d1d5db !important;
+          stroke: #d1d5db !important;
+        }
+        
+        .dark .nav-container-dark header a svg {
+          color: #d1d5db !important;
+          fill: #d1d5db !important;
+          stroke: #d1d5db !important;
         }
         
         /* Стилі для основного контенту в темній темі */
