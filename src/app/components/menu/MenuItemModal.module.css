@@ -1,0 +1,349 @@
+/* ===========================================
+   MENU ITEM MODAL STYLES
+   Сучасний дизайн модального вікна
+   =========================================== */
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 560px;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  color: #111827;
+  animation: slideInUp 0.3s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.modal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.02) 0%, rgba(16, 185, 129, 0.02) 100%);
+  pointer-events: none;
+}
+
+.modalContent {
+  position: relative;
+  z-index: 2;
+}
+
+.title {
+  margin: 0 0 20px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  text-align: center;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  color: #374151;
+  font-weight: 600;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  font-size: 1rem;
+  color: #111827;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  background: #fafafa;
+}
+
+.input:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  font-size: 1rem;
+  color: #111827;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  background: #fafafa;
+}
+
+.textarea:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.fileInput {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  font-size: 1rem;
+  color: #111827;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.fileInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  background: #fafafa;
+}
+
+.fileInput:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.imagePreview {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.previewImage {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.previewImage:hover {
+  transform: scale(1.02);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.button {
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.button:hover::before {
+  opacity: 1;
+}
+
+.saveButton {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+}
+
+.saveButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+}
+
+.saveButton:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+}
+
+.cancelButton {
+  background: rgba(107, 114, 128, 0.1);
+  color: #374151;
+  border: 1.5px solid rgba(107, 114, 128, 0.2);
+}
+
+.cancelButton:hover {
+  background: rgba(107, 114, 128, 0.2);
+  border-color: rgba(107, 114, 128, 0.3);
+  transform: translateY(-1px);
+}
+
+.cancelButton:active {
+  transform: translateY(0);
+}
+
+.priceInput {
+  position: relative;
+}
+
+.priceSymbol {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  font-weight: 600;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.priceInput .input {
+  padding-left: 40px;
+}
+
+/* Анімації */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Мобільна адаптація */
+@media (max-width: 768px) {
+  .modal {
+    width: 95%;
+    padding: 20px;
+    margin: 20px;
+  }
+  
+  .title {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+  }
+  
+  .formGroup {
+    margin-bottom: 16px;
+  }
+  
+  .input,
+  .textarea,
+  .fileInput {
+    padding: 10px 14px;
+    font-size: 0.95rem;
+  }
+  
+  .button {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+  
+  .buttonGroup {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .previewImage {
+    max-width: 150px;
+    max-height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal {
+    width: 98%;
+    padding: 16px;
+    margin: 10px;
+  }
+  
+  .title {
+    font-size: 1.2rem;
+  }
+  
+  .input,
+  .textarea,
+  .fileInput {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .previewImage {
+    max-width: 120px;
+    max-height: 120px;
+  }
+}

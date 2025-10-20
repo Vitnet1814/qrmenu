@@ -129,7 +129,7 @@ const MenuBanner = ({ restaurantId }: MenuBannerProps) => {
   if (isLoading) {
     return (
       <div style={{ marginBottom: '20px', position: 'relative' }}>
-        <div style={{ display: 'block', backgroundColor: '#f0f0f0', borderRadius: '5px', padding: '20px', textAlign: 'center' }}>
+        <div className="banner-loading banner-loading-dark" style={{ display: 'block', backgroundColor: '#f0f0f0', borderRadius: '5px', padding: '20px', textAlign: 'center' }}>
           Завантаження банера...
         </div>
       </div>
@@ -139,7 +139,7 @@ const MenuBanner = ({ restaurantId }: MenuBannerProps) => {
   return (
     <div style={{ marginBottom: '20px', position: 'relative' }}>
       {error && (
-        <div style={{ 
+        <div className="banner-error banner-error-dark" style={{ 
           backgroundColor: '#fee', 
           color: '#c33', 
           padding: '10px', 
@@ -166,6 +166,7 @@ const MenuBanner = ({ restaurantId }: MenuBannerProps) => {
           <button
             onClick={handleRemoveBanner}
             disabled={isUploading}
+            className="banner-remove-btn banner-remove-btn-dark"
             style={{
               position: 'absolute',
               top: '10px',
@@ -184,6 +185,7 @@ const MenuBanner = ({ restaurantId }: MenuBannerProps) => {
       ) : (
         <label 
           htmlFor="banner-upload" 
+          className="banner-upload-area banner-upload-area-dark"
           style={{ 
             display: 'block', 
             backgroundColor: '#f0f0f0', 

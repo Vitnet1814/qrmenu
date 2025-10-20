@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { connectDatabase } from '../../../src/app/lib/database';
-import { ObjectId } from 'mongodb';
+import { RestaurantManager } from '../../../src/app/lib/restaurantDatabase';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { itemId } = req.query;
@@ -11,10 +10,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ message: 'Необхідно надати ID страви' });
       }
 
-      const { db } = await connectDatabase();
-      const menuItemsCollection = db.collection('menuItems');
+      // Знаходимо ресторан, якому належить ця страва
+      const restaurantId = await RestaurantManager.findRestaurantByMenuItem(itemId);
+      
+      if (!restaurantId) {
+        return res.status(404).json({ message: 'Страву не знайдено' });
+      }
 
-      const result = await menuItemsCollection.deleteOne({ _id: new ObjectId(itemId) });
+      const restaurantDb = await RestaurantManager.getRestaurantDatabase(restaurantId);
+      const result = await restaurantDb.delete(itemId);
 
       if (result.deletedCount > 0) {
         res.status(200).json({ message: 'Страву успішно видалено' });
@@ -23,14 +27,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     } catch (error) {
       console.error('Помилка при видаленні страви:', error);
-      res.status(500).json({ message: 'Помилка сервера при видаленні страви' });
+      res.status(500).json({ 
+        message: error instanceof Error ? error.message : 'Помилка сервера при видаленні страви' 
+      });
     }
-  } else {
-    res.setHeader('Allow', ['DELETE']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
-
-  if (req.method === 'PUT') {
+  } else if (req.method === 'PUT') {
     try {
       if (!itemId || typeof itemId !== 'string') {
         return res.status(400).json({ message: 'Необхідно надати ID страви' });
@@ -42,23 +43,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ message: 'Необхідно надати restaurantId, categoryId, name та price' });
       }
 
-      const { db } = await connectDatabase();
-      const menuItemsCollection = db.collection('menuItems');
+      const restaurantDb = await RestaurantManager.getRestaurantDatabase(restaurantId);
 
-      const updatedItem = {
-        restaurantId: new ObjectId(restaurantId),
-        categoryId: new ObjectId(categoryId),
+      const updatedData = {
+        categoryId,
         name,
         description: description || '',
         price: parseFloat(price),
         image: image || null,
-        updatedAt: new Date(),
       };
 
-      const result = await menuItemsCollection.updateOne(
-        { _id: new ObjectId(itemId) },
-        { $set: updatedItem }
-      );
+      const result = await restaurantDb.update(itemId, updatedData);
 
       if (result.modifiedCount > 0) {
         res.status(200).json({ message: 'Страву успішно оновлено' });
@@ -67,10 +62,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     } catch (error) {
       console.error('Помилка при редагуванні страви:', error);
-      res.status(500).json({ message: 'Помилка сервера при редагуванні страви' });
+      res.status(500).json({ 
+        message: error instanceof Error ? error.message : 'Помилка сервера при редагуванні страви' 
+      });
     }
-  } else if (req.method === 'DELETE') {
-    // ... (код для видалення страви, як показано вище) ...
   } else {
     res.setHeader('Allow', ['PUT', 'DELETE']);
     res.status(405).end(`Method ${req.method} Not Allowed`);

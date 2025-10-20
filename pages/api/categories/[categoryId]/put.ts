@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { connectDatabase } from '../../../../src/app/lib/database';
-import { ObjectId } from 'mongodb';
+import { RestaurantManager } from '../../../../src/app/lib/restaurantDatabase';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { categoryId } = req.query;
@@ -17,38 +16,51 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ error: 'Назва категорії обов\'язкова' });
       }
 
-      const { db } = await connectDatabase();
-      const categoriesCollection = db.collection('categories');
+      if (!restaurantId || typeof restaurantId !== 'string') {
+        return res.status(400).json({ error: 'Невірний ID ресторану' });
+      }
 
-      const updateData: {
-        name: string;
-        description: string | undefined;
-        image: string | null | undefined;
-        restaurantId?: ObjectId;
-        updatedAt: Date;
-      } = {
+      const restaurantDb = await RestaurantManager.getRestaurantDatabase(restaurantId);
+      
+      // Оновлюємо дані категорії в правильній структурі
+      const updateData = {
         name,
-        description,
-        image,
-        updatedAt: new Date(),
+        description: description || '',
+        image: image || null,
       };
 
-      if (restaurantId) {
-        updateData.restaurantId = new ObjectId(restaurantId);
-      }    
-      const updateResult = await categoriesCollection.findOneAndUpdate(
-        { _id: new ObjectId(categoryId) },
-        { $set: updateData },
-        { returnDocument: 'after' }
-      );
-      if (updateResult) {
-        return res.status(200).json(updateResult);
+      const updateResult = await restaurantDb.update(categoryId, updateData);
+      console.log('Update result:', updateResult);
+
+      if (updateResult.modifiedCount > 0) {
+        // Отримуємо оновлений документ
+        const updatedCategory = await restaurantDb.getById(categoryId);
+        console.log('Updated category:', updatedCategory);
+        
+        if (updatedCategory && updatedCategory.data) {
+          // Форматуємо відповідь для фронтенду
+          const formattedResult = {
+            _id: updatedCategory._id?.toString(),
+            name: updatedCategory.data.name || '',
+            description: updatedCategory.data.description || '',
+            image: updatedCategory.data.image || null,
+            order: updatedCategory.order,
+            createdAt: updatedCategory.createdAt,
+            updatedAt: updatedCategory.updatedAt
+          };
+
+          return res.status(200).json(formattedResult);
+        } else {
+          return res.status(404).json({ error: 'Не вдалося отримати оновлену категорію' });
+        }
       } else {
         return res.status(404).json({ error: 'Категорію не знайдено' });
       }
     } catch (error) {
       console.error('Помилка оновлення категорії:', error);
-      return res.status(500).json({ error: 'Не вдалося оновити категорію АПІ' });
+      return res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Не вдалося оновити категорію' 
+      });
     }
   } else {
     res.setHeader('Allow', ['PUT']);

@@ -24,14 +24,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const result = await restaurantDb.create('category', categoryData);
 
-      return res.status(201).json({ 
+      // Форматуємо дані в формат, сумісний з фронтендом
+      const formattedCategory = {
         _id: result._id?.toString(),
-        type: result.type,
-        data: result.data,
+        name: result.data.name,
+        description: result.data.description,
+        image: result.data.image,
         order: result.order,
         createdAt: result.createdAt,
         updatedAt: result.updatedAt
-      });
+      };
+
+      return res.status(201).json(formattedCategory);
     } catch (error) {
       console.error('Помилка створення категорії:', error);
       return res.status(500).json({ 

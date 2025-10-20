@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import MenuItem from '../menu/MenuItem';
 import MenuItemModal from '../menu/MenuItemModal';
 import ConfirmationModal from '../menu/ConfirmationModal';
-import { processImageClient } from '../../lib/imageUtils';
+import styles from './MenuList.module.css';
+// Видаляємо імпорт processImageClient, оскільки тепер використовуємо Base64 оптимізацію на сервері
 
 interface MenuItemData {
   _id: string;
@@ -14,6 +15,7 @@ interface MenuItemData {
   description?: string;
   price: number;
   image?: string | File | null;
+  order?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -94,43 +96,42 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
     setItemToDelete(null);
   };
 
+  // Конвертуємо файл в Base64 (як у банері)
+  const convertFileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
   const handleSaveItem = async (itemData: {
     name: string;
     description: string;
     price: number;
     image: File | null;
+    imageChanged: boolean;
     _id?: string
   }) => {
-    let imageUrl: string | null = null;
+    let imageToSend: string | null = null;
+    
+    // Якщо є нове зображення - конвертуємо його в Base64
     if (itemData.image) {
-      const processedImage = await processImageClient(itemData.image);
-      if (processedImage) {
-        const formData = new FormData();
-        formData.append('image', processedImage);
-
-        try {
-          const uploadResponse = await fetch('/api/upload-image', {
-            method: 'POST',
-            body: formData,
-          });
-
-          if (uploadResponse.ok) {
-            const uploadData = await uploadResponse.json();
-            imageUrl = uploadData.url;
-          } else {
-            console.error('Помилка завантаження зображення на сервер.');
-            // Обробка помилки завантаження
-            return;
-          }
-        } catch (error) {
-          console.error('Помилка завантаження зображення:', error);
-          return;
-        }
-      } else {
-        console.error('Не вдалося обробити зображення на клієнті.');
+      try {
+        imageToSend = await convertFileToBase64(itemData.image);
+      } catch (error) {
+        console.error('Помилка конвертації зображення в Base64:', error);
         return;
       }
+    } else if (itemData._id && !itemData.imageChanged) {
+      // Якщо редагуємо існуючу страву без зміни зображення - зберігаємо існуюче
+      const existingItem = menuItems.find(item => item._id === itemData._id);
+      if (existingItem && existingItem.image) {
+        imageToSend = existingItem.image as string;
+      }
     }
+    // Якщо imageChanged = true але image = null, то imageToSend залишається null (видалення зображення)
 
     const dataToSend = {
       restaurantId,
@@ -138,7 +139,7 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
       name: itemData.name,
       description: itemData.description || '',
       price: itemData.price,
-      image: imageUrl, // URL отриманий від сервера
+      image: imageToSend, // Base64 зображення або існуюче зображення
     };
 
     try {
@@ -185,28 +186,94 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
     setIsAddItemModalOpen(false);
     setItemToEdit(null);
   };
+
+  const handleMoveMenuItem = async (itemId: string, direction: 'up' | 'down') => {
+    const currentIndex = menuItems.findIndex((item) => item._id === itemId);
+    if (currentIndex === -1) return;
+
+    const newMenuItems = [...menuItems];
+    let swapIndex: number;
+
+    if (direction === 'up' && currentIndex > 0) {
+      swapIndex = currentIndex - 1;
+    } else if (direction === 'down' && currentIndex < newMenuItems.length - 1) {
+      swapIndex = currentIndex + 1;
+    } else {
+      return; // Немає куди рухати
+    }
+
+    // Обмінюємо елементи в масиві
+    [newMenuItems[currentIndex], newMenuItems[swapIndex]] = [newMenuItems[swapIndex], newMenuItems[currentIndex]];
+
+    // Оновлюємо порядок на основі нової позиції
+    const updatedMenuItems = newMenuItems.map((item, index) => ({ ...item, order: index + 1 }));
+    setMenuItems(updatedMenuItems);
+
+    // Надсилаємо оновлений порядок на сервер
+    try {
+      const response = await fetch('/api/menu-items/reorder', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          menuItems: updatedMenuItems.map(item => ({ _id: item._id!, order: item.order! })),
+          restaurantId: restaurantId
+        }),
+      });
+
+      if (!response.ok) {
+        console.error('Не вдалося оновити порядок страв меню на сервері');
+        // TODO: Додати обробку помилок для користувача
+        // Можливо, варто відкотити зміни на клієнті у разі помилки
+      }
+    } catch (error) {
+      console.error('Помилка під час оновлення порядку страв меню:', error);
+      // TODO: Додати обробку помилок для користувача
+      // Можливо, варто відкотити зміни на клієнті у разі помилки
+    }
+  };
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
-        <button onClick={handleAddItemClick}>Додати страву</button>
-      </div>
+    <div className={`${styles.container} menu-list-container-dark`}>
+      <header className={`${styles.header} menu-list-header-dark`}>
+        <h2 className={`${styles.title} menu-list-title-dark`}>Страви меню</h2>
+        <button 
+          onClick={handleAddItemClick}
+          className={`${styles.addButton} menu-list-add-button-dark`}
+        >
+          <span className={styles.addButtonIcon}>+</span>
+          Додати страву
+        </button>
+      </header>
 
       {!categoryId ? (
-        <div>Оберіть категорію для перегляду страв</div>
+        <div className={`${styles.selectCategoryMessage} menu-list-select-category-dark`}>
+          <div className={styles.selectCategoryIcon}>🍽️</div>
+          <div className={styles.selectCategoryText}>
+            Оберіть категорію для перегляду страв
+          </div>
+        </div>
       ) : menuItems.length === 0 ? (
-        <div>Немає страв у цій категорії</div>
+        <div className={`${styles.emptyState} menu-list-empty-state-dark`}>
+          <div className={styles.emptyStateIcon}>🍴</div>
+          <div className={`${styles.emptyStateTitle} menu-list-empty-title-dark`}>Немає страв у цій категорії</div>
+          <div className={`${styles.emptyStateDescription} menu-list-empty-description-dark`}>
+            Додайте першу страву, натиснувши кнопку &quot;Додати страву&quot;
+          </div>
+        </div>
       ) : (
-        <div>
+        <div className={`${styles.menuItemsGrid} menu-list-grid-dark`}>
           {menuItems.map((item) => (
-            <MenuItem
-              key={item._id}
-              item={{
-                ...item,
-                image: typeof item.image === 'string' ? item.image : undefined,
-              }}
-              onEdit={() => handleEditItemClick(item)}
-  onDelete={() => handleDeleteItemClick(item)}
-            />
+            <div key={item._id} className={styles.menuItemWrapper}>
+              <MenuItem
+                item={{
+                  ...item,
+                  image: typeof item.image === 'string' ? item.image : undefined,
+                }}
+                onEdit={() => handleEditItemClick(item)}
+                onDelete={() => handleDeleteItemClick(item)}
+                onMoveUp={() => handleMoveMenuItem(item._id, 'up')}
+                onMoveDown={() => handleMoveMenuItem(item._id, 'down')}
+              />
+            </div>
           ))}
         </div>
       )}

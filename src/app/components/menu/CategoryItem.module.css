@@ -1,0 +1,282 @@
+/* ===========================================
+   CATEGORY ITEM STYLES
+   Сучасні картки з анімаціями та ефектами
+   =========================================== */
+
+.categoryItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  animation: slideInFromLeft 0.6s ease-out;
+  min-height: 120px; /* Фіксована висота для всіх карток */
+  user-select: none; /* Запобігає виділенню тексту при перетягуванні */
+}
+
+.categoryCard {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 16px;
+  padding: 20px;
+  min-width: 140px;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.categoryCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0.02) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.categoryCard:hover::before {
+  opacity: 1;
+}
+
+.categoryCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.categoryCard.active {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 12px 35px rgba(59, 130, 246, 0.2);
+}
+
+.categoryCard.active::before {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+  opacity: 1;
+}
+
+.categoryName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+  position: relative;
+  /* z-index: 2; */
+}
+
+
+.controlsContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  position: relative;
+  /* z-index: 2; */
+}
+
+.moveControls {
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  /* z-index: 10; */
+}
+
+.actionControls {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  /* z-index: 10; */
+}
+
+.controlButton {
+  background: rgba(248, 250, 252, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #374151;
+  position: relative;
+  overflow: hidden;
+}
+
+.controlButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.controlButton:hover::before {
+  opacity: 1;
+}
+
+.controlButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.controlButton:active {
+  transform: translateY(0);
+}
+
+.editButton {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.editButton:hover {
+  background: rgba(16, 185, 129, 0.3);
+  border-color: rgba(16, 185, 129, 0.5);
+}
+
+.deleteButton {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.deleteButton:hover {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.moveButton {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.moveButton:hover {
+  background: rgba(59, 130, 246, 0.3);
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  color: #374151;
+}
+
+.moveIcon {
+  width: 14px;
+  height: 14px;
+  color: #374151;
+}
+
+/* Анімації */
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Мобільна адаптація */
+@media (max-width: 768px) {
+  .categoryItem {
+    min-height: 100px;
+  }
+  
+  .categoryCard {
+    min-width: 120px;
+    padding: 16px;
+  }
+  
+  .categoryName {
+    font-size: 0.9rem;
+  }
+  
+  .controlButton {
+    padding: 6px;
+  }
+  
+  .icon {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .moveIcon {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .categoryItem {
+    min-height: 90px;
+  }
+  
+  .categoryCard {
+    min-width: 100px;
+    padding: 12px;
+  }
+  
+  .categoryName {
+    font-size: 0.8rem;
+  }
+  
+  .controlButton {
+    padding: 4px;
+  }
+  
+  .icon {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .moveIcon {
+    width: 10px;
+    height: 10px;
+  }
+}

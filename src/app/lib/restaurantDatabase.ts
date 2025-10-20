@@ -31,9 +31,35 @@ export class RestaurantDatabase {
   async create(type: RestaurantData['type'], data: Record<string, unknown>, order?: number) {
     const collection = this.getCollection();
     
+    // Оптимізуємо зображення для категорій та страв меню
+    let processedData = { ...data };
+    if (data.image && typeof data.image === 'string') {
+      try {
+        let optimizedImage: string;
+        if (type === 'category') {
+          optimizedImage = await this.optimizeCategoryImage(data.image as string);
+        } else if (type === 'menu-item') {
+          optimizedImage = await this.optimizeMenuItemImage(data.image as string);
+        } else {
+          optimizedImage = data.image as string;
+        }
+        
+        processedData = {
+          ...data,
+          image: optimizedImage,
+          imageFormat: 'webp',
+          imageOptimized: true
+        };
+      } catch (error) {
+        console.error('Помилка оптимізації зображення:', error);
+        // Якщо оптимізація не вдалася, зберігаємо оригінальне зображення
+        processedData = { ...data };
+      }
+    }
+    
     const newItem: RestaurantData = {
       type,
-      data,
+      data: processedData,
       order: order || (await collection.countDocuments({ type })) + 1,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -58,11 +84,44 @@ export class RestaurantDatabase {
   // Оновити запис
   async update(id: string, data: Record<string, unknown>) {
     const collection = this.getCollection();
+    
+    // Спочатку отримуємо існуючий запис для визначення типу
+    const existingItem = await collection.findOne({ _id: new ObjectId(id) });
+    if (!existingItem) {
+      throw new Error('Запис не знайдено');
+    }
+    
+    // Оптимізуємо зображення для категорій та страв меню
+    let processedData = { ...data };
+    if (data.image && typeof data.image === 'string') {
+      try {
+        let optimizedImage: string;
+        if (existingItem.type === 'category') {
+          optimizedImage = await this.optimizeCategoryImage(data.image as string);
+        } else if (existingItem.type === 'menu-item') {
+          optimizedImage = await this.optimizeMenuItemImage(data.image as string);
+        } else {
+          optimizedImage = data.image as string;
+        }
+        
+        processedData = {
+          ...data,
+          image: optimizedImage,
+          imageFormat: 'webp',
+          imageOptimized: true
+        };
+      } catch (error) {
+        console.error('Помилка оптимізації зображення:', error);
+        // Якщо оптимізація не вдалася, зберігаємо оригінальне зображення
+        processedData = { ...data };
+      }
+    }
+    
     return await collection.updateOne(
       { _id: new ObjectId(id) },
       { 
         $set: { 
-          data,
+          data: processedData,
           updatedAt: new Date() 
         } 
       }
@@ -117,7 +176,7 @@ export class RestaurantDatabase {
     return await collection.findOne({ type: 'banner' });
   }
 
-  // Оптимізувати зображення через Sharp (конвертація в WebP)
+  // Оптимізувати зображення через Sharp (конвертація в WebP) - для банера
   private async optimizeImageToWebP(base64Image: string): Promise<string> {
     try {
       // Витягуємо Base64 без префіксу
@@ -142,6 +201,62 @@ export class RestaurantDatabase {
     } catch (error) {
       console.error('Помилка оптимізації зображення:', error);
       throw new Error('Не вдалося оптимізувати зображення');
+    }
+  }
+
+  // Оптимізувати зображення для категорій (квадратний формат)
+  private async optimizeCategoryImage(base64Image: string): Promise<string> {
+    try {
+      // Витягуємо Base64 без префіксу
+      const base64Data = base64Image.replace(/^data:image\/[a-z]+;base64,/, '');
+      const buffer = Buffer.from(base64Data, 'base64');
+      
+      // Оптимізуємо зображення для категорій (квадратний формат)
+      const webpBuffer = await sharp(buffer)
+        .resize(400, 400, { 
+          fit: 'cover',        // Обрізаємо до квадрата
+          position: 'center'   // Центруємо обрізку
+        })
+        .webp({ 
+          quality: 85,          // Трохи вища якість для категорій
+          lossless: false,     // Втратне стиснення для меншого розміру
+          nearLossless: false
+        })
+        .toBuffer();
+      
+      // Повертаємо оптимізоване WebP зображення як Base64
+      return `data:image/webp;base64,${webpBuffer.toString('base64')}`;
+    } catch (error) {
+      console.error('Помилка оптимізації зображення категорії:', error);
+      throw new Error('Не вдалося оптимізувати зображення категорії');
+    }
+  }
+
+  // Оптимізувати зображення для страв меню (прямокутний формат)
+  private async optimizeMenuItemImage(base64Image: string): Promise<string> {
+    try {
+      // Витягуємо Base64 без префіксу
+      const base64Data = base64Image.replace(/^data:image\/[a-z]+;base64,/, '');
+      const buffer = Buffer.from(base64Data, 'base64');
+      
+      // Оптимізуємо зображення для страв меню (прямокутний формат)
+      const webpBuffer = await sharp(buffer)
+        .resize(600, 400, { 
+          fit: 'inside',       // Зберігаємо пропорції
+          withoutEnlargement: true 
+        })
+        .webp({ 
+          quality: 80,         // Оптимальна якість для страв
+          lossless: false,     // Втратне стиснення для меншого розміру
+          nearLossless: false
+        })
+        .toBuffer();
+      
+      // Повертаємо оптимізоване WebP зображення як Base64
+      return `data:image/webp;base64,${webpBuffer.toString('base64')}`;
+    } catch (error) {
+      console.error('Помилка оптимізації зображення страви:', error);
+      throw new Error('Не вдалося оптимізувати зображення страви');
     }
   }
 
@@ -291,6 +406,29 @@ export class RestaurantManager {
       });
       
       if (category) {
+        return restaurant._id.toString();
+      }
+    }
+    
+    return null;
+  }
+
+  // Знайти ресторан за стравою меню
+  static async findRestaurantByMenuItem(itemId: string): Promise<string | null> {
+    const { db } = await connectDatabase();
+    const restaurantsCollection = db.collection('restaurants');
+    
+    // Отримуємо всі ресторани і перевіряємо, в якому є ця страва
+    const restaurants = await restaurantsCollection.find({}).toArray();
+    
+    for (const restaurant of restaurants) {
+      const restaurantDb = new RestaurantDatabase(db, restaurant.slug);
+      const menuItem = await restaurantDb.getCollection().findOne({ 
+        type: 'menu-item',
+        _id: new ObjectId(itemId)
+      });
+      
+      if (menuItem) {
         return restaurant._id.toString();
       }
     }

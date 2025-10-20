@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import styles from './CategoryModal.module.css';
 export type CategoryModalMode = 'add' | 'edit';
 
 interface CategoryModalProps {
@@ -52,11 +53,31 @@ const CategoryModal = ({ isOpen, onClose, onSave, categoryToEdit, restaurantId, 
     setDescription(event.target.value);
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      // Перевіряємо тип файлу
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        alert('Дозволені тільки зображення: JPEG, PNG, WebP');
+        return;
+      }
+
+      // Перевіряємо розмір файлу (максимум 5MB)
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      if (file.size > maxSize) {
+        alert('Розмір файлу не повинен перевищувати 5MB');
+        return;
+      }
+
       setImage(file);
-      setPreviewImage(URL.createObjectURL(file));
+      
+      // Створюємо попередній перегляд
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPreviewImage(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -67,13 +88,23 @@ const CategoryModal = ({ isOpen, onClose, onSave, categoryToEdit, restaurantId, 
     }
   
     try {
+      let optimizedImage = previewImage;
+      
+      if (image) {
+        // Перевіряємо розмір файлу (максимум 5MB)
+        if (image.size > 5 * 1024 * 1024) {
+          alert('Зображення занадто велике. Будь ласка, виберіть файл менше 5MB.');
+          return;
+        }
+        optimizedImage = await convertToBase64(image);
+      }
+      
       const categoryData = {
         name,
         description,
-        image: image ? await convertToBase64(image) : previewImage,
+        image: optimizedImage,
+        restaurantId, // Завжди передаємо restaurantId з пропсів
         ...(mode === 'edit' && categoryToEdit?._id && { _id: categoryToEdit._id }),
-        ...(mode === 'add' && { restaurantId }),
-        ...(mode === 'edit' && categoryToEdit?.restaurantId && { restaurantId: categoryToEdit.restaurantId }), // Переконайтеся, що це є
       };
 
   
@@ -91,22 +122,73 @@ const CategoryModal = ({ isOpen, onClose, onSave, categoryToEdit, restaurantId, 
       if (!response.ok) throw new Error('Помилка при збереженні');
   
       const savedCategory = await response.json();
+      
+      // Логуємо інформацію про оптимізацію зображення
+      if (savedCategory.image && savedCategory.image.startsWith('data:image/webp')) {
+        // Зображення оптимізовано: WebP формат
+      }
+      
       onSave(savedCategory); // Викликаємо переданий пропс
       onClose();
     } catch (error) {
       console.error('Помилка:', error);
-      alert('Не вдалося зберегти категорію Модал');
+      
+      // Більш інформативні повідомлення про помилки
+      if (error instanceof Error) {
+        if (error.message.includes('SSL') || error.message.includes('TLS')) {
+          alert('Помилка з\'єднання з сервером. Спробуйте зменшити розмір зображення або спробуйте пізніше.');
+        } else if (error.message.includes('413')) {
+          alert('Зображення занадто велике для завантаження. Будь ласка, виберіть менше зображення.');
+        } else {
+          alert(`Не вдалося зберегти категорію: ${error.message}`);
+        }
+      } else {
+        alert('Не вдалося зберегти категорію. Спробуйте ще раз.');
+      }
     }
   };
 
 const convertToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = error => reject(error);
-    });
-  }
+  return new Promise((resolve, reject) => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new window.Image();
+    
+    img.onload = () => {
+      // Максимальні розміри для оптимізації
+      const maxWidth = 400;
+      const maxHeight = 400;
+      
+      let { width, height } = img;
+      
+      // Розрахунок нових розмірів з збереженням пропорцій
+      if (width > height) {
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width;
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width = (width * maxHeight) / height;
+          height = maxHeight;
+        }
+      }
+      
+      canvas.width = width;
+      canvas.height = height;
+      
+      // Малюємо зображення з новими розмірами
+      ctx?.drawImage(img, 0, 0, width, height);
+      
+      // Конвертуємо в base64 з якістю 0.8 (80%)
+      const optimizedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+      resolve(optimizedBase64);
+    };
+    
+    img.onerror = (error: Event | string) => reject(error);
+    img.src = URL.createObjectURL(file);
+  });
+};
   const handleCloseClick = () => {
     onClose();
   };
@@ -114,78 +196,60 @@ const convertToBase64 = (file: File): Promise<string> => {
   return (
     <>
       {isOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onClick={handleCloseClick}
-        >
-          <div
-            style={{
-              backgroundColor: 'white',
-              padding: '20px',
-              borderRadius: '8px',
-              width: '80%',
-              maxWidth: '500px',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2>{categoryToEdit ? 'Редагувати категорію' : 'Додати нову категорію'}</h2>
+        <div className={styles.backdrop} onClick={handleCloseClick}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <h2 className={styles.title}>{categoryToEdit ? 'Редагувати категорію' : 'Додати нову категорію'}</h2>
 
-            <div style={{ marginBottom: '15px' }}>
-              <label htmlFor="name" style={{ display: 'block', marginBottom: '5px' }}>Назва:</label>
+            <div className={styles.formGroup}>
+              <label htmlFor="name" className={styles.label}>Назва:</label>
               <input
                 type="text"
                 id="name"
                 value={name}
                 onChange={handleNameChange}
-                style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+                className={styles.input}
+                placeholder="Введіть назву категорії"
               />
             </div>
 
-            <div style={{ marginBottom: '15px' }}>
-              <label htmlFor="description" style={{ display: 'block', marginBottom: '5px' }}>Опис:</label>
+            <div className={styles.formGroup}>
+              <label htmlFor="description" className={styles.label}>Опис:</label>
               <textarea
                 id="description"
                 value={description}
                 onChange={handleDescriptionChange}
-                style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc', minHeight: '80px' }}
+                className={`${styles.input} ${styles.textarea}`}
+                placeholder="Короткий опис категорії"
               />
             </div>
 
-            <div style={{ marginBottom: '15px' }}>
-              <label htmlFor="image" style={{ display: 'block', marginBottom: '5px' }}>Зображення:</label>
+            <div className={styles.formGroup}>
+              <label htmlFor="image" className={styles.label}>Зображення:</label>
               <input
                 type="file"
                 id="image"
                 accept="image/*"
                 onChange={handleImageChange}
-                style={{ width: '100%', padding: '8px' }}
+                className={styles.fileInput}
               />
              {previewImage && (
-                <Image
-                  src={previewImage}
-                  alt="Попередній перегляд"
-                  width={100}
-                  height={100}
-                  style={{ marginTop: '10px', objectFit: 'contain' }}
-                />
+                <div className={styles.preview}>
+                  <Image
+                    src={previewImage}
+                    alt="Попередній перегляд"
+                    width={120}
+                    height={120}
+                    style={{ objectFit: 'cover' }}
+                  />
+                </div>
               )}
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
-              <button onClick={handleCloseClick} style={{ marginRight: '10px', padding: '8px 15px', borderRadius: '4px', border: '1px solid #ccc', cursor: 'pointer' }}>
+            <div className={styles.actions}>
+              <button onClick={handleCloseClick} className={`${styles.button} ${styles.cancelButton}`}>
                 Скасувати
               </button>
-              <button onClick={handleSaveClick} style={{ padding: '8px 15px', borderRadius: '4px', backgroundColor: '#007bff', color: 'white', border: 'none', cursor: 'pointer' }}>
+              <button onClick={handleSaveClick} className={`${styles.button} ${styles.saveButton}`}>
                 Зберегти
               </button>
             </div>

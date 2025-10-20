@@ -8,6 +8,7 @@ import { useParams } from 'next/navigation'; // Хук для отримання
 // import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 import MenuList from '../../components/menu/MenuList'; // Або шлях до вашого файлу MenuItemsList
+import styles from './CategoryList.module.css';
 
 // Інтерфейс для представлення об'єкта категорії
 interface Category {
@@ -39,6 +40,11 @@ const CategoryList = () => {
   const restaurantId = params?.restaurantId as string; // або params?.restaurantId для безпеки
   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add'); // Стан для режиму модального вікна
   const categoriesContainerRef = useRef<HTMLDivElement>(null);
+  
+  // Стан для перетягування
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
   // useEffect хук для завантаження категорій при завантаженні компонента
   useEffect(() => {
@@ -196,7 +202,10 @@ const CategoryList = () => {
       const response = await fetch('/api/categories/reorder', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedCategories.map(cat => ({ _id: cat._id!, order: cat.order! }))),
+        body: JSON.stringify({
+          categories: updatedCategories.map(cat => ({ _id: cat._id!, order: cat.order! })),
+          restaurantId: restaurantId
+        }),
       });
 
       if (!response.ok) {
@@ -210,37 +219,88 @@ const CategoryList = () => {
       // Можливо, варто відкотити зміни на клієнті у разі помилки
     }
   };
+
+  // Обробники для перетягування
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!categoriesContainerRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - categoriesContainerRef.current.offsetLeft);
+    setScrollLeft(categoriesContainerRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !categoriesContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - categoriesContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // Множник для швидшої прокрутки
+    categoriesContainerRef.current.scrollLeft = scrollLeft - walk;
+  };
   
   return (
-  <>
-    <div>
-      {/* Кнопка для додавання нової категорії */}
-      <div>
-        <button onClick={handleAddCategoryClick}>+</button>
-      </div>
-      {/* Контейнер для горизонтальної прокрутки категорій */}
-      <div style={{ overflowX: 'auto', whiteSpace: 'nowrap' }} ref={categoriesContainerRef}>
-        {categories.map((category) => (
-          <div
-            key={category._id}
-            style={{ display: 'inline-block', marginRight: '10px' }}
-          >
-            {/* Компонент для відображення однієї категорії */}
-            <CategoryItem
-              category={category}
-              isActive={category._id === activeCategory} // Передаємо стан активності
-              onEdit={handleEditCategoryClick} // Передаємо обробник редагування
-              onDelete={handleDeleteCategoryClick} // Передаємо обробник видалення
-              onClick={handleCategoryClick} // Передаємо обробник кліку на категорію
-              onMoveLeft={() => handleMoveCategory(category._id!, 'left')}
-              onMoveRight={() => handleMoveCategory(category._id!, 'right')}
-            />
+    <div className={`${styles.container} category-list-container-dark`}>
+      <header className={`${styles.header} category-list-header-dark`}>
+        <div className={styles.headerContent}>
+          <div>
+            <h1 className={`${styles.title} category-list-title-dark`}>Категорії меню</h1>
+            <p className={`${styles.subtitle} category-list-subtitle-dark`}>
+              Керуйте категоріями вашого меню
+            </p>
           </div>
-        ))}
+          <button 
+            onClick={handleAddCategoryClick}
+            className={`${styles.addButton} category-list-add-button-dark`}
+          >
+            <span className={styles.addButtonIcon}>+</span>
+            Додати категорію
+          </button>
+        </div>
+      </header>
+      
+      <main className={`${styles.categoriesContainer} category-list-categories-container-dark`}>
+        <div 
+          className={`${styles.categoriesScrollContainer} category-list-scroll-container-dark`}
+          ref={categoriesContainerRef}
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeave}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+          style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+        >
+          {categories.map((category) => (
+            <div
+              key={category._id}
+              className={styles.categoryItemWrapper}
+            >
+              <CategoryItem
+                category={category}
+                isActive={category._id === activeCategory}
+                onEdit={handleEditCategoryClick}
+                onDelete={handleDeleteCategoryClick}
+                onClick={handleCategoryClick}
+                onMoveLeft={() => handleMoveCategory(category._id!, 'left')}
+                onMoveRight={() => handleMoveCategory(category._id!, 'right')}
+              />
+            </div>
+          ))}
+        </div>
+      </main>
+
+      <div className={`${styles.menuListContainer} category-list-menu-container-dark`}>
+        <MenuList 
+          categoryId={activeCategory} 
+          restaurantId={restaurantId}
+        />
       </div>
- {/* Рендеринг MenuList та передача activeCategory як prop */}
- {/* {activeCategory && <MenuList categoryId={activeCategory} restaurantId={restaurantId} />} */}
-   {/* Умовний рендеринг модальних вікон (залишається без змін) */}
+
+      {/* Модальні вікна */}
       {isAddCategoryModalOpen && (
         <CategoryModal
           isOpen={isAddCategoryModalOpen}
@@ -260,11 +320,6 @@ const CategoryList = () => {
         />
       )}
     </div>
-    <MenuList 
-  categoryId={activeCategory} 
-  restaurantId={restaurantId}
-/>
-  </>
   );
 };
 

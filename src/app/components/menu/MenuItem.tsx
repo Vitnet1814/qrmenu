@@ -2,36 +2,63 @@
 
 import React from 'react';
 import { PencilIcon, TrashIcon, ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/outline';
+import styles from './MenuItem.module.css';
 
 interface MenuItemProps {
   item: { _id: string; name: string; price: number; image?: string };
   onEdit: (item: { _id: string; name: string; price: number; image?: string }) => void;
   onDelete: (item: { _id: string; name: string }) => void;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
 }
 
-const MenuItem = ({ item, onEdit, onDelete }: MenuItemProps) => {
+const MenuItem = ({ item, onEdit, onDelete, onMoveUp, onMoveDown }: MenuItemProps) => {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', padding: '10px', borderBottom: '1px solid #eee' }}>
-      {item.image && (
-        <img src={item.image} alt={item.name} style={{ width: '80px', height: '80px', marginRight: '10px', objectFit: 'cover', borderRadius: '5px' }} />
-      )}
-      <div style={{ flexGrow: 1 }}>
-        <div style={{ fontWeight: 'bold' }}>{item.name}</div>
-        <div>{item.price}₴</div>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <button onClick={() => console.log('Move up item', item._id)} style={{ marginRight: '5px', cursor: 'pointer' }}>
-          <ArrowUpIcon style={{ width: '24px', height: '24px' }} />
-        </button>
-        <button onClick={() => console.log('Move down item', item._id)} style={{ marginRight: '5px', cursor: 'pointer' }}>
-          <ArrowDownIcon style={{ width: '24px', height: '24px' }} />
-        </button>
-        <button onClick={() => onEdit(item)} style={{ marginRight: '5px', cursor: 'pointer' }}>
-          <PencilIcon style={{ width: '24px', height: '24px' }} />
-        </button>
-        <button onClick={() => onDelete({ _id: item._id, name: item.name })} style={{ cursor: 'pointer' }}>
-          <TrashIcon style={{ width: '24px', height: '24px' }} />
-        </button>
+    <div className={`${styles.menuItem} menu-item-dark`}>
+      <div className={styles.content}>
+        {item.image && (
+          <div className={styles.imageContainer}>
+            <img 
+              src={item.image} 
+              alt={item.name} 
+              className={styles.image}
+            />
+          </div>
+        )}
+        <div className={styles.details}>
+          <h3 className={`${styles.name} menu-item-name-dark`}>{item.name}</h3>
+          <div className={`${styles.price} menu-item-price-dark`}>{item.price}</div>
+        </div>
+        <div className={styles.controls}>
+          <button 
+            onClick={onMoveUp} 
+            className={`${styles.controlButton} ${styles.moveUpButton} menu-item-control-dark`}
+            title="Перемістити вгору"
+          >
+            <ArrowUpIcon className={styles.icon} />
+          </button>
+          <button 
+            onClick={onMoveDown} 
+            className={`${styles.controlButton} ${styles.moveDownButton} menu-item-control-dark`}
+            title="Перемістити вниз"
+          >
+            <ArrowDownIcon className={styles.icon} />
+          </button>
+          <button 
+            onClick={() => onEdit(item)} 
+            className={`${styles.controlButton} ${styles.editButton} menu-item-control-dark`}
+            title="Редагувати страву"
+          >
+            <PencilIcon className={styles.icon} />
+          </button>
+          <button 
+            onClick={() => onDelete({ _id: item._id, name: item.name })} 
+            className={`${styles.controlButton} ${styles.deleteButton} menu-item-control-dark`}
+            title="Видалити страву"
+          >
+            <TrashIcon className={styles.icon} />
+          </button>
+        </div>
       </div>
     </div>
   );

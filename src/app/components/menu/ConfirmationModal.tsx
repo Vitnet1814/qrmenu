@@ -24,7 +24,7 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, message }: Confirmation
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            zIndex: 1000,
+            zIndex: 1100,
           }}
           onClick={onClose}
         >

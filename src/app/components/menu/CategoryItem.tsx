@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { PencilIcon, TrashIcon, ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
+import styles from './CategoryItem.module.css';
 
 interface CategoryItemProps {
   category: {
@@ -21,46 +22,48 @@ interface CategoryItemProps {
 
 const CategoryItem = ({ category, isActive, onEdit, onDelete, onClick, onMoveLeft, onMoveRight }: CategoryItemProps) => {
   return (
-    <div 
-    style={{
-       display: 'inline-flex', 
-       flexDirection: 'column',
-    //    width: '85px'
-      //   alignItems: 'center',
-      //    position: 'relative'
-          }}>
-             {isActive && (
-        <div style={{ display: 'inline-flex', alignItems: 'center' }}>
-          <button onClick={onMoveLeft} style={{ marginRight: '5px', cursor: 'pointer' }}>
-            <ArrowLeftIcon style={{ width: '20px', height: '20px' }} />
+    <div className={`${styles.categoryItem} category-item-dark`}>
+      {isActive && (
+        <div className={styles.moveControls}>
+          <button 
+            onClick={onMoveLeft} 
+            className={`${styles.controlButton} ${styles.moveButton} category-item-control-dark`}
+            title="Перемістити вліво"
+          >
+            <ArrowLeftIcon className={styles.moveIcon} />
           </button>
-          <button onClick={onMoveRight} style={{ marginRight: '10px', cursor: 'pointer' }}>
-            <ArrowRightIcon style={{ width: '20px', height: '20px' }} />
+          <button 
+            onClick={onMoveRight} 
+            className={`${styles.controlButton} ${styles.moveButton} category-item-control-dark`}
+            title="Перемістити вправо"
+          >
+            <ArrowRightIcon className={styles.moveIcon} />
           </button>
-         
         </div>
       )}
-      <button
-        style={{
-          padding: '10px 15px',
-          border: '1px solid #ccc',
-          borderRadius: '5px',
-          backgroundColor: isActive ? '#f0f0f0' : 'white',
-          cursor: 'pointer',
-          marginBottom: '5px', // Додаємо відступ між кнопкою назви та кнопками дій
-        }}
+      
+      <div 
+        className={`${styles.categoryCard} ${isActive ? styles.active : ''} category-item-card-dark`}
         onClick={() => onClick(category._id)}
       >
-        {category.name}
-      </button>
+        <h3 className={`${styles.categoryName} category-item-name-dark`}>{category.name}</h3>
+      </div>
+      
       {isActive && (
-        <div style={{ display: 'inline-flex', alignItems: 'center' }}>
-          
-          <button onClick={() => onEdit(category)} style={{ marginRight: '5px', cursor: 'pointer' }}>
-            <PencilIcon style={{ width: '20px', height: '20px' }} />
+        <div className={styles.actionControls}>
+          <button 
+            onClick={() => onEdit(category)} 
+            className={`${styles.controlButton} ${styles.editButton} category-item-control-dark`}
+            title="Редагувати категорію"
+          >
+            <PencilIcon className={styles.icon} />
           </button>
-          <button onClick={() => onDelete(category)} style={{ cursor: 'pointer' }}>
-            <TrashIcon style={{ width: '20px', height: '20px' }} />
+          <button 
+            onClick={() => onDelete(category)} 
+            className={`${styles.controlButton} ${styles.deleteButton} category-item-control-dark`}
+            title="Видалити категорію"
+          >
+            <TrashIcon className={styles.icon} />
           </button>
         </div>
       )}

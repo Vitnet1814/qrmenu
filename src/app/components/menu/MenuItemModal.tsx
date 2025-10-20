@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import styles from './MenuItemModal.module.css';
 
 interface MenuItemModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (itemData: { categoryId: string; name: string; description: string; price: number; image: File | null; _id?: string }) => void;
+  onSave: (itemData: { categoryId: string; name: string; description: string; price: number; image: File | null; imageChanged: boolean; _id?: string }) => void;
   itemToEdit: { _id?: string; categoryId: string; name: string; description: string; price: number; image?: string } | null;
   restaurantId: string;
   categoryId: string;
@@ -17,6 +18,7 @@ const MenuItemModal = ({ isOpen, onClose, onSave, itemToEdit, restaurantId, cate
   const [price, setPrice] = useState('');
   const [image, setImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [imageChanged, setImageChanged] = useState(false); // Відстежуємо чи було зображення змінено
 
   useEffect(() => {
     if (itemToEdit) {
@@ -24,12 +26,14 @@ const MenuItemModal = ({ isOpen, onClose, onSave, itemToEdit, restaurantId, cate
       setDescription(itemToEdit.description || '');
       setPrice(itemToEdit.price ? itemToEdit.price.toString() : '');
       setPreviewImage(itemToEdit.image || null);
+      setImageChanged(false); // Скидаємо стан зміни зображення
     } else {
       setName('');
       setDescription('');
       setPrice('');
       setPreviewImage(null);
       setImage(null);
+      setImageChanged(false);
     }
   }, [itemToEdit]);
 
@@ -50,12 +54,13 @@ const MenuItemModal = ({ isOpen, onClose, onSave, itemToEdit, restaurantId, cate
     if (file) {
       setImage(file);
       setPreviewImage(URL.createObjectURL(file));
+      setImageChanged(true); // Позначаємо що зображення змінено
     }
   };
 
   const handleSaveClick = () => {
      if (name.trim() && price.trim() && categoryId && restaurantId) {
-      onSave({ categoryId, name, description, price: parseFloat(price), image, _id: itemToEdit?._id });
+      onSave({ categoryId, name, description, price: parseFloat(price), image, imageChanged, _id: itemToEdit?._id });
       onClose();
     } else {
       alert('Будь ласка, заповніть назву та ціну.');
@@ -69,80 +74,87 @@ const MenuItemModal = ({ isOpen, onClose, onSave, itemToEdit, restaurantId, cate
   return (
     <>
       {isOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 1000,
-          }}
-          onClick={handleCloseClick}
-        >
-          <div
-            style={{
-              backgroundColor: 'white',
-              padding: '20px',
-              borderRadius: '8px',
-              width: '400px',
-              maxWidth: '90%',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2>{itemToEdit ? 'Редагувати страву' : 'Нова страва'}</h2>
-            <div>
-              <label htmlFor="image">Фото страви:</label>
-              <input
-                type="file"
-                id="image"
-                onChange={handleImageChange}
-                style={{ width: '100%', padding: '8px', margin: '5px 0' }}
-              />
-              {previewImage && (
-                <img src={previewImage} alt="Preview" style={{ maxWidth: '100px', marginTop: '10px' }} />
-              )}
-            </div>
-            <div>
-              <label htmlFor="name">Назва страви:</label>
-              <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={handleNameChange}
-                style={{ width: '100%', padding: '8px', margin: '5px 0', border: '1px solid #ccc', borderRadius: '4px' }}
-              />
-            </div>
-            <div>
-              <label htmlFor="description">Опис:</label>
-              <textarea
-                id="description"
-                value={description}
-                onChange={handleDescriptionChange}
-                style={{ width: '100%', padding: '8px', margin: '5px 0', border: '1px solid #ccc', borderRadius: '4px', minHeight: '80px' }}
-              />
-            </div>
-            <div>
-              <label htmlFor="price">Ціна:</label>
-              <input
-                type="number"
-                id="price"
-                value={price}
-                onChange={handlePriceChange}
-                style={{ width: '100%', padding: '8px', margin: '5px 0', border: '1px solid #ccc', borderRadius: '4px' }}
-              />
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
-              <button onClick={handleCloseClick} style={{ padding: '10px 15px', marginRight: '10px', borderRadius: '5px', border: '1px solid #ccc', cursor: 'pointer' }}>
-                Скасувати
-              </button>
-              <button onClick={handleSaveClick} style={{ padding: '10px 15px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-                Зберегти
-              </button>
+        <div className={styles.backdrop} onClick={handleCloseClick}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalContent}>
+              <h2 className={styles.title}>
+                {itemToEdit ? 'Редагувати страву' : 'Нова страва'}
+              </h2>
+              
+              <div className={styles.formGroup}>
+                <label htmlFor="image" className={styles.label}>Фото страви:</label>
+                <input
+                  type="file"
+                  id="image"
+                  onChange={handleImageChange}
+                  className={styles.fileInput}
+                  accept="image/*"
+                />
+                {previewImage && (
+                  <div className={styles.imagePreview}>
+                    <img 
+                      src={previewImage} 
+                      alt="Preview" 
+                      className={styles.previewImage}
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="name" className={styles.label}>Назва страви:</label>
+                <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={handleNameChange}
+                  className={styles.input}
+                  placeholder="Введіть назву страви"
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="description" className={styles.label}>Опис:</label>
+                <textarea
+                  id="description"
+                  value={description}
+                  onChange={handleDescriptionChange}
+                  className={styles.textarea}
+                  placeholder="Опишіть страву (необов'язково)"
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="price" className={styles.label}>Ціна:</label>
+                <div className={styles.priceInput}>
+                  <span className={styles.priceSymbol}>₴</span>
+                  <input
+                    type="number"
+                    id="price"
+                    value={price}
+                    onChange={handlePriceChange}
+                    className={styles.input}
+                    placeholder="0.00"
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
+              </div>
+
+              <div className={styles.buttonGroup}>
+                <button 
+                  onClick={handleCloseClick} 
+                  className={`${styles.button} ${styles.cancelButton}`}
+                >
+                  Скасувати
+                </button>
+                <button 
+                  onClick={handleSaveClick} 
+                  className={`${styles.button} ${styles.saveButton}`}
+                >
+                  {itemToEdit ? 'Оновити страву' : 'Створити страву'}
+                </button>
+              </div>
             </div>
           </div>
         </div>
