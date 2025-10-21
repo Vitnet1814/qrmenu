@@ -42,7 +42,6 @@ export interface LivePreviewProps {
 
 export interface DesignTipsProps {
   theme: Theme;
-  layoutSettings: LayoutSettings;
 }
 
 // Готові теми
@@ -765,7 +764,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
 };
 
 // Компонент DesignTips
-export const DesignTips: React.FC<DesignTipsProps> = ({ theme, layoutSettings }) => {
+export const DesignTips: React.FC<DesignTipsProps> = ({ theme }) => {
   const [activeTip, setActiveTip] = useState<string | null>(null);
 
   const getTips = () => {

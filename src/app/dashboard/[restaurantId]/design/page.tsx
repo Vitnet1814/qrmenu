@@ -142,12 +142,6 @@ const DesignSettingsPage = () => {
   };
 
   const handlePreviewInNewTab = () => {
-    const previewData = {
-      theme: settings.theme,
-      layout: settings.layout,
-      restaurantName: settings.restaurantName
-    };
-    
     const previewWindow = window.open('', '_blank');
     if (previewWindow) {
       previewWindow.document.write(`
@@ -398,7 +392,6 @@ const DesignSettingsPage = () => {
             {/* Поради */}
             <DesignTips
               theme={settings.theme}
-              layoutSettings={settings.layout}
             />
           </div>
         </div>
