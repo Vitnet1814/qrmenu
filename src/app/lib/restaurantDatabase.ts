@@ -6,7 +6,7 @@ import sharp from 'sharp';
 
 export interface RestaurantData {
   _id?: ObjectId;
-  type: 'restaurant-info' | 'category' | 'menu-item' | 'theme' | 'photo' | 'settings' | 'banner';
+  type: 'restaurant-info' | 'category' | 'menu-item' | 'theme' | 'photo' | 'settings' | 'banner' | 'design-settings';
   data: Record<string, unknown>;
   order?: number;
   createdAt: Date;
