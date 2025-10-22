@@ -119,13 +119,11 @@ a {
 }
 
 @media (max-width: 640px) {
-  .app-content {
-    padding: 0 16px;
+  .app-content {   
     max-width: 100%;
   }
   
-  .dashboard-content {
-    padding: 0 16px;
+  .dashboard-content {   
     max-width: 100%;
   }
 }
