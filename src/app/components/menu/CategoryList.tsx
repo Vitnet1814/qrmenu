@@ -5,6 +5,8 @@ import CategoryItem from '../menu/CategoryItem'; // Компонент для в
 import CategoryModal from '../menu/CategoryModal'; // Модальне вікно для додавання/редагування категорії
 import ConfirmationModal from '../menu/ConfirmationModal'; // Модальне вікно для підтвердження видалення
 import { useParams } from 'next/navigation'; // Хук для отримання параметрів з URL
+import { useToast } from '../../contexts/ToastContext';
+import { LoadingSpinner, ErrorState } from '../ui/LoadingStates';
 // import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 import MenuList from '../../components/menu/MenuList'; // Або шлях до вашого файлу MenuItemsList
@@ -46,11 +48,19 @@ const CategoryList = () => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
+  // Стани для завантаження та помилок
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const { showSuccess, showError } = useToast();
+
   // useEffect хук для завантаження категорій при завантаженні компонента
   useEffect(() => {
     if (!restaurantId) return; // Додайте перевірку
     const fetchCategories = async () => {
       try {
+        setIsLoading(true);
+        setError(null);
         // Виконуємо GET-запит до API для отримання категорій конкретного ресторану
         const response = await fetch(`/api/categories/restaurant/${restaurantId}`);
         if (response.ok) {
@@ -60,12 +70,15 @@ const CategoryList = () => {
           // Встановлюємо першу категорію як активну, якщо є категорії
           setActiveCategory(data[0]?._id || null);
         } else {
-          console.error('Не вдалося отримати категорії');
-          // TODO: Додати обробку помилок для відображення користувачеві
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Не вдалося отримати категорії');
         }
       } catch (error) {
         console.error('Помилка під час отримання категорій:', error);
-        // TODO: Додати обробку помилок для відображення користувачеві
+        setError(error instanceof Error ? error.message : 'Сталася помилка при завантаженні категорій');
+        showError('Помилка завантаження', 'Не вдалося завантажити категорії меню');
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -73,7 +86,7 @@ const CategoryList = () => {
     if (restaurantId) {
       fetchCategories();
     }
-  }, [restaurantId]); // Залежність від restaurantId: запит виконується при зміні ID ресторану
+  }, [restaurantId, showError]); // Залежність від restaurantId: запит виконується при зміні ID ресторану
 
   // Обробник натискання на кнопку додавання категорії
   const handleAddCategoryClick = () => {
@@ -132,13 +145,14 @@ const CategoryList = () => {
           }
           setIsDeleteConfirmationOpen(false); // Закриваємо модальне вікно підтвердження
           setCategoryToDelete(null); // Скидаємо категорію для видалення
+          showSuccess('Категорію видалено', `Категорія "${categoryToDelete.name}" була успішно видалена`);
         } else {
-          console.error('Не вдалося видалити категорію');
-          // TODO: Додати обробку помилок для відображення користувачеві
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Не вдалося видалити категорію');
         }
       } catch (error) {
         console.error('Помилка під час видалення категорії:', error);
-        // TODO: Додати обробку помилок для відображення користувачеві
+        showError('Помилка видалення', error instanceof Error ? error.message : 'Не вдалося видалити категорію');
       }
     }
   };
@@ -209,14 +223,15 @@ const CategoryList = () => {
       });
 
       if (!response.ok) {
-        console.error('Не вдалося оновити порядок категорій на сервері');
-        // TODO: Додати обробку помилок для користувача
-        // Можливо, варто відкотити зміни на клієнті у разі помилки
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Не вдалося оновити порядок категорій на сервері');
       }
+      showSuccess('Порядок оновлено', 'Порядок категорій було успішно змінено');
     } catch (error) {
       console.error('Помилка під час оновлення порядку категорій:', error);
-      // TODO: Додати обробку помилок для користувача
-      // Можливо, варто відкотити зміни на клієнті у разі помилки
+      showError('Помилка оновлення', error instanceof Error ? error.message : 'Не вдалося оновити порядок категорій');
+      // Відкочуємо зміни на клієнті у разі помилки
+      setCategories(categories);
     }
   };
 
@@ -243,6 +258,28 @@ const CategoryList = () => {
     const walk = (x - startX) * 2; // Множник для швидшої прокрутки
     categoriesContainerRef.current.scrollLeft = scrollLeft - walk;
   };
+  
+  if (isLoading) {
+    return (
+      <div className={`${styles.container} category-list-container-dark`}>
+        <div className="flex items-center justify-center h-64">
+          <LoadingSpinner size="lg" text="Завантаження категорій..." />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={`${styles.container} category-list-container-dark`}>
+        <ErrorState 
+          title="Помилка завантаження"
+          message={error}
+          onRetry={() => window.location.reload()}
+        />
+      </div>
+    );
+  }
   
   return (
     <div className={`${styles.container} category-list-container-dark`}>

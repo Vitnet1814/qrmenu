@@ -19,8 +19,8 @@ export interface DesignSettings extends Record<string, unknown> {
     borderRadius: 'minimal' | 'medium' | 'large';
     padding: 'compact' | 'normal' | 'spacious';
     shadow: 'minimal' | 'normal' | 'dramatic';
+    fontFamily: 'inter' | 'roboto' | 'opensans' | 'lato' | 'montserrat' | 'poppins' | 'nunito' | 'playfair' | 'merriweather' | 'crimson' | 'libre' | 'source';
   };
-  restaurantName: string;
   updatedAt: string;
 }
 
@@ -55,9 +55,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             layout: {
               borderRadius: 'medium',
               padding: 'normal',
-              shadow: 'normal'
+              shadow: 'normal',
+              fontFamily: 'inter'
             },
-            restaurantName: 'Назва ресторану',
             updatedAt: new Date().toISOString()
           };
           return res.status(200).json(defaultSettings);

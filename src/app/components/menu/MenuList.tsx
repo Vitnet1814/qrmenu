@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import MenuItem from '../menu/MenuItem';
 import MenuItemModal from '../menu/MenuItemModal';
 import ConfirmationModal from '../menu/ConfirmationModal';
+import { useToast } from '../../contexts/ToastContext';
+import { LoadingSpinner, ErrorState } from '../ui/LoadingStates';
 import styles from './MenuList.module.css';
 // Видаляємо імпорт processImageClient, оскільки тепер використовуємо Base64 оптимізацію на сервері
 
@@ -32,6 +34,12 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
   const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<MenuItemData | null>(null);
 
+  // Стани для завантаження та помилок
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const { showSuccess, showError } = useToast();
+
   useEffect(() => {
     const fetchMenuItems = async () => {
       if (!categoryId) {
@@ -40,20 +48,27 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
       }
 
       try {
+        setIsLoading(true);
+        setError(null);
         const response = await fetch(`/api/menu-items/category/${categoryId}`);
         if (response.ok) {
           const data = await response.json();
           setMenuItems(data);
         } else {
-          console.error('Не вдалося отримати список страв');
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Не вдалося отримати список страв');
         }
       } catch (error) {
         console.error('Помилка при отриманні списку страв:', error);
+        setError(error instanceof Error ? error.message : 'Сталася помилка при завантаженні страв');
+        showError('Помилка завантаження', 'Не вдалося завантажити страви меню');
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchMenuItems();
-  }, [categoryId]); // Залежність від categoryId
+  }, [categoryId, showError]); // Залежність від categoryId
 
 
   const handleAddItemClick = () => {
@@ -81,13 +96,14 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
         setMenuItems(prevItems => prevItems.filter(item => item._id !== itemToDelete._id));
         setIsDeleteConfirmationOpen(false);
         setItemToDelete(null);
+        showSuccess('Страву видалено', `Страву "${itemToDelete.name}" було успішно видалено`);
       } else {
-        console.error('Не вдалося видалити страву');
-        // TODO: Додати обробку помилок для відображення користувачеві
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Не вдалося видалити страву');
       }
     } catch (error) {
       console.error('Помилка при видаленні страви:', error);
-      // TODO: Додати обробку помилок для відображення користувачеві
+      showError('Помилка видалення', error instanceof Error ? error.message : 'Не вдалося видалити страву');
     }
   };
 
@@ -168,17 +184,19 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
           setMenuItems(prevItems =>
             prevItems.map(item => (item._id === itemData._id ? { ...item, ...dataToSend } : item))
           );
+          showSuccess('Страву оновлено', `Страву "${itemData.name}" було успішно оновлено`);
         } else {
           setMenuItems(prevItems => [...prevItems, { ...dataToSend, _id: newItem.itemId }]);
+          showSuccess('Страву додано', `Страву "${itemData.name}" було успішно додано до меню`);
         }
         setIsAddItemModalOpen(false);
       } else {
-        console.error('Не вдалося зберегти страву');
-        // TODO: Додати обробку помилок для відображення користувачеві
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Не вдалося зберегти страву');
       }
     } catch (error) {
       console.error('Помилка при збереженні страви:', error);
-      // TODO: Додати обробку помилок для відображення користувачеві
+      showError('Помилка збереження', error instanceof Error ? error.message : 'Не вдалося зберегти страву');
     }
   };
 
@@ -221,16 +239,39 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
       });
 
       if (!response.ok) {
-        console.error('Не вдалося оновити порядок страв меню на сервері');
-        // TODO: Додати обробку помилок для користувача
-        // Можливо, варто відкотити зміни на клієнті у разі помилки
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Не вдалося оновити порядок страв меню на сервері');
       }
+      showSuccess('Порядок оновлено', 'Порядок страв було успішно змінено');
     } catch (error) {
       console.error('Помилка під час оновлення порядку страв меню:', error);
-      // TODO: Додати обробку помилок для користувача
-      // Можливо, варто відкотити зміни на клієнті у разі помилки
+      showError('Помилка оновлення', error instanceof Error ? error.message : 'Не вдалося оновити порядок страв');
+      // Відкочуємо зміни на клієнті у разі помилки
+      setMenuItems(menuItems);
     }
   };
+  if (isLoading) {
+    return (
+      <div className={`${styles.container} menu-list-container-dark`}>
+        <div className="flex items-center justify-center h-64">
+          <LoadingSpinner size="lg" text="Завантаження страв..." />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={`${styles.container} menu-list-container-dark`}>
+        <ErrorState 
+          title="Помилка завантаження"
+          message={error}
+          onRetry={() => window.location.reload()}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className={`${styles.container} menu-list-container-dark`}>
       <header className={`${styles.header} menu-list-header-dark`}>

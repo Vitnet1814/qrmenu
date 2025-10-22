@@ -20,7 +20,6 @@ interface Params {
 interface DesignSettings {
   theme: Theme;
   layout: LayoutSettings;
-  restaurantName: string;
 }
 
 const DesignSettingsPage = () => {
@@ -34,8 +33,7 @@ const DesignSettingsPage = () => {
       padding: 'normal',
       shadow: 'normal',
       fontFamily: 'inter'
-    },
-    restaurantName: 'Назва ресторану'
+    }
   });
 
   const [selectedThemeId, setSelectedThemeId] = useState<string>('modern');
@@ -54,8 +52,7 @@ const DesignSettingsPage = () => {
           const data = await response.json();
           setSettings({
             theme: themes.find(t => t.id === data.theme.id) || themes[5],
-            layout: data.layout,
-            restaurantName: data.restaurantName || 'Назва ресторану'
+            layout: data.layout
           });
         }
       } catch (error) {
@@ -103,8 +100,7 @@ const DesignSettingsPage = () => {
             name: newSettings.theme.name,
             colors: newSettings.theme.colors
           },
-          layout: newSettings.layout,
-          restaurantName: newSettings.restaurantName
+          layout: newSettings.layout
         }),
       });
 
@@ -223,7 +219,6 @@ const DesignSettingsPage = () => {
             <LivePreview
               theme={settings.theme}
               layoutSettings={settings.layout}
-              restaurantName={settings.restaurantName}
             />
 
             {/* Загальні рекомендації */}

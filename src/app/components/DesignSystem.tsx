@@ -38,7 +38,6 @@ export interface LayoutSettingsProps {
 export interface LivePreviewProps {
   theme: Theme;
   layoutSettings: LayoutSettings;
-  restaurantName: string;
 }
 
 export interface DesignTipsProps {
@@ -493,8 +492,7 @@ export const LayoutSettings: React.FC<LayoutSettingsProps> = ({ settings, onChan
 // Компонент LivePreview
 export const LivePreview: React.FC<LivePreviewProps> = ({ 
   theme, 
-  layoutSettings, 
-  restaurantName = 'Назва ресторану' 
+  layoutSettings
 }) => {
   const [restaurantData, setRestaurantData] = useState<{name: string, banner?: string} | null>(null);
 
@@ -509,20 +507,20 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
         
         // Поки що використовуємо мок дані
         setRestaurantData({
-          name: restaurantName,
+          name: 'Назва ресторану',
           banner: undefined // Буде завантажуватися з API
         });
       } catch (error) {
         console.error('Помилка завантаження даних ресторану:', error);
         setRestaurantData({
-          name: restaurantName,
+          name: 'Назва ресторану',
           banner: undefined
         });
       }
     };
 
     loadRestaurantData();
-  }, [restaurantName]);
+  }, []);
 
   const getBorderRadiusClass = (value: LayoutSettings['borderRadius']) => {
     switch (value) {
@@ -596,7 +594,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
           )}
           <div className="ds-relative ds-z-10">
             <h1 className="ds-text-xl ds-font-bold ds-mb-1">
-              {restaurantData?.name || restaurantName}
+              {restaurantData?.name || 'Назва ресторану'}
             </h1>
             <p className="ds-text-sm ds-opacity-90">Ресторан української кухні</p>
           </div>
