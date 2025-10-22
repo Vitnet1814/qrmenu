@@ -13,39 +13,21 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, message }: Confirmation
   return (
     <>
       {isOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 1100,
-          }}
-          onClick={onClose}
-        >
-          <div
-            style={{
-              backgroundColor: 'white',
-              padding: '20px',
-              borderRadius: '8px',
-              width: '400px',
-              maxWidth: '90%',
-              textAlign: 'center',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2>Підтвердження</h2>
-            <p>{message}</p>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-              <button onClick={onClose} style={{ padding: '10px 15px', marginRight: '10px', borderRadius: '5px', border: '1px solid #ccc', cursor: 'pointer' }}>
+        <div className="ds-fixed ds-inset-0 ds-bg-black ds-bg-opacity-50 ds-flex ds-items-center ds-justify-center ds-z-50" onClick={onClose}>
+          <div className="ds-card ds-p-6 ds-max-w-md ds-w-full ds-mx-4 ds-text-center" onClick={(e) => e.stopPropagation()}>
+            <h2 className="ds-text-xl ds-font-bold ds-text-gray-900 ds-mb-4">Підтвердження</h2>
+            <p className="ds-text-gray-700 ds-mb-6">{message}</p>
+            <div className="ds-flex ds-justify-center ds-gap-3">
+              <button 
+                onClick={onClose} 
+                className="ds-btn ds-btn-secondary"
+              >
                 Скасувати
               </button>
-              <button onClick={onConfirm} style={{ padding: '10px 15px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+              <button 
+                onClick={onConfirm} 
+                className="ds-btn ds-btn-danger"
+              >
                 Видалити
               </button>
             </div>

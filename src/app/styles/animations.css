@@ -197,26 +197,4 @@ html {
   }
 }
 
-/* Темна тема (опціонально) */
-@media (prefers-color-scheme: dark) {
-  .ds-card {
-    background-color: #1f2937;
-    color: #f9fafb;
-  }
-  
-  .ds-card:hover {
-    background-color: #374151;
-  }
-  
-  .bg-gray-50 {
-    background-color: #111827;
-  }
-  
-  .text-gray-900 {
-    color: #f9fafb;
-  }
-  
-  .text-gray-600 {
-    color: #d1d5db;
-  }
-}
+/* Темна тема видалена - завжди використовуємо світлу тему */

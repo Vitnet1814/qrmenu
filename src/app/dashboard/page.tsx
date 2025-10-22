@@ -74,7 +74,19 @@ const DashboardPage: React.FC = () => {
             setError('Не вдалося створити заклад.');
           }
         } else {
-          setError('Помилка при створенні закладу.');
+          const errorData = await response.json();
+          if (response.status === 409) {
+            // Користувач вже має заклад
+            setError(errorData.error || 'У вас вже є заклад. Один користувач може мати тільки один заклад.');
+            // Перенаправляємо на існуючий заклад
+            if (errorData.existingRestaurantId) {
+              setTimeout(() => {
+                router.push(`/dashboard/${errorData.existingRestaurantId}`);
+              }, 2000);
+            }
+          } else {
+            setError(errorData.error || 'Помилка при створенні закладу.');
+          }
         }
       } catch (error) {
         console.error('Error creating restaurant:', error);

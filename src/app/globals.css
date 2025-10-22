@@ -2,7 +2,6 @@
 @import './styles/design-system.css';
 @import './styles/themes.css';
 @import './styles/animations.css';
-@import './styles/dark-theme.css';
 
 /* Підключення Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -51,16 +50,6 @@ a {
   .section {
     padding: 1rem 0;
   }
-}
-
-/* Додаткові стилі для темної теми */
-[data-theme="dark"] {
-  color-scheme: dark;
-}
-
-[data-theme="dark"] body {
-  background-color: var(--color-gray-50);
-  color: var(--color-gray-800);
 }
 
 /* Стилі для скролу */

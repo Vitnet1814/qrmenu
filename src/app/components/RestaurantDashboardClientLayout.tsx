@@ -9,12 +9,10 @@ import {
   QrCodeIcon,
   ArrowRightStartOnRectangleIcon,
   EyeIcon,
-  SunIcon,
-  MoonIcon,
   ChevronUpIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { signOut } from 'next-auth/react'; // Імпортуємо signOut
+import { signOut } from 'next-auth/react';
 
 
 
@@ -38,7 +36,6 @@ interface NavItem {
 
 const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInfo }: RestaurantDashboardClientLayoutProps) => {
   const pathname = usePathname();
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [showScrollToTop, setShowScrollToTop] = useState(false);
   
   const navigation: NavItem[] = [
@@ -48,24 +45,6 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
     { name: 'Вийти', onClick: async () => await signOut({ redirect: true, callbackUrl: '/' }), icon: ArrowRightStartOnRectangleIcon },
   ];
 
-  // Функція для зміни теми
-  const toggleTheme = () => {
-    const newTheme = !isDarkMode;
-    setIsDarkMode(newTheme);
-    
-    // Зберігаємо вибір теми в localStorage
-    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
-    
-    // Застосовуємо тему до документа
-    if (newTheme) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    
-    // Відправити кастомну подію для синхронізації з іншими сторінками
-    window.dispatchEvent(new CustomEvent('themeChanged'));
-  };
 
   // Функція для прокрутки до початку сторінки
   const scrollToTop = () => {
@@ -75,42 +54,6 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
     });
   };
 
-  // Завантажуємо збережену тему при завантаженні компонента
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const shouldUseDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
-    
-    setIsDarkMode(shouldUseDark);
-    
-    if (shouldUseDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-
-    // Слухач для змін теми з інших сторінок
-    const handleThemeChange = () => {
-      const currentTheme = localStorage.getItem('theme');
-      const isDark = currentTheme === 'dark';
-      setIsDarkMode(isDark);
-      
-      if (isDark) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    };
-
-    // Додати слухач подій
-    window.addEventListener('storage', handleThemeChange);
-    window.addEventListener('themeChanged', handleThemeChange);
-
-    return () => {
-      window.removeEventListener('storage', handleThemeChange);
-      window.removeEventListener('themeChanged', handleThemeChange);
-    };
-  }, []);
 
   // Слухач події scroll для показу/приховування кнопки Scroll to Top
   useEffect(() => {
@@ -127,7 +70,7 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
   }, []);
 
 
-  // Додаємо CSS стилі для темної теми
+  // Додаємо CSS стилі для адаптивності
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const styleSheet = document.createElement('style');
@@ -170,500 +113,6 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
           opacity: 0.7;
         }
         
-        /* Стилі для перемикача теми */
-        .theme-toggle-button:hover {
-          background-color: #f3f4f6 !important;
-          border-color: #9ca3af !important;
-        }
-        
-        .theme-toggle-button:active {
-          transform: scale(0.95);
-        }
-        
-        /* Темна тема */
-        .dark .nav-container-dark {
-          background-color: #111827 !important;
-        }
-        
-        .dark .nav-bottom-dark {
-          background-color: #1f2937 !important;
-          border-top-color: #374151 !important;
-        }
-        
-        .dark .nav-link-dark {
-          color: #d1d5db !important;
-        }
-        
-        .dark .nav-link-dark:hover {
-          background-color: #374151 !important;
-          color: #d1d5db !important;
-        }
-        
-        .dark .nav-link-active-dark {
-          color: #60a5fa !important;
-          background-color: #1e3a8a !important;
-        }
-        
-        .dark .sub-menu-dark {
-          background-color: #1f2937 !important;
-          border-color: #374151 !important;
-        }
-        
-        .dark .sub-menu-item-dark {
-          color: #e5e7eb !important;
-        }
-        
-        .dark .sub-menu-item-dark:hover {
-          background-color: #374151 !important;
-          color: #60a5fa !important;
-        }
-        
-        /* Виправляємо колір іконок в темній темі */
-        .dark .nav-link-dark svg {
-          color: inherit !important;
-        }
-        
-        /* Стилі для перемикача теми в темній темі */
-        .dark .theme-toggle-button {
-          background-color: #374151 !important;
-          border-color: #4b5563 !important;
-          color: #d1d5db !important;
-        }
-        
-        .dark .theme-toggle-button:hover {
-          background-color: #4b5563 !important;
-          border-color: #6b7280 !important;
-        }
-        
-        /* Стилі для хедера в темній темі */
-        .dark .header-dark {
-          background-color: #1f2937 !important;
-          border-bottom-color: #374151 !important;
-        }
-        
-        .dark .header-title-dark {
-          color: #f9fafb !important;
-        }
-        
-        .dark .header-subtitle-dark {
-          color: #9ca3af !important;
-        }
-        
-        .dark .preview-button-dark {
-          background-color: #374151 !important;
-          border-color: #4b5563 !important;
-          color: #d1d5db !important;
-        }
-        
-        .dark .preview-button-dark:hover {
-          background-color: #4b5563 !important;
-          border-color: #6b7280 !important;
-        }
-        
-        /* Стилі для кнопок вибору теми в темній темі */
-        .dark .theme-select-button:not(.ds-bg-blue-500) {
-          background-color: #374151 !important;
-          border-color: #4b5563 !important;
-          color: #d1d5db !important;
-        }
-        
-        .dark .theme-select-button:not(.ds-bg-blue-500):hover {
-          background-color: #4b5563 !important;
-          border-color: #6b7280 !important;
-        }
-        
-        /* Стилі для поля вводу назви ресторану в темній темі */
-        .dark .restaurant-name-input {
-          background-color: #374151 !important;
-          border-color: #4b5563 !important;
-          color: #d1d5db !important;
-        }
-        
-        .dark .restaurant-name-input::placeholder {
-          color: #9ca3af !important;
-        }
-        
-        .dark .restaurant-name-input:focus {
-          background-color: #374151 !important;
-          border-color: #60a5fa !important;
-          color: #d1d5db !important;
-        }
-        
-        /* Додаткові стилі для хедера в темній темі */
-        .dark header {
-          background-color: #1f2937 !important;
-          border-bottom-color: #374151 !important;
-        }
-        
-        .dark header h1 {
-          color: #f9fafb !important;
-        }
-        
-        .dark header p {
-          color: #9ca3af !important;
-        }
-        
-        .dark header a {
-          color: #d1d5db !important;
-        }
-        
-        /* Більш специфічні стилі для хедера */
-        .dark .nav-container-dark header {
-          background-color: #1f2937 !important;
-          border-bottom-color: #374151 !important;
-        }
-        
-        .dark .nav-container-dark header h1 {
-          color: #f9fafb !important;
-        }
-        
-        .dark .nav-container-dark header p {
-          color: #9ca3af !important;
-        }
-        
-        .dark .nav-container-dark header a {
-          color: #d1d5db !important;
-        }
-        
-        .dark .nav-container-dark header button {
-          background-color: #374151 !important;
-          border-color: #4b5563 !important;
-          color: #d1d5db !important;
-        }
-        
-        .dark .nav-container-dark header button:hover {
-          background-color: #4b5563 !important;
-          border-color: #6b7280 !important;
-        }
-        
-        /* Стилі для іконок у кнопках хедера */
-        .dark .nav-container-dark header button svg {
-          color: #d1d5db !important;
-          fill: #d1d5db !important;
-          stroke: #d1d5db !important;
-        }
-        
-        .dark .nav-container-dark header a svg {
-          color: #d1d5db !important;
-          fill: #d1d5db !important;
-          stroke: #d1d5db !important;
-        }
-        
-        /* Стилі для основного контенту в темній темі */
-        .dark .main-content-dark {
-          background-color: #111827 !important;
-        }
-        
-        /* Стилі для сторінки меню в темній темі */
-        .dark .menu-page-container {
-          background-color: #111827 !important;
-          color: #f9fafb !important;
-        }
-        
-        /* Стилі для MenuBanner в темній темі */
-        .dark .banner-loading-dark {
-          background-color: #374151 !important;
-          color: #d1d5db !important;
-        }
-        
-        .dark .banner-error-dark {
-          background-color: #7f1d1d !important;
-          color: #fecaca !important;
-        }
-        
-        .dark .banner-remove-btn-dark {
-          background-color: rgba(31, 41, 55, 0.9) !important;
-          color: #d1d5db !important;
-          border: 1px solid #4b5563 !important;
-        }
-        
-        .dark .banner-remove-btn-dark:hover {
-          background-color: rgba(55, 65, 81, 0.9) !important;
-        }
-        
-        .dark .banner-upload-area-dark {
-          background-color: #374151 !important;
-          color: #d1d5db !important;
-          border: 2px dashed #4b5563 !important;
-        }
-        
-        .dark .banner-upload-area-dark:hover {
-          background-color: #4b5563 !important;
-          border-color: #6b7280 !important;
-        }
-        
-        /* Стилі для CategoryList в темній темі */
-        .dark .category-list-container-dark {
-          background-color: #111827 !important;
-        }
-        
-        .dark .category-list-title-dark {
-          color: #f9fafb !important;
-        }
-        
-        .dark .category-list-subtitle-dark {
-          color: #9ca3af !important;
-        }
-        
-        .dark .category-list-add-button-dark {
-          background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
-          box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3) !important;
-        }
-        
-        .dark .category-list-add-button-dark:hover {
-          background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%) !important;
-          box-shadow: 0 12px 35px rgba(59, 130, 246, 0.4) !important;
-        }
-        
-        .dark .category-list-categories-container-dark {
-          background-color: transparent !important;
-        }
-        
-        .dark .category-list-scroll-container-dark {
-          scrollbar-color: rgba(75, 85, 99, 0.3) transparent !important;
-        }
-        
-        .dark .category-list-scroll-container-dark::-webkit-scrollbar-track {
-          background: rgba(75, 85, 99, 0.1) !important;
-        }
-        
-        .dark .category-list-scroll-container-dark::-webkit-scrollbar-thumb {
-          background: rgba(75, 85, 99, 0.3) !important;
-        }
-        
-        .dark .category-list-scroll-container-dark::-webkit-scrollbar-thumb:hover {
-          background: rgba(75, 85, 99, 0.5) !important;
-        }
-        
-        .dark .category-list-menu-container-dark {
-          background-color: transparent !important;
-        }
-        
-        /* Стилі для CategoryItem в темній темі */
-        .dark .category-item-card-dark {
-          background: rgba(31, 41, 55, 0.9) !important;
-          border-color: rgba(75, 85, 99, 0.8) !important;
-          color: #f9fafb !important;
-        }
-        
-        .dark .category-item-card-dark:hover {
-          background: rgba(55, 65, 81, 0.9) !important;
-          border-color: rgba(59, 130, 246, 0.3) !important;
-        }
-        
-        .dark .category-item-card-dark.active {
-          background: rgba(59, 130, 246, 0.2) !important;
-          border-color: rgba(59, 130, 246, 0.4) !important;
-        }
-        
-        .dark .category-item-name-dark {
-          color: #f9fafb !important;
-        }
-        
-        .dark .category-item-control-dark {
-          background: rgba(55, 65, 81, 0.9) !important;
-          border-color: rgba(75, 85, 99, 0.8) !important;
-          color: #d1d5db !important;
-        }
-        
-        .dark .category-item-control-dark:hover {
-          background: rgba(75, 85, 99, 0.9) !important;
-          border-color: rgba(59, 130, 246, 0.3) !important;
-        }
-        
-        .dark .category-item-control-dark.editButton {
-          background: rgba(16, 185, 129, 0.4) !important;
-          border-color: rgba(16, 185, 129, 0.6) !important;
-        }
-        
-        .dark .category-item-control-dark.editButton:hover {
-          background: rgba(16, 185, 129, 0.6) !important;
-          border-color: rgba(16, 185, 129, 0.8) !important;
-        }
-        
-        .dark .category-item-control-dark.deleteButton {
-          background: rgba(239, 68, 68, 0.4) !important;
-          border-color: rgba(239, 68, 68, 0.6) !important;
-        }
-        
-        .dark .category-item-control-dark.deleteButton:hover {
-          background: rgba(239, 68, 68, 0.6) !important;
-          border-color: rgba(239, 68, 68, 0.8) !important;
-        }
-        
-        .dark .category-item-control-dark.moveButton {
-          background: rgba(59, 130, 246, 0.3) !important;
-          border-color: rgba(59, 130, 246, 0.4) !important;
-        }
-        
-        .dark .category-item-control-dark.moveButton:hover {
-          background: rgba(59, 130, 246, 0.4) !important;
-          border-color: rgba(59, 130, 246, 0.6) !important;
-        }
-        
-        /* Інвертування іконок для CategoryItem в темній темі */
-        .dark .category-item-control-dark .icon,
-        .dark .category-item-control-dark .moveIcon,
-        .dark .category-item-control-dark svg {
-          color: #d1d5db !important;
-          fill: #d1d5db !important;
-          stroke: #d1d5db !important;
-        }
-        
-        /* Альтернативний спосіб через CSS фільтри 
-        .dark .category-item-control-dark svg {
-          filter: brightness(0) invert(1) !important;
-        }*/
-        
-        /* Стилі для MenuItem в темній темі */
-        .dark .menu-item-dark {
-          background: rgba(31, 41, 55, 0.95) !important;
-          border-color: rgba(75, 85, 99, 0.8) !important;
-        }
-        
-        .dark .menu-item-dark:hover {
-          background: rgba(55, 65, 81, 0.95) !important;
-          border-color: rgba(59, 130, 246, 0.3) !important;
-        }
-        
-        .dark .menu-item-name-dark {
-          color: #f9fafb !important;
-        }
-        
-        .dark .menu-item-price-dark {
-          color: #10b981 !important;
-        }
-        
-        .dark .menu-item-control-dark {
-          background: rgba(55, 65, 81, 0.9) !important;
-          border-color: rgba(75, 85, 99, 0.8) !important;
-          color: #d1d5db !important;
-        }
-        
-        .dark .menu-item-control-dark:hover {
-          background: rgba(75, 85, 99, 0.9) !important;
-          border-color: rgba(59, 130, 246, 0.3) !important;
-        }
-        
-        .dark .menu-item-control-dark.editButton {
-          background: rgba(16, 185, 129, 0.4) !important;
-          border-color: rgba(16, 185, 129, 0.6) !important;
-        }
-        
-        .dark .menu-item-control-dark.editButton:hover {
-          background: rgba(16, 185, 129, 0.6) !important;
-          border-color: rgba(16, 185, 129, 0.8) !important;
-        }
-        
-        .dark .menu-item-control-dark.deleteButton {
-          background: rgba(239, 68, 68, 0.4) !important;
-          border-color: rgba(239, 68, 68, 0.6) !important;
-        }
-        
-        .dark .menu-item-control-dark.deleteButton:hover {
-          background: rgba(239, 68, 68, 0.6) !important;
-          border-color: rgba(239, 68, 68, 0.8) !important;
-        }
-        
-        .dark .menu-item-control-dark.moveUpButton,
-        .dark .menu-item-control-dark.moveDownButton {
-          background: rgba(59, 130, 246, 0.3) !important;
-          border-color: rgba(59, 130, 246, 0.4) !important;
-        }
-        
-        .dark .menu-item-control-dark.moveUpButton:hover,
-        .dark .menu-item-control-dark.moveDownButton:hover {
-          background: rgba(59, 130, 246, 0.4) !important;
-          border-color: rgba(59, 130, 246, 0.6) !important;
-        }
-        
-        /* Інвертування іконок для MenuItem в темній темі */
-        .dark .menu-item-control-dark .icon,
-        .dark .menu-item-control-dark svg {
-          color: #d1d5db !important;
-          fill:rgb(9, 54, 122) !important;
-          stroke: #d1d5db !important;
-        }
-        
-        /* Альтернативний спосіб через CSS фільтри 
-        .dark .menu-item-control-dark svg {
-          filter: brightness(0) invert(1) !important;
-        }*/
-        
-        /* Стилі для MenuList в темній темі */
-        .dark .menu-list-container-dark {
-          background: #1f2937 !important;
-          border-color: #374151 !important;
-        }
-        
-        .dark .menu-list-header-dark {
-          border-bottom-color: #374151 !important;
-        }
-        
-        .dark .menu-list-title-dark {
-          color: #f9fafb !important;
-        }
-        
-        .dark .menu-list-add-button-dark {
-          background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
-          box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3) !important;
-        }
-        
-        .dark .menu-list-add-button-dark:hover {
-          background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
-          box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4) !important;
-        }
-        
-        .dark .menu-list-select-category-dark {
-          background: #374151 !important;
-          border-color: #4b5563 !important;
-          color: #d1d5db !important;
-        }
-        
-        .dark .menu-list-empty-state-dark {
-          color: #9ca3af !important;
-        }
-        
-        .dark .menu-list-empty-title-dark {
-          color: #d1d5db !important;
-        }
-        
-        .dark .menu-list-empty-description-dark {
-          color: #9ca3af !important;
-        }
-        
-        .dark .menu-list-grid-dark {
-          background: transparent !important;
-        }
-        
-        /* Стилі для Scroll to Top кнопки в темній темі */
-        .dark .scroll-to-top-button {
-          background-color: #1d4ed8 !important;
-          box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4) !important;
-        }
-        
-        .dark .scroll-to-top-button:hover {
-          background-color: #3b82f6 !important;
-          box-shadow: 0 6px 16px rgba(59, 130, 246, 0.5) !important;
-          transform: translateY(-2px) !important;
-        }
-        
-        .dark .scroll-to-top-button:active {
-          transform: translateY(0) scale(0.95) !important;
-        }
-        
-        /* Hover ефект для Scroll to Top кнопки */
-        .scroll-to-top-button:hover {
-          background-color: #1d4ed8 !important;
-          box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4) !important;
-          transform: translateY(-2px);
-          opacity: 1 !important;
-        }
-        
-        .scroll-to-top-button:active {
-          transform: translateY(0) scale(0.95);
-        }
-        
         /* Шрифти для дизайн-системи */
         .font-inter { font-family: 'Inter', sans-serif; }
         .font-roboto { font-family: 'Roboto', sans-serif; }
@@ -687,38 +136,26 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
   }, []);
 
   return (
-    <div style={styles.container} className="nav-container-dark">
+    <div style={styles.container}>
       {/* Header */}
-      <header style={styles.header} className="header-dark">
+      <header style={styles.header}>
         <div style={styles.headerContent} className="header-content-responsive">
           <div style={styles.headerLeft}>
             <Link href="/dashboard" style={styles.headerTitleLink} className="header-title-link">
-              <h1 style={styles.headerTitle} className="header-title-dark">
+              <h1 style={styles.headerTitle}>
                 {restaurantInfo?.name || 'Ресторан'}
               </h1>
             </Link>
-            <p style={styles.headerSubtitle} className="header-subtitle-dark">
+            <p style={styles.headerSubtitle}>
               Панель управління
             </p>
           </div>
           <div style={styles.headerRight} className="header-right-responsive">
-            <button
-              onClick={toggleTheme}
-              style={styles.themeToggle}
-              className="theme-toggle-button"
-              title={isDarkMode ? 'Перемкнути на світлу тему' : 'Перемкнути на темну тему'}
-            >
-              {isDarkMode ? (
-                <SunIcon style={styles.themeIcon} />
-              ) : (
-                <MoonIcon style={styles.themeIcon} />
-              )}
-            </button>
             <Link
               href={`/menu/${restaurantInfo?.slug}`}
               target="_blank"
               style={styles.previewButton}
-              className="preview-button-responsive preview-button-dark"
+              className="preview-button-responsive"
             >
               <EyeIcon style={styles.buttonIcon} />
               <span style={styles.buttonText} className="preview-button-text-responsive">Попередній перегляд</span>
@@ -728,16 +165,15 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
         </div>
       </header>
 
-      <main style={styles.mainContent} className="main-content-dark">{children}</main>
+      <main style={styles.mainContent}>{children}</main>
 
-      <nav style={styles.bottomNav} className="nav-bottom-dark">
+      <nav style={styles.bottomNav}>
         <ul style={styles.navList}>
           {navigation.map((item) => (
             <li key={item.name} style={styles.navItem}>
               {item.onClick ? (
                 <button
                   onClick={item.onClick}
-                  className="nav-link-dark"
                   style={{
                     ...styles.navLink,
                     backgroundColor: 'transparent',
@@ -759,7 +195,6 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
               ) : (
                 <Link
                   href={item.href!}
-                  className={`nav-link-dark ${pathname === item.href ? 'nav-link-active-dark' : ''}`}
                   style={pathname === item.href ? { ...styles.navLink, color: '#60a5fa', backgroundColor: '#1e3a8a' } : styles.navLink}
                 >
                   <item.icon style={styles.navIcon} />
@@ -861,19 +296,6 @@ const styles: { [key: string]: CSSProperties } = {
   },
   buttonText: {
     fontSize: '0.875rem',
-  },
-  themeToggle: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '8px',
-    backgroundColor: 'transparent',
-    border: '1px solid #d1d5db',
-    borderRadius: '6px',
-    color: '#374151',
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
-    marginRight: '12px',
   },
   themeIcon: {
     width: '20px',

@@ -39,36 +39,6 @@ const RestaurantDashboardPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Завантажити тему з localStorage та синхронізувати з глобальною темою
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-
-    // Слухач для змін теми з інших сторінок
-    const handleThemeChange = () => {
-      const currentTheme = localStorage.getItem('theme');
-      const isDark = currentTheme === 'dark';
-      
-      if (isDark) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    };
-
-    // Додати слухач подій
-    window.addEventListener('storage', handleThemeChange);
-    window.addEventListener('themeChanged', handleThemeChange);
-
-    return () => {
-      window.removeEventListener('storage', handleThemeChange);
-      window.removeEventListener('themeChanged', handleThemeChange);
-    };
-  }, []);
 
 
   useEffect(() => {
