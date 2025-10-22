@@ -2199,6 +2199,56 @@ body {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
 }
 
+/* ===========================================
+   DASHBOARD СТОРІНКА - ЗАВЖДИ СВІТЛА ТЕМА
+   =========================================== */
+.dashboard-light-theme {
+  /* Перевизначаємо всі темні стилі для dashboard сторінки */
+}
+
+.dashboard-light-theme .ds-card {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.dashboard-light-theme .ds-card:hover {
+  background-color: #f9fafb !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+}
+
+.dashboard-light-theme .ds-text-gray-900 {
+  color: #1f2937 !important;
+}
+
+.dashboard-light-theme .ds-text-gray-600 {
+  color: #4b5563 !important;
+}
+
+.dashboard-light-theme .ds-text-gray-500 {
+  color: #6b7280 !important;
+}
+
+.dashboard-light-theme .ds-text-gray-700 {
+  color: #374151 !important;
+}
+
+.dashboard-light-theme .ds-bg-gray-50 {
+  background-color: #f9fafb !important;
+}
+
+.dashboard-light-theme .ds-bg-white {
+  background-color: #ffffff !important;
+}
+
+.dashboard-light-theme .ds-border-b {
+  border-bottom-color: #e5e7eb !important;
+}
+
+.dashboard-light-theme .ds-shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
 @media (prefers-color-scheme: dark) {
   .ds-card {
     background-color: #1f2937;
