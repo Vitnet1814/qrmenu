@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export interface Theme {
   id: string;
@@ -22,6 +22,7 @@ export interface LayoutSettings {
   borderRadius: 'minimal' | 'medium' | 'large';
   padding: 'compact' | 'normal' | 'spacious';
   shadow: 'minimal' | 'normal' | 'dramatic';
+  fontFamily: 'inter' | 'roboto' | 'opensans' | 'lato' | 'montserrat' | 'poppins' | 'nunito' | 'playfair' | 'merriweather' | 'crimson' | 'libre' | 'source';
 }
 
 export interface ColorPickerProps {
@@ -215,7 +216,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ colors, onChange }) =>
     <div className="space-y-6">
       {/* Вибір кольору для редагування */}
       <div>
-        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+        <h4 className="text-sm font-medium text-gray-700 mb-3">
           Оберіть колір для редагування:
         </h4>
         <div className="grid grid-cols-3 gap-2">
@@ -225,7 +226,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ colors, onChange }) =>
               className={`px-3 py-2 text-sm font-medium rounded-md border transition-colors ${
                 activeColorKey === key
                   ? 'bg-blue-500 text-white border-blue-500'
-                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                  : 'bg-white text-gray-700 border-gray-300'
               }`}
               onClick={() => setActiveColorKey(key as keyof Theme['colors'])}
             >
@@ -243,7 +244,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ colors, onChange }) =>
 
       {/* Поточний колір */}
       <div>
-        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+        <h4 className="text-sm font-medium text-gray-700 mb-3">
           Поточний колір ({colorLabels[activeColorKey]}):
         </h4>
         <div className="flex items-center gap-4">
@@ -256,7 +257,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ colors, onChange }) =>
               type="text"
               value={localColors[activeColorKey]}
               onChange={(e) => handleColorChange(activeColorKey, e.target.value)}
-              className="w-full px-3 py-2 text-sm font-mono border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+              className="w-full px-3 py-2 text-sm font-mono border border-gray-300 rounded-md bg-white text-gray-900"
               placeholder="#000000"
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -268,7 +269,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ colors, onChange }) =>
 
       {/* Color picker input */}
       <div>
-        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+        <h4 className="text-sm font-medium text-gray-700 mb-3">
           Виберіть колір:
         </h4>
         <input
@@ -281,14 +282,14 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ colors, onChange }) =>
 
       {/* Попередньо визначені кольори */}
       <div>
-        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+        <h4 className="text-sm font-medium text-gray-700 mb-3">
           Попередньо визначені кольори:
         </h4>
         <div className="grid grid-cols-6 gap-2">
           {predefinedColors.map((color, index) => (
             <button
               key={index}
-              className="w-8 h-8 rounded border border-gray-300 shadow-sm hover:scale-110 transition-transform"
+              className="w-8 h-8 rounded border border-gray-300 shadow-sm transition-transform"
               style={{ backgroundColor: color }}
               onClick={() => handleColorChange(activeColorKey, color)}
               title={color}
@@ -375,163 +376,115 @@ export const LayoutSettings: React.FC<LayoutSettingsProps> = ({ settings, onChan
   };
 
   const borderRadiusOptions = [
-    { value: 'minimal' as const, label: 'Мінімальне', description: '2px' },
-    { value: 'medium' as const, label: 'Середнє', description: '8px' },
-    { value: 'large' as const, label: 'Велике', description: '16px' }
+    { value: 'minimal' as const, label: 'Мінімальне' },
+    { value: 'medium' as const, label: 'Середнє' },
+    { value: 'large' as const, label: 'Велике' }
   ];
 
   const paddingOptions = [
-    { value: 'compact' as const, label: 'Компактні', description: '8px' },
-    { value: 'normal' as const, label: 'Звичайні', description: '16px' },
-    { value: 'spacious' as const, label: 'Великі', description: '24px' }
+    { value: 'compact' as const, label: 'Компактні' },
+    { value: 'normal' as const, label: 'Звичайні' },
+    { value: 'spacious' as const, label: 'Великі' }
   ];
 
   const shadowOptions = [
-    { value: 'minimal' as const, label: 'Мінімальні', description: 'Легка тінь' },
-    { value: 'normal' as const, label: 'Звичайні', description: 'Помірна тінь' },
-    { value: 'dramatic' as const, label: 'Драматичні', description: 'Сильна тінь' }
+    { value: 'minimal' as const, label: 'Мінімальні' },
+    { value: 'normal' as const, label: 'Звичайні' },
+    { value: 'dramatic' as const, label: 'Драматичні' }
   ];
 
-  const getBorderRadiusClass = (value: LayoutSettings['borderRadius']) => {
-    switch (value) {
-      case 'minimal': return 'rounded-sm';
-      case 'medium': return 'rounded-md';
-      case 'large': return 'rounded-lg';
-      default: return 'rounded-md';
-    }
-  };
+  const fontOptions = [
+    { value: 'inter' as const, label: 'Inter' },
+    { value: 'roboto' as const, label: 'Roboto' },
+    { value: 'opensans' as const, label: 'Open Sans' },
+    { value: 'lato' as const, label: 'Lato' },
+    { value: 'montserrat' as const, label: 'Montserrat' },
+    { value: 'poppins' as const, label: 'Poppins' },
+    { value: 'nunito' as const, label: 'Nunito' },
+    { value: 'playfair' as const, label: 'Playfair Display' },
+    { value: 'merriweather' as const, label: 'Merriweather' },
+    { value: 'crimson' as const, label: 'Crimson Text' },
+    { value: 'libre' as const, label: 'Libre Baskerville' },
+    { value: 'source' as const, label: 'Source Serif Pro' }
+  ];
 
-  const getPaddingClass = (value: LayoutSettings['padding']) => {
-    switch (value) {
-      case 'compact': return 'p-2';
-      case 'normal': return 'p-4';
-      case 'spacious': return 'p-6';
-      default: return 'p-4';
-    }
-  };
-
-  const getShadowClass = (value: LayoutSettings['shadow']) => {
-    switch (value) {
-      case 'minimal': return 'shadow-sm';
-      case 'normal': return 'shadow-md';
-      case 'dramatic': return 'shadow-lg';
-      default: return 'shadow-md';
-    }
-  };
 
   return (
-    <div className="space-y-6">
+    <div className="ds-card ds-card-body ds-space-y-6">
+      <h3 className="ds-text-lg ds-font-semibold ds-text-gray-900 ds-mb-4">
+        Налаштування макету
+      </h3>
+
       {/* Закруглення кутів */}
-      <div>
-        <h4 className="text-sm font-medium text-gray-700 mb-3">
+      <div className="ds-flex ds-items-center ds-justify-between ds-gap-4">
+        <h4 className="ds-text-sm ds-font-medium ds-text-gray-700 ds-flex-shrink-0">
           Закруглення кутів:
         </h4>
-        <div className="grid grid-cols-3 gap-2">
+        <select
+          value={localSettings.borderRadius}
+          onChange={(e) => handleSettingChange('borderRadius', e.target.value as LayoutSettings['borderRadius'])}
+          className="ds-flex-1 ds-px-4 ds-py-3 ds-border ds-border-gray-300 ds-rounded-lg ds-bg-white ds-text-gray-900 ds-focus:outline-none ds-focus:ring-2 ds-focus:ring-blue-500 ds-focus:border-transparent"
+        >
           {borderRadiusOptions.map((option) => (
-            <button
-              key={option.value}
-              className={`flex flex-col items-center gap-1 h-auto py-3 px-2 rounded-md border transition-colors ${
-                localSettings.borderRadius === option.value
-                  ? 'bg-blue-500 text-white border-blue-500'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-              }`}
-              onClick={() => handleSettingChange('borderRadius', option.value)}
-            >
-              <div 
-                className={`w-8 h-8 bg-gray-200 border border-gray-300 ${getBorderRadiusClass(option.value)}`}
-              />
-              <span className="text-xs font-medium">{option.label}</span>
-              <span className="text-xs opacity-70">{option.description}</span>
-            </button>
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
           ))}
-        </div>
+        </select>
       </div>
 
       {/* Відступи */}
-      <div>
-        <h4 className="text-sm font-medium text-gray-700 mb-3">
+      <div className="ds-flex ds-items-center ds-justify-between ds-gap-4">
+        <h4 className="ds-text-sm ds-font-medium ds-text-gray-700 ds-flex-shrink-0">
           Відступи:
         </h4>
-        <div className="grid grid-cols-3 gap-2">
+        <select
+          value={localSettings.padding}
+          onChange={(e) => handleSettingChange('padding', e.target.value as LayoutSettings['padding'])}
+          className="ds-flex-1 ds-px-4 ds-py-3 ds-border ds-border-gray-300 ds-rounded-lg ds-bg-white ds-text-gray-900 ds-focus:outline-none ds-focus:ring-2 ds-focus:ring-blue-500 ds-focus:border-transparent"
+        >
           {paddingOptions.map((option) => (
-            <button
-              key={option.value}
-              className={`flex flex-col items-center gap-1 h-auto py-3 px-2 rounded-md border transition-colors ${
-                localSettings.padding === option.value
-                  ? 'bg-blue-500 text-white border-blue-500'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-              }`}
-              onClick={() => handleSettingChange('padding', option.value)}
-            >
-              <div 
-                className={`w-8 h-8 bg-gray-200 border border-gray-300 relative ${getPaddingClass(option.value)}`}
-              >
-                <div className="absolute inset-1 bg-white border border-gray-400 rounded-sm" />
-              </div>
-              <span className="text-xs font-medium">{option.label}</span>
-              <span className="text-xs opacity-70">{option.description}</span>
-            </button>
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
           ))}
-        </div>
+        </select>
       </div>
 
       {/* Тіні */}
-      <div>
-        <h4 className="text-sm font-medium text-gray-700 mb-3">
+      <div className="ds-flex ds-items-center ds-justify-between ds-gap-4">
+        <h4 className="ds-text-sm ds-font-medium ds-text-gray-700 ds-flex-shrink-0">
           Тіні:
         </h4>
-        <div className="grid grid-cols-3 gap-2">
+        <select
+          value={localSettings.shadow}
+          onChange={(e) => handleSettingChange('shadow', e.target.value as LayoutSettings['shadow'])}
+          className="ds-flex-1 ds-px-4 ds-py-3 ds-border ds-border-gray-300 ds-rounded-lg ds-bg-white ds-text-gray-900 ds-focus:outline-none ds-focus:ring-2 ds-focus:ring-blue-500 ds-focus:border-transparent"
+        >
           {shadowOptions.map((option) => (
-            <button
-              key={option.value}
-              className={`flex flex-col items-center gap-1 h-auto py-3 px-2 rounded-md border transition-colors ${
-                localSettings.shadow === option.value
-                  ? 'bg-blue-500 text-white border-blue-500'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-              }`}
-              onClick={() => handleSettingChange('shadow', option.value)}
-            >
-              <div 
-                className={`w-8 h-8 bg-white border border-gray-300 ${getShadowClass(option.value)}`}
-              />
-              <span className="text-xs font-medium">{option.label}</span>
-              <span className="text-xs opacity-70">{option.description}</span>
-            </button>
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
           ))}
-        </div>
+        </select>
       </div>
 
-      {/* Попередній перегляд */}
-      <div>
-        <h4 className="text-sm font-medium text-gray-700 mb-3">
-          Попередній перегляд:
+      {/* Шрифти */}
+      <div className="ds-flex ds-items-center ds-justify-between ds-gap-4">
+        <h4 className="ds-text-sm ds-font-medium ds-text-gray-700 ds-flex-shrink-0">
+          Шрифти:
         </h4>
-        <div className="p-4 bg-gray-50 rounded-lg">
-          <div 
-            className={`bg-white border border-gray-200 mb-3 ${getBorderRadiusClass(localSettings.borderRadius)} ${getPaddingClass(localSettings.padding)} ${getShadowClass(localSettings.shadow)}`}
-          >
-            <h5 className="text-sm font-semibold text-gray-900 mb-2">
-              Приклад картки меню
-            </h5>
-            <p className="text-xs text-gray-600 mb-2">
-              Опис страви з використанням поточних налаштувань макету
-            </p>
-            <div className="flex gap-2">
-              <div className={`px-3 py-1 bg-blue-500 text-white text-xs font-medium ${getBorderRadiusClass(localSettings.borderRadius)}`}>
-                Кнопка
-              </div>
-              <div className={`px-3 py-1 bg-gray-200 text-gray-700 text-xs font-medium ${getBorderRadiusClass(localSettings.borderRadius)}`}>
-                Другорядна
-              </div>
-            </div>
-          </div>
-          
-          <div className="text-xs text-gray-500 space-y-1">
-            <p>• Закруглення: {borderRadiusOptions.find(o => o.value === localSettings.borderRadius)?.description}</p>
-            <p>• Відступи: {paddingOptions.find(o => o.value === localSettings.padding)?.description}</p>
-            <p>• Тіні: {shadowOptions.find(o => o.value === localSettings.shadow)?.description}</p>
-          </div>
-        </div>
+        <select
+          value={localSettings.fontFamily}
+          onChange={(e) => handleSettingChange('fontFamily', e.target.value as LayoutSettings['fontFamily'])}
+          className="ds-flex-1 ds-px-4 ds-py-3 ds-border ds-border-gray-300 ds-rounded-lg ds-bg-white ds-text-gray-900 ds-focus:outline-none ds-focus:ring-2 ds-focus:ring-blue-500 ds-focus:border-transparent"
+        >
+          {fontOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );
@@ -543,67 +496,117 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
   layoutSettings, 
   restaurantName = 'Назва ресторану' 
 }) => {
+  const [restaurantData, setRestaurantData] = useState<{name: string, banner?: string} | null>(null);
+
+  // Завантаження даних ресторану з API
+  useEffect(() => {
+    const loadRestaurantData = async () => {
+      try {
+        // Тут буде реальний API виклик
+        // const response = await fetch(`/api/restaurants/${restaurantId}`);
+        // const data = await response.json();
+        // setRestaurantData(data);
+        
+        // Поки що використовуємо мок дані
+        setRestaurantData({
+          name: restaurantName,
+          banner: undefined // Буде завантажуватися з API
+        });
+      } catch (error) {
+        console.error('Помилка завантаження даних ресторану:', error);
+        setRestaurantData({
+          name: restaurantName,
+          banner: undefined
+        });
+      }
+    };
+
+    loadRestaurantData();
+  }, [restaurantName]);
+
   const getBorderRadiusClass = (value: LayoutSettings['borderRadius']) => {
     switch (value) {
-      case 'minimal': return 'rounded-sm';
-      case 'medium': return 'rounded-md';
-      case 'large': return 'rounded-lg';
-      default: return 'rounded-md';
+      case 'minimal': return 'ds-rounded-sm';
+      case 'medium': return 'ds-rounded-md';
+      case 'large': return 'ds-rounded-lg';
+      default: return 'ds-rounded-md';
     }
   };
 
   const getPaddingClass = (value: LayoutSettings['padding']) => {
     switch (value) {
-      case 'compact': return 'p-2';
-      case 'normal': return 'p-4';
-      case 'spacious': return 'p-6';
-      default: return 'p-4';
+      case 'compact': return 'ds-p-2';
+      case 'normal': return 'ds-p-4';
+      case 'spacious': return 'ds-p-6';
+      default: return 'ds-p-4';
     }
   };
 
   const getShadowClass = (value: LayoutSettings['shadow']) => {
     switch (value) {
-      case 'minimal': return 'shadow-sm';
-      case 'normal': return 'shadow-md';
-      case 'dramatic': return 'shadow-lg';
-      default: return 'shadow-md';
+      case 'minimal': return 'ds-shadow-sm';
+      case 'normal': return 'ds-shadow-md';
+      case 'dramatic': return 'ds-shadow-lg';
+      default: return 'ds-shadow-md';
+    }
+  };
+
+  const getFontFamilyClass = (value: LayoutSettings['fontFamily']) => {
+    switch (value) {
+      case 'inter': return 'font-inter';
+      case 'roboto': return 'font-roboto';
+      case 'opensans': return 'font-open-sans';
+      case 'lato': return 'font-lato';
+      case 'montserrat': return 'font-montserrat';
+      case 'poppins': return 'font-poppins';
+      case 'nunito': return 'font-nunito';
+      case 'playfair': return 'font-playfair';
+      case 'merriweather': return 'font-merriweather';
+      case 'crimson': return 'font-crimson';
+      case 'libre': return 'font-libre';
+      case 'source': return 'font-source';
+      default: return 'font-inter';
     }
   };
 
   const borderRadiusClass = getBorderRadiusClass(layoutSettings.borderRadius);
   const paddingClass = getPaddingClass(layoutSettings.padding);
   const shadowClass = getShadowClass(layoutSettings.shadow);
+  const fontFamilyClass = getFontFamilyClass(layoutSettings.fontFamily);
 
   return (
-    <div className="p-6 bg-gray-50 rounded-xl">
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          Попередній перегляд меню
-        </h3>
-        <p className="text-sm text-gray-600">
-          Як виглядатиме ваше меню з поточними налаштуваннями
-        </p>
-      </div>
-
+    <div className={`ds-card ds-card-body ${fontFamilyClass}`}>
       {/* Мобільний попередній перегляд */}
-      <div className="max-w-sm mx-auto bg-white rounded-xl shadow-xl overflow-hidden">
+      <div className={`ds-max-w-sm ds-mx-auto ds-bg-white ds-rounded-xl ds-overflow-hidden ${shadowClass}`}>
         {/* Заголовок ресторану */}
         <div 
-          className={`text-center py-6 px-4 ${shadowClass}`}
+          className={`ds-text-center ds-py-6 ds-px-4 ds-relative ds-overflow-hidden`}
           style={{ 
-            background: `linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.secondary} 100%)`,
-            color: theme.colors.text === '#ffffff' ? '#ffffff' : '#ffffff'
+            background: restaurantData?.banner 
+              ? `url(${restaurantData.banner}) center/cover`
+              : `linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.secondary} 100%)`,
+            color: '#ffffff'
           }}
         >
-          <h1 className="text-xl font-bold mb-1">{restaurantName}</h1>
-          <p className="text-sm opacity-90">Ресторан української кухні</p>
+          {/* Overlay для кращої читабельності тексту поверх банеру */}
+          {restaurantData?.banner && (
+            <div 
+              className="ds-absolute ds-inset-0 ds-bg-black ds-bg-opacity-40"
+            />
+          )}
+          <div className="ds-relative ds-z-10">
+            <h1 className="ds-text-xl ds-font-bold ds-mb-1">
+              {restaurantData?.name || restaurantName}
+            </h1>
+            <p className="ds-text-sm ds-opacity-90">Ресторан української кухні</p>
+          </div>
         </div>
 
         {/* Категорії */}
-        <div className="p-4" style={{ backgroundColor: theme.colors.background }}>
-          <div className="flex gap-2 mb-4 overflow-x-auto">
+        <div className={`${paddingClass}`} style={{ backgroundColor: theme.colors.background }}>
+          <div className="ds-flex ds-gap-2 ds-mb-4 ds-overflow-x-auto">
             <div 
-              className={`px-4 py-2 text-sm font-medium whitespace-nowrap ${borderRadiusClass} ${shadowClass}`}
+              className={`ds-px-4 ds-py-2 ds-text-sm ds-font-medium ds-whitespace-nowrap ${borderRadiusClass} ${shadowClass}`}
               style={{ 
                 backgroundColor: theme.colors.primary,
                 color: '#ffffff'
@@ -612,7 +615,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
               Гарячі страви
             </div>
             <div 
-              className={`px-4 py-2 text-sm font-medium whitespace-nowrap ${borderRadiusClass} ${shadowClass}`}
+              className={`ds-px-4 ds-py-2 ds-text-sm ds-font-medium ds-whitespace-nowrap ${borderRadiusClass} ${shadowClass}`}
               style={{ 
                 backgroundColor: theme.colors.surface,
                 color: theme.colors.text,
@@ -622,7 +625,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
               Салати
             </div>
             <div 
-              className={`px-4 py-2 text-sm font-medium whitespace-nowrap ${borderRadiusClass} ${shadowClass}`}
+              className={`ds-px-4 ds-py-2 ds-text-sm ds-font-medium ds-whitespace-nowrap ${borderRadiusClass} ${shadowClass}`}
               style={{ 
                 backgroundColor: theme.colors.surface,
                 color: theme.colors.text,
@@ -634,37 +637,37 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
           </div>
 
           {/* Страви */}
-          <div className="space-y-3">
+          <div className="ds-space-y-3">
             {/* Страва 1 */}
             <div 
-              className={`bg-white ${borderRadiusClass} ${paddingClass} ${shadowClass}`}
+              className={`ds-bg-white ${borderRadiusClass} ${paddingClass} ${shadowClass}`}
               style={{ border: `1px solid ${theme.colors.primary}10` }}
             >
-              <div className="flex justify-between items-start mb-2">
-                <div className="flex-1">
+              <div className="ds-flex ds-justify-between ds-items-start ds-mb-2">
+                <div className="ds-flex-1">
                   <h3 
-                    className="text-base font-semibold mb-1"
+                    className="ds-text-base ds-font-semibold ds-mb-1"
                     style={{ color: theme.colors.text }}
                   >
                     Борщ український
                   </h3>
                   <p 
-                    className="text-sm mb-2"
+                    className="ds-text-sm ds-mb-2"
                     style={{ color: theme.colors.text, opacity: 0.7 }}
                   >
                     Традиційний український борщ зі сметаною та зеленню
                   </p>
                 </div>
                 <div 
-                  className="text-lg font-bold ml-2"
+                  className="ds-text-lg ds-font-bold ds-ml-2"
                   style={{ color: theme.colors.primary }}
                 >
                   120₴
                 </div>
               </div>
-              <div className="flex gap-2">
+              <div className="ds-flex ds-gap-2">
                 <div 
-                  className={`px-3 py-1 text-xs font-medium ${borderRadiusClass}`}
+                  className={`ds-px-3 ds-py-1 ds-text-xs ds-font-medium ${borderRadiusClass}`}
                   style={{ 
                     backgroundColor: theme.colors.accent,
                     color: '#ffffff'
@@ -673,7 +676,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
                   Гаряче
                 </div>
                 <div 
-                  className={`px-3 py-1 text-xs font-medium ${borderRadiusClass}`}
+                  className={`ds-px-3 ds-py-1 ds-text-xs ds-font-medium ${borderRadiusClass}`}
                   style={{ 
                     backgroundColor: theme.colors.secondary,
                     color: '#ffffff'
@@ -686,34 +689,34 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
 
             {/* Страва 2 */}
             <div 
-              className={`bg-white ${borderRadiusClass} ${paddingClass} ${shadowClass}`}
+              className={`ds-bg-white ${borderRadiusClass} ${paddingClass} ${shadowClass}`}
               style={{ border: `1px solid ${theme.colors.primary}10` }}
             >
-              <div className="flex justify-between items-start mb-2">
-                <div className="flex-1">
+              <div className="ds-flex ds-justify-between ds-items-start ds-mb-2">
+                <div className="ds-flex-1">
                   <h3 
-                    className="text-base font-semibold mb-1"
+                    className="ds-text-base ds-font-semibold ds-mb-1"
                     style={{ color: theme.colors.text }}
                   >
                     Вареники з картоплею
                   </h3>
                   <p 
-                    className="text-sm mb-2"
+                    className="ds-text-sm ds-mb-2"
                     style={{ color: theme.colors.text, opacity: 0.7 }}
                   >
                     Домашні вареники з картоплею та цибулею
                   </p>
                 </div>
                 <div 
-                  className="text-lg font-bold ml-2"
+                  className="ds-text-lg ds-font-bold ds-ml-2"
                   style={{ color: theme.colors.primary }}
                 >
                   95₴
                 </div>
               </div>
-              <div className="flex gap-2">
+              <div className="ds-flex ds-gap-2">
                 <div 
-                  className={`px-3 py-1 text-xs font-medium ${borderRadiusClass}`}
+                  className={`ds-px-3 ds-py-1 ds-text-xs ds-font-medium ${borderRadiusClass}`}
                   style={{ 
                     backgroundColor: theme.colors.accent,
                     color: '#ffffff'
@@ -728,35 +731,16 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
 
         {/* Футер */}
         <div 
-          className="text-center py-3 px-4"
+          className="ds-text-center ds-py-3 ds-px-4"
           style={{ 
             backgroundColor: theme.colors.surface,
             color: theme.colors.text,
             borderTop: `1px solid ${theme.colors.primary}20`
           }}
         >
-          <p className="text-xs opacity-70">
+          <p className="ds-text-xs ds-opacity-70">
             Скануйте QR-код для перегляду повного меню
           </p>
-        </div>
-      </div>
-
-      {/* Кольорова палітра */}
-      <div className="mt-6">
-        <h4 className="text-sm font-medium text-gray-700 mb-3">
-          Поточна кольорова палітра:
-        </h4>
-        <div className="grid grid-cols-6 gap-2">
-          {Object.entries(theme.colors).map(([key, color]) => (
-            <div key={key} className="text-center">
-              <div
-                className="w-8 h-8 rounded border border-gray-300 mb-1 mx-auto"
-                style={{ backgroundColor: color }}
-                title={`${key}: ${color}`}
-              />
-              <p className="text-xs text-gray-600 capitalize">{key}</p>
-            </div>
-          ))}
         </div>
       </div>
     </div>
@@ -849,7 +833,7 @@ export const DesignTips: React.FC<DesignTipsProps> = ({ theme }) => {
             <div
               key={tip.id}
               className={`p-4 rounded-lg border cursor-pointer transition-all duration-200 ${getLevelColor(tip.level)} ${
-                activeTip === tip.id ? 'shadow-md scale-105' : 'hover:shadow-sm'
+                activeTip === tip.id ? 'shadow-md scale-105' : ''
               }`}
               onClick={() => setActiveTip(activeTip === tip.id ? null : tip.id)}
             >
@@ -876,7 +860,7 @@ export const DesignTips: React.FC<DesignTipsProps> = ({ theme }) => {
         <h4 className="text-sm font-semibold text-gray-900 mb-3">
           Загальні рекомендації:
         </h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3">
           <div className="flex items-start gap-2">
             <span className="text-blue-500">💡</span>
             <div>

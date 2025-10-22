@@ -138,7 +138,7 @@ const RestaurantDashboardPage = () => {
       icon: Squares2X2Icon,
       href: `/dashboard/${restaurantId}/menu`,
       color: 'bg-blue-500',
-      hoverColor: 'hover:bg-blue-600',
+      hoverColor: '',
     },
     {
       title: 'Налаштування дизайну',
@@ -146,7 +146,7 @@ const RestaurantDashboardPage = () => {
       icon: PaintBrushIcon,
       href: `/dashboard/${restaurantId}/design`,
       color: 'bg-purple-500',
-      hoverColor: 'hover:bg-purple-600',
+      hoverColor: '',
     },
     {
       title: 'Генерація QR-коду',
@@ -154,7 +154,7 @@ const RestaurantDashboardPage = () => {
       icon: QrCodeIcon,
       href: `/dashboard/${restaurantId}/qr-code`,
       color: 'bg-green-500',
-      hoverColor: 'hover:bg-green-600',
+      hoverColor: '',
     },
     {
       title: 'Попередній перегляд',
@@ -162,7 +162,7 @@ const RestaurantDashboardPage = () => {
       icon: EyeIcon,
       href: `/menu/${restaurantInfo?.slug}`,
       color: 'bg-orange-500',
-      hoverColor: 'hover:bg-orange-600',
+      hoverColor: '',
       external: true,
     },
   ];
@@ -204,7 +204,7 @@ const RestaurantDashboardPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <LoadingSpinner 
           size="lg" 
           text="Завантаження даних ресторану..." 
@@ -215,7 +215,7 @@ const RestaurantDashboardPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <ErrorState 
           title="Помилка завантаження"
           message={error}
@@ -226,12 +226,12 @@ const RestaurantDashboardPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Статистичні картки */}
         <div className="mb-8">
-          <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 dark:ds-text-gray-100 mb-6">Статистика</h2>
-          <div className="ds-grid ds-grid-cols-1 ds-sm:grid-cols-2  ds-gap-6">
+          <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 mb-6">Статистика</h2>
+          <div className="ds-grid ds-grid-cols-1 ds-gap-6">
             {statsCards.map((card, index) => (
               <StatCard
                 key={index}
@@ -248,8 +248,8 @@ const RestaurantDashboardPage = () => {
 
         {/* Швидкі дії */}
         <div className="mb-8">
-          <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 dark:ds-text-gray-100 mb-6">Швидкі дії</h2>
-          <div className="ds-grid ds-grid-cols-1 ds-sm:grid-cols-2  ds-gap-6">
+          <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 mb-6">Швидкі дії</h2>
+          <div className="ds-grid ds-grid-cols-1 ds-gap-6">
             {quickActions.map((action, index) => (
               <QuickActionCard
                 key={index}
@@ -268,8 +268,8 @@ const RestaurantDashboardPage = () => {
         {/* Остання активність */}
         {stats && (stats.recentActivity.lastCategoryAdded || stats.recentActivity.lastMenuItemAdded) && (
           <div className="mb-8">
-            <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 dark:ds-text-gray-100 mb-6">Остання активність</h2>
-            <div className="ds-card ds-card-body dark:bg-gray-800 dark:border-gray-700">
+            <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 mb-6">Остання активність</h2>
+            <div className="ds-card ds-card-body">
               <div className="space-y-4">
                 {stats.recentActivity.lastMenuItemAdded && (
                   <ActivityItem
@@ -291,18 +291,18 @@ const RestaurantDashboardPage = () => {
         )}
 
         {/* Інформація про ресторан */}
-        <div className="ds-card ds-card-body dark:bg-gray-800 dark:border-gray-700">
-          <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 dark:ds-text-gray-100 mb-4">Інформація про ресторан</h2>
-          <div className="ds-grid ds-grid-cols-1 ds-md:grid-cols-2 ds-gap-6">
+        <div className="ds-card ds-card-body">
+          <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 mb-4">Інформація про ресторан</h2>
+          <div className="ds-grid ds-grid-cols-1 ds-gap-6">
             <div>
-              <p className="ds-text-sm ds-text-gray-600 dark:ds-text-gray-400">Дата створення</p>
-              <p className="ds-text-lg ds-font-medium ds-text-gray-900 dark:ds-text-gray-100">
+              <p className="ds-text-sm ds-text-gray-600">Дата створення</p>
+              <p className="ds-text-lg ds-font-medium ds-text-gray-900">
                 {stats?.createdAt ? formatDate(stats.createdAt) : 'Невідомо'}
               </p>
             </div>
             <div>
-              <p className="ds-text-sm ds-text-gray-600 dark:ds-text-gray-400">Останнє оновлення</p>
-              <p className="ds-text-lg ds-font-medium ds-text-gray-900 dark:ds-text-gray-100">
+              <p className="ds-text-sm ds-text-gray-600">Останнє оновлення</p>
+              <p className="ds-text-lg ds-font-medium ds-text-gray-900">
                 {stats?.lastUpdated ? formatDate(stats.lastUpdated) : 'Невідомо'}
               </p>
             </div>

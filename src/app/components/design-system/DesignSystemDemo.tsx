@@ -42,14 +42,14 @@ const DesignSystemDemo: React.FC = () => {
           <h2 className="ds-text-2xl ds-font-semibold ds-text-gray-900 ds-mb-6">
             Швидкий вибір теми
           </h2>
-          <div className="ds-grid ds-grid-cols-2 ds-md:grid-cols-3 ds-lg:grid-cols-5 ds-gap-4">
+          <div className="ds-grid ds-grid-cols-2 ds-gap-4">
             {availableThemes.map((theme) => (
               <Card
                 key={theme.id}
                 className={`ds-cursor-pointer ds-transition-all ${
                   currentTheme.id === theme.id 
                     ? 'ds-ring-2 ds-ring-primary ds-ring-offset-2' 
-                    : 'ds-hover:shadow-lg ds-hover:scale-105'
+                    : ''
                 }`}
                 onClick={() => setThemeById(theme.id)}
               >
@@ -84,7 +84,7 @@ const DesignSystemDemo: React.FC = () => {
               <CardTitle>Кнопки</CardTitle>
             </CardHeader>
             <CardBody>
-              <div className="ds-grid ds-grid-cols-2 ds-md:grid-cols-4 ds-gap-4 ds-mb-6">
+              <div className="ds-grid ds-grid-cols-2 ds-gap-4 ds-mb-6">
                 <Button variant="primary">Основна</Button>
                 <Button variant="secondary">Другорядна</Button>
                 <Button variant="accent">Акцентна</Button>
@@ -95,7 +95,7 @@ const DesignSystemDemo: React.FC = () => {
                 <Button variant="error">Помилка</Button>
               </div>
               
-              <div className="ds-grid ds-grid-cols-2 ds-md:grid-cols-4 ds-gap-4">
+              <div className="ds-grid ds-grid-cols-2 ds-gap-4">
                 <Button variant="primary" size="sm">Мала</Button>
                 <Button variant="primary" size="md">Середня</Button>
                 <Button variant="primary" size="lg">Велика</Button>
@@ -110,7 +110,7 @@ const DesignSystemDemo: React.FC = () => {
               <CardTitle>Картки</CardTitle>
             </CardHeader>
             <CardBody>
-              <div className="ds-grid ds-grid-cols-1 ds-md:grid-cols-2 ds-lg:grid-cols-3 ds-gap-6">
+              <div className="ds-grid ds-grid-cols-1 ds-gap-6">
                 <Card shadow="sm">
                   <CardHeader>
                     <CardTitle>Проста картка</CardTitle>
@@ -153,7 +153,7 @@ const DesignSystemDemo: React.FC = () => {
               <CardTitle>Форми</CardTitle>
             </CardHeader>
             <CardBody>
-              <div className="ds-grid ds-grid-cols-1 ds-md:grid-cols-2 ds-gap-6">
+              <div className="ds-grid ds-grid-cols-1 ds-gap-6">
                 <div>
                   <label className="ds-form-label">Ім&apos;я</label>
                   <input type="text" className="ds-form-input" placeholder="Введіть ваше ім&apos;я" />
@@ -164,7 +164,7 @@ const DesignSystemDemo: React.FC = () => {
                   <input type="email" className="ds-form-input" placeholder="your@email.com" />
                 </div>
                 
-                <div className="ds-md:col-span-2">
+                <div className="ds-col-span-2">
                   <label className="ds-form-label">Повідомлення</label>
                   <textarea className="ds-form-textarea" placeholder="Введіть ваше повідомлення"></textarea>
                 </div>
@@ -273,7 +273,7 @@ const DesignSystemDemo: React.FC = () => {
             <CardTitle>Про дизайн-систему</CardTitle>
           </CardHeader>
           <CardBody>
-            <div className="ds-grid ds-grid-cols-1 ds-md:grid-cols-2 ds-lg:grid-cols-3 ds-gap-6">
+            <div className="ds-grid ds-grid-cols-1 ds-gap-6">
               <div>
                 <h3 className="ds-text-lg ds-font-semibold ds-text-gray-900 ds-mb-2">
                   🎨 Кольори

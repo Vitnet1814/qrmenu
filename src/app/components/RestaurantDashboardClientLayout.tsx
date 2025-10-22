@@ -260,6 +260,35 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
           border-color: #6b7280 !important;
         }
         
+        /* Стилі для кнопок вибору теми в темній темі */
+        .dark .theme-select-button:not(.ds-bg-blue-500) {
+          background-color: #374151 !important;
+          border-color: #4b5563 !important;
+          color: #d1d5db !important;
+        }
+        
+        .dark .theme-select-button:not(.ds-bg-blue-500):hover {
+          background-color: #4b5563 !important;
+          border-color: #6b7280 !important;
+        }
+        
+        /* Стилі для поля вводу назви ресторану в темній темі */
+        .dark .restaurant-name-input {
+          background-color: #374151 !important;
+          border-color: #4b5563 !important;
+          color: #d1d5db !important;
+        }
+        
+        .dark .restaurant-name-input::placeholder {
+          color: #9ca3af !important;
+        }
+        
+        .dark .restaurant-name-input:focus {
+          background-color: #374151 !important;
+          border-color: #60a5fa !important;
+          color: #d1d5db !important;
+        }
+        
         /* Додаткові стилі для хедера в темній темі */
         .dark header {
           background-color: #1f2937 !important;
@@ -634,6 +663,20 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
         .scroll-to-top-button:active {
           transform: translateY(0) scale(0.95);
         }
+        
+        /* Шрифти для дизайн-системи */
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .font-roboto { font-family: 'Roboto', sans-serif; }
+        .font-open-sans { font-family: 'Open Sans', sans-serif; }
+        .font-lato { font-family: 'Lato', sans-serif; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .font-poppins { font-family: 'Poppins', sans-serif; }
+        .font-nunito { font-family: 'Nunito', sans-serif; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-merriweather { font-family: 'Merriweather', serif; }
+        .font-crimson { font-family: 'Crimson Text', serif; }
+        .font-libre { font-family: 'Libre Baskerville', serif; }
+        .font-source { font-family: 'Source Serif Pro', serif; }
       `;
       document.head.appendChild(styleSheet);
 

@@ -271,14 +271,14 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
       </div>
 
       {/* Сітка тем */}
-      <div className="ds-grid ds-grid-cols-1 ds-md:grid-cols-2 ds-lg:grid-cols-3 ds-gap-6 ds-mb-8">
+      <div className="ds-grid ds-grid-cols-1 ds-gap-6 ds-mb-8">
         {themes.map((theme) => (
           <Card
             key={theme.id}
             className={`ds-cursor-pointer ds-transition-all ds-duration-300 ${
               currentTheme === theme.id 
                 ? 'ds-ring-2 ds-ring-primary ds-ring-offset-2' 
-                : 'ds-hover:shadow-lg ds-hover:scale-105'
+                : ''
             }`}
             onClick={() => handleThemeSelect(theme)}
           >
