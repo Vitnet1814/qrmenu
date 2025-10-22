@@ -201,7 +201,7 @@ const RestaurantDashboardPage = () => {
         {/* Статистичні картки */}
         <div className="mb-8">
           <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 mb-6">Статистика</h2>
-          <div className="ds-grid ds-grid-cols-1 ds-gap-6">
+          <div className="ds-grid ds-grid-cols-1 ds-md:grid-cols-2 ds-gap-6">
             {statsCards.map((card, index) => (
               <StatCard
                 key={index}
@@ -219,7 +219,7 @@ const RestaurantDashboardPage = () => {
         {/* Швидкі дії */}
         <div className="mb-8">
           <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 mb-6">Швидкі дії</h2>
-          <div className="ds-grid ds-grid-cols-1 ds-gap-6">
+          <div className="ds-grid ds-grid-cols-1 ds-md:grid-cols-2 ds-gap-6">
             {quickActions.map((action, index) => (
               <QuickActionCard
                 key={index}

@@ -76,6 +76,16 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
       const styleSheet = document.createElement('style');
       styleSheet.textContent = `
         /* Адаптивний хедер */
+        @media (max-width: 640px) {
+          .header-content-responsive {
+            flex-direction: row !important;
+            justify-content: space-between !important;
+          }
+          
+          .header-right-responsive {
+            width: auto !important;
+          }
+        }
         @media (min-width: 640px) {
           .header-content-responsive {
             flex-direction: row !important;
@@ -98,6 +108,15 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
           .preview-button-text-mobile {
             display: none !important;
           }
+          
+          .header-subtitle-responsive {
+            display: block !important;
+          }
+        }
+        
+        /* Приховуємо підзаголовок на мобільних пристроях */
+        .header-subtitle-responsive {
+          display: none;
         }
         
         .preview-button-text-responsive {
@@ -106,6 +125,21 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
         
         .preview-button-text-mobile {
           display: inline;
+        }
+        
+        /* Стилі для мобільної кнопки попереднього перегляду */
+        @media (max-width: 639px) {
+          .preview-button-responsive {
+            padding: 6px 12px !important;
+            font-size: 0.75rem !important;
+            width: auto !important;
+            min-width: auto !important;
+          }
+          
+          .preview-button-responsive .button-icon-mobile {
+            width: 16px !important;
+            height: 16px !important;
+          }
         }
         
         /* Hover ефект для заголовка */
@@ -145,21 +179,19 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
               <h1 style={styles.headerTitle}>
                 {restaurantInfo?.name || 'Ресторан'}
               </h1>
-            </Link>
-            <p style={styles.headerSubtitle}>
+           
+            <p style={styles.headerSubtitle} className="header-subtitle-responsive">
               Панель управління
-            </p>
+            </p> </Link>
           </div>
           <div style={styles.headerRight} className="header-right-responsive">
             <Link
               href={`/menu/${restaurantInfo?.slug}`}
               target="_blank"
               style={styles.previewButton}
-              className="preview-button-responsive"
-            >
-              <EyeIcon style={styles.buttonIcon} />
-              <span style={styles.buttonText} className="preview-button-text-responsive">Попередній перегляд</span>
-              <span style={styles.buttonText} className="preview-button-text-mobile">Попередній перегляд</span>
+              className="preview-button-responsive" >
+              <EyeIcon style={styles.buttonIcon} className="button-icon-mobile" />   <span style={styles.buttonText}>Попередній перегляд</span>
+              
             </Link>
           </div>
         </div>
