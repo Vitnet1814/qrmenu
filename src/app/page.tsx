@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function HomePage() {
   return (
-    <div className="ds-gradient-bg ds-gradient-overlay">
+    <div className="ds-gradient-bg ds-gradient-overlay homepage-light-theme">
       <header className="ds-gradient-header px-5 py-6">
         <div className="container ds-flex ds-items-center ds-justify-between">
           <Link href="/" className="ds-flex ds-items-center ds-gap-3 text-white text-2xl font-bold">

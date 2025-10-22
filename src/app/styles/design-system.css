@@ -2132,6 +2132,64 @@ body {
   }
 }
 
+/* ===========================================
+   ГОЛОВНА СТОРІНКА - ЗАВЖДИ СВІТЛА ТЕМА
+   =========================================== */
+.homepage-light-theme {
+  /* Перевизначаємо всі темні стилі для головної сторінки */
+}
+
+.homepage-light-theme .ds-card {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.homepage-light-theme .ds-card:hover {
+  background-color: #f9fafb !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+}
+
+.homepage-light-theme .text-gray-900 {
+  color: #1f2937 !important;
+}
+
+.homepage-light-theme .text-gray-600 {
+  color: #4b5563 !important;
+}
+
+.homepage-light-theme .ds-text-gray-900 {
+  color: #1f2937 !important;
+}
+
+.homepage-light-theme .ds-text-gray-600 {
+  color: #4b5563 !important;
+}
+
+.homepage-light-theme .ds-text-gray-500 {
+  color: #6b7280 !important;
+}
+
+.homepage-light-theme .ds-text-gray-700 {
+  color: #374151 !important;
+}
+
+.homepage-light-theme .bg-gray-50 {
+  background-color: #f9fafb !important;
+}
+
+.homepage-light-theme .bg-white {
+  background-color: #ffffff !important;
+}
+
+.homepage-light-theme .border-b {
+  border-bottom-color: #e5e7eb !important;
+}
+
+.homepage-light-theme .shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
 @media (prefers-color-scheme: dark) {
   .ds-card {
     background-color: #1f2937;
