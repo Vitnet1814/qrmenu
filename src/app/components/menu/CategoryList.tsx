@@ -10,7 +10,6 @@ import { LoadingSpinner, ErrorState } from '../ui/LoadingStates';
 // import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 import MenuList from '../../components/menu/MenuList'; // Або шлях до вашого файлу MenuItemsList
-import styles from './CategoryList.module.css';
 
 // Інтерфейс для представлення об'єкта категорії
 interface Category {
@@ -261,8 +260,8 @@ const CategoryList = () => {
   
   if (isLoading) {
     return (
-      <div className={`${styles.container} category-list-container-dark`}>
-        <div className="flex items-center justify-center h-64">
+      <div className="ds-gradient-bg ds-gradient-overlay min-h-screen ds-p-6">
+        <div className="ds-flex ds-items-center ds-justify-center h-64">
           <LoadingSpinner size="lg" text="Завантаження категорій..." />
         </div>
       </div>
@@ -271,7 +270,7 @@ const CategoryList = () => {
 
   if (error) {
     return (
-      <div className={`${styles.container} category-list-container-dark`}>
+      <div className="ds-gradient-bg ds-gradient-overlay min-h-screen ds-p-6">
         <ErrorState 
           title="Помилка завантаження"
           message={error}
@@ -282,28 +281,28 @@ const CategoryList = () => {
   }
   
   return (
-    <div className={`${styles.container} category-list-container-dark`}>
-      <header className={`${styles.header} category-list-header-dark`}>
-        <div className={styles.headerContent}>
+    <div className="ds-gradient-bg ds-gradient-overlay min-h-screen">
+      <header className="ds-gradient-header ds-p-6">
+        <div className="container ds-flex ds-items-center ds-justify-between">
           <div>
-            <h1 className={`${styles.title} category-list-title-dark`}>Категорії меню</h1>
-            <p className={`${styles.subtitle} category-list-subtitle-dark`}>
+            <h1 className="ds-gradient-title ds-text-3xl ds-font-bold ds-mb-2">Категорії меню</h1>
+            <p className="ds-gradient-subtitle ds-text-lg">
               Керуйте категоріями вашого меню
             </p>
           </div>
           <button 
             onClick={handleAddCategoryClick}
-            className={`${styles.addButton} category-list-add-button-dark`}
+            className="ds-gradient-button ds-flex ds-items-center ds-gap-2"
           >
-            <span className={styles.addButtonIcon}>+</span>
+            <span className="ds-text-xl ds-font-bold">+</span>
             Додати категорію
           </button>
         </div>
       </header>
       
-      <main className={`${styles.categoriesContainer} category-list-categories-container-dark`}>
+      <main className="ds-gradient-main ds-p-6">
         <div 
-          className={`${styles.categoriesScrollContainer} category-list-scroll-container-dark`}
+          className="ds-flex ds-gap-6 ds-overflow-x-auto ds-pb-4"
           ref={categoriesContainerRef}
           onMouseDown={handleMouseDown}
           onMouseLeave={handleMouseLeave}
@@ -314,7 +313,7 @@ const CategoryList = () => {
           {categories.map((category) => (
             <div
               key={category._id}
-              className={styles.categoryItemWrapper}
+              className="ds-flex-shrink-0"
             >
               <CategoryItem
                 category={category}
@@ -330,7 +329,7 @@ const CategoryList = () => {
         </div>
       </main>
 
-      <div className={`${styles.menuListContainer} category-list-menu-container-dark`}>
+      <div className="ds-gradient-main ds-p-6">
         <MenuList 
           categoryId={activeCategory} 
           restaurantId={restaurantId}

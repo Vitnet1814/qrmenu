@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import styles from './CategoryModal.module.css';
 export type CategoryModalMode = 'add' | 'edit';
 
 interface CategoryModalProps {
@@ -196,65 +195,65 @@ const convertToBase64 = (file: File): Promise<string> => {
   return (
     <>
       {isOpen && (
-        <div className={styles.backdrop} onClick={handleCloseClick}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-            <h2 className={styles.title}>{categoryToEdit ? 'Редагувати категорію' : 'Додати нову категорію'}</h2>
+      <div className="modal-backdrop ds-fixed ds-inset-0 ds-bg-black ds-bg-opacity-50 ds-flex ds-items-center ds-justify-center ds-z-50" onClick={handleCloseClick}>
+        <div className="ds-card ds-p-8 ds-max-w-md ds-w-full ds-mx-4" onClick={(e) => e.stopPropagation()}>
+          <h2 className="ds-text-2xl ds-font-bold ds-text-gray-900 ds-mb-6">{categoryToEdit ? 'Редагувати категорію' : 'Додати нову категорію'}</h2>
 
-            <div className={styles.formGroup}>
-              <label htmlFor="name" className={styles.label}>Назва:</label>
-              <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={handleNameChange}
-                className={styles.input}
-                placeholder="Введіть назву категорії"
-              />
-            </div>
+          <div className="ds-form-group ds-mb-4">
+            <label htmlFor="name" className="ds-form-label">Назва:</label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={handleNameChange}
+              className="ds-form-input"
+              placeholder="Введіть назву категорії"
+            />
+          </div>
 
-            <div className={styles.formGroup}>
-              <label htmlFor="description" className={styles.label}>Опис:</label>
-              <textarea
-                id="description"
-                value={description}
-                onChange={handleDescriptionChange}
-                className={`${styles.input} ${styles.textarea}`}
-                placeholder="Короткий опис категорії"
-              />
-            </div>
+          <div className="ds-form-group ds-mb-4">
+            <label htmlFor="description" className="ds-form-label">Опис:</label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={handleDescriptionChange}
+              className="ds-form-textarea"
+              placeholder="Короткий опис категорії"
+            />
+          </div>
 
-            <div className={styles.formGroup}>
-              <label htmlFor="image" className={styles.label}>Зображення:</label>
-              <input
-                type="file"
-                id="image"
-                accept="image/*"
-                onChange={handleImageChange}
-                className={styles.fileInput}
-              />
-             {previewImage && (
-                <div className={styles.preview}>
-                  <Image
-                    src={previewImage}
-                    alt="Попередній перегляд"
-                    width={120}
-                    height={120}
-                    style={{ objectFit: 'cover' }}
-                  />
-                </div>
-              )}
-            </div>
+          <div className="ds-form-group ds-mb-6">
+            <label htmlFor="image" className="ds-form-label">Зображення:</label>
+            <input
+              type="file"
+              id="image"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="ds-form-input"
+            />
+           {previewImage && (
+              <div className="ds-mt-4">
+                <Image
+                  src={previewImage}
+                  alt="Попередній перегляд"
+                  width={120}
+                  height={120}
+                  style={{ objectFit: 'cover' }}
+                />
+              </div>
+            )}
+          </div>
 
-            <div className={styles.actions}>
-              <button onClick={handleCloseClick} className={`${styles.button} ${styles.cancelButton}`}>
-                Скасувати
-              </button>
-              <button onClick={handleSaveClick} className={`${styles.button} ${styles.saveButton}`}>
-                Зберегти
-              </button>
-            </div>
+          <div className="ds-flex ds-gap-4 ds-justify-end">
+            <button onClick={handleCloseClick} className="ds-btn ds-btn-secondary">
+              Скасувати
+            </button>
+            <button onClick={handleSaveClick} className="ds-btn ds-btn-primary">
+              Зберегти
+            </button>
           </div>
         </div>
+      </div>
       )}
     </>
   );

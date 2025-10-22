@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import styles from './dashboard.module.css';
 
 // Іконки для перемикання теми
 const SunIcon = ({ style }: { style?: React.CSSProperties }) => (
@@ -154,33 +153,28 @@ const DashboardPage = () => {
 
   if (isLoading) {
     return (
-      <div className={styles.container}>
-        <div className={styles.loadingCard}>
-          <div className={styles.loadingSpinner}></div>
-          <div className={styles.loadingText}>Завантаження...</div>
+      <div className="ds-gradient-bg ds-gradient-overlay min-h-screen ds-flex ds-items-center ds-justify-center">
+        <div className="ds-card ds-p-8 ds-text-center">
+          <div className="animate-spin ds-w-8 ds-h-8 ds-border-4 ds-border-primary ds-border-t-transparent ds-rounded-full ds-mx-auto ds-mb-4"></div>
+          <div className="ds-text-lg ds-text-gray-600">Завантаження...</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.headerContent}>
-          <div className={styles.logo}>
-            <div className={styles.logoIcon}>QR</div>
-            <span>QR Menu</span>
+    <div className="ds-gradient-bg ds-gradient-overlay min-h-screen">
+      <header className="ds-gradient-header ds-p-6">
+        <div className="container ds-flex ds-items-center ds-justify-between">
+          <div className="ds-flex ds-items-center ds-gap-3">
+            <div className="ds-auth-logo-icon">QR</div>
+            <span className="ds-text-2xl ds-font-bold ds-text-white">QR Menu</span>
           </div>
-          <div className={styles.userInfo}>
+          <div className="ds-flex ds-items-center ds-gap-4">
             <button
               onClick={toggleTheme}
-              className={styles.themeToggle}
+              className="ds-p-2 ds-rounded-lg ds-bg-white ds-bg-opacity-20 ds-text-white ds-transition-all hover:ds-bg-opacity-30"
               title={isDarkMode ? 'Перемкнути на світлу тему' : 'Перемкнути на темну тему'}
-              style={{ 
-                color: 'white',
-                fontSize: '16px',
-                fontWeight: 'bold'
-              }}
             >
               {isDarkMode ? (
                 <SunIcon style={{ color: 'white', strokeWidth: '2.5' }} />
@@ -188,40 +182,42 @@ const DashboardPage = () => {
                 <MoonIcon style={{ color: 'white', strokeWidth: '2.5' }} />
               )}
             </button>
-            <div className={styles.userAvatar}>
-              {session?.user?.name?.charAt(0) || 'U'}
+            <div className="ds-flex ds-items-center ds-gap-3">
+              <div className="ds-w-10 ds-h-10 ds-bg-white ds-bg-opacity-20 ds-rounded-full ds-flex ds-items-center ds-justify-center ds-text-white ds-font-bold">
+                {session?.user?.name?.charAt(0) || 'U'}
+              </div>
+              <span className="ds-text-white ds-font-medium">{session?.user?.name || 'Користувач'}</span>
             </div>
-            <span>{session?.user?.name || 'Користувач'}</span>
           </div>
         </div>
       </header>
       
-      <main className={styles.main}>
-        <div className={styles.mainContent}>
-          <div className={styles.welcomeCard}>
-            <h1 className={styles.welcomeTitle}>Ласкаво просимо!</h1>
-            <p className={styles.welcomeSubtitle}>
+      <main className="ds-gradient-main ds-p-6">
+        <div className="container ds-max-w-2xl">
+          <div className="ds-card ds-p-8 ds-text-center ds-mb-8">
+            <h1 className="ds-gradient-title ds-text-4xl ds-font-bold ds-mb-4">Ласкаво просимо!</h1>
+            <p className="ds-text-lg ds-text-gray-600">
               Створіть заклад та почніть використовувати QR-меню
             </p>
           </div>
           
-          <div className={styles.formCard}>
-            <h2 className={styles.formTitle}>Створення закладу</h2>
+          <div className="ds-card ds-p-8">
+            <h2 className="ds-text-2xl ds-font-bold ds-text-gray-900 ds-mb-6">Створення закладу</h2>
             
             {error && (
-              <div className={styles.errorAlert}>
+              <div className="ds-alert ds-alert-error ds-mb-6">
                 {error}
               </div>
             )}
             
             {success && (
-              <div className={styles.successAlert}>
+              <div className="ds-alert ds-alert-success ds-mb-6">
                 {success}
               </div>
             )}
             
-            <div className={styles.formGroup}>
-              <label htmlFor="restaurantName" className={styles.formLabel}>
+            <div className="ds-form-group ds-mb-6">
+              <label htmlFor="restaurantName" className="ds-form-label">
                 Назва закладу
               </label>
               <input
@@ -230,7 +226,7 @@ const DashboardPage = () => {
                 value={restaurantName}
                 onChange={(e) => setRestaurantName(e.target.value)}
                 placeholder="Введіть назву вашого закладу"
-                className={styles.formInput}
+                className="ds-form-input"
                 disabled={isSubmitting}
               />
             </div>
@@ -238,11 +234,11 @@ const DashboardPage = () => {
             <button 
               onClick={handleSaveRestaurantName}
               disabled={isSubmitting}
-              className={styles.submitButton}
+              className="ds-btn ds-btn-primary ds-w-full ds-flex ds-items-center ds-justify-center ds-gap-2"
             >
               {isSubmitting ? (
                 <>
-                  <span className={styles.loadingSpinner}></span>
+                  <div className="animate-spin ds-w-5 ds-h-5 ds-border-2 ds-border-white ds-border-t-transparent ds-rounded-full"></div>
                   Створення...
                 </>
               ) : (

@@ -6,7 +6,6 @@ import MenuItemModal from '../menu/MenuItemModal';
 import ConfirmationModal from '../menu/ConfirmationModal';
 import { useToast } from '../../contexts/ToastContext';
 import { LoadingSpinner, ErrorState } from '../ui/LoadingStates';
-import styles from './MenuList.module.css';
 // Видаляємо імпорт processImageClient, оскільки тепер використовуємо Base64 оптимізацію на сервері
 
 interface MenuItemData {
@@ -252,8 +251,8 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
   };
   if (isLoading) {
     return (
-      <div className={`${styles.container} menu-list-container-dark`}>
-        <div className="flex items-center justify-center h-64">
+      <div className="ds-gradient-main ds-p-6">
+        <div className="ds-flex ds-items-center ds-justify-center h-64">
           <LoadingSpinner size="lg" text="Завантаження страв..." />
         </div>
       </div>
@@ -262,7 +261,7 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
 
   if (error) {
     return (
-      <div className={`${styles.container} menu-list-container-dark`}>
+      <div className="ds-gradient-main ds-p-6">
         <ErrorState 
           title="Помилка завантаження"
           message={error}
@@ -273,37 +272,37 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
   }
 
   return (
-    <div className={`${styles.container} menu-list-container-dark`}>
-      <header className={`${styles.header} menu-list-header-dark`}>
-        <h2 className={`${styles.title} menu-list-title-dark`}>Страви меню</h2>
+    <div className="ds-gradient-main ds-p-6">
+      <header className="ds-flex ds-items-center ds-justify-between ds-mb-6">
+        <h2 className="ds-gradient-title ds-text-2xl ds-font-bold">Страви меню</h2>
         <button 
           onClick={handleAddItemClick}
-          className={`${styles.addButton} menu-list-add-button-dark`}
+          className="ds-gradient-button ds-flex ds-items-center ds-gap-2"
         >
-          <span className={styles.addButtonIcon}>+</span>
+          <span className="ds-text-xl ds-font-bold">+</span>
           Додати страву
         </button>
       </header>
 
       {!categoryId ? (
-        <div className={`${styles.selectCategoryMessage} menu-list-select-category-dark`}>
-          <div className={styles.selectCategoryIcon}>🍽️</div>
-          <div className={styles.selectCategoryText}>
+        <div className="ds-card ds-p-8 ds-text-center">
+          <div className="ds-text-6xl ds-mb-4">🍽️</div>
+          <div className="ds-text-lg ds-text-gray-600">
             Оберіть категорію для перегляду страв
           </div>
         </div>
       ) : menuItems.length === 0 ? (
-        <div className={`${styles.emptyState} menu-list-empty-state-dark`}>
-          <div className={styles.emptyStateIcon}>🍴</div>
-          <div className={`${styles.emptyStateTitle} menu-list-empty-title-dark`}>Немає страв у цій категорії</div>
-          <div className={`${styles.emptyStateDescription} menu-list-empty-description-dark`}>
-            Додайте першу страву, натиснувши кнопку &quot;Додати страву&quot;
+        <div className="ds-card ds-p-8 ds-text-center">
+          <div className="ds-text-6xl ds-mb-4">🍴</div>
+          <div className="ds-text-xl ds-font-semibold ds-text-gray-900 ds-mb-2">Немає страв у цій категорії</div>
+          <div className="ds-text-gray-600">
+            Додайте першу страву, натиснувши кнопку "Додати страву"
           </div>
         </div>
       ) : (
-        <div className={`${styles.menuItemsGrid} menu-list-grid-dark`}>
+        <div className="ds-grid ds-grid-cols-1 ds-md:grid-cols-2 ds-lg:grid-cols-3 ds-gap-6">
           {menuItems.map((item) => (
-            <div key={item._id} className={styles.menuItemWrapper}>
+            <div key={item._id}>
               <MenuItem
                 item={{
                   ...item,

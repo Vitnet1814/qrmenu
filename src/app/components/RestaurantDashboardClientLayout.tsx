@@ -698,7 +698,7 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
               </h1>
             </Link>
             <p style={styles.headerSubtitle} className="header-subtitle-dark">
-              Панель управління рестораном
+              Панель управління
             </p>
           </div>
           <div style={styles.headerRight} className="header-right-responsive">
@@ -791,8 +791,7 @@ const styles: { [key: string]: CSSProperties } = {
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
-    backgroundColor: '#f8fafc', // bg-gray-50
-    alignItems: 'center',
+    width: '100%',
     position: 'relative',
   },
   header: {
@@ -885,15 +884,15 @@ const styles: { [key: string]: CSSProperties } = {
     padding: '20px',
     paddingTop: '120px', // Додаємо відступ зверху для хедера
     paddingBottom: '100px', // Додаємо відступ знизу для футера
-    maxWidth: '600px',
     width: '100%',
+    maxWidth: '600px',
   },
   bottomNav: {
     backgroundColor: '#ffffff', // білий фон з тінню
     borderTop: '1px solid #e5e7eb',
     padding: '10px 0',
-    maxWidth: '600px',
     width: '100%',
+    maxWidth: '600px',
     boxShadow: '0 -1px 3px 0 rgba(0, 0, 0, 0.1)', // тінь
     position: 'fixed',
     bottom: 0,

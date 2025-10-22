@@ -9,8 +9,7 @@ interface DashboardLayoutProps {
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
-    <div>
-      {/* Загальна навігація для всіх кабінетів може бути тут, якщо потрібно */}
+    <div className="dashboard-content">
       {children}
     </div>
   );

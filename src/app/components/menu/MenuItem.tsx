@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { PencilIcon, TrashIcon, ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/outline';
-import styles from './MenuItem.module.css';
 
 interface MenuItemProps {
   item: { _id: string; name: string; price: number; image?: string };
@@ -14,49 +13,49 @@ interface MenuItemProps {
 
 const MenuItem = ({ item, onEdit, onDelete, onMoveUp, onMoveDown }: MenuItemProps) => {
   return (
-    <div className={`${styles.menuItem} menu-item-dark`}>
-      <div className={styles.content}>
+    <div className="ds-menu-item-card">
+      <div className="ds-menu-item-content">
         {item.image && (
-          <div className={styles.imageContainer}>
+          <div className="ds-menu-item-image">
             <img 
               src={item.image} 
               alt={item.name} 
-              className={styles.image}
+              className="ds-menu-item-img"
             />
           </div>
         )}
-        <div className={styles.details}>
-          <h3 className={`${styles.name} menu-item-name-dark`}>{item.name}</h3>
-          <div className={`${styles.price} menu-item-price-dark`}>{item.price}</div>
+        <div className="ds-menu-item-details">
+          <h3 className="ds-menu-item-name">{item.name}</h3>
+          <div className="ds-menu-item-price">{item.price}</div>
         </div>
-        <div className={styles.controls}>
+        <div className="ds-menu-item-controls">
           <button 
             onClick={onMoveUp} 
-            className={`${styles.controlButton} ${styles.moveUpButton} menu-item-control-dark`}
+            className="ds-control-btn ds-control-btn-move"
             title="Перемістити вгору"
           >
-            <ArrowUpIcon className={styles.icon} />
+            <ArrowUpIcon className="ds-control-icon" />
           </button>
           <button 
             onClick={onMoveDown} 
-            className={`${styles.controlButton} ${styles.moveDownButton} menu-item-control-dark`}
+            className="ds-control-btn ds-control-btn-move"
             title="Перемістити вниз"
           >
-            <ArrowDownIcon className={styles.icon} />
+            <ArrowDownIcon className="ds-control-icon" />
           </button>
           <button 
             onClick={() => onEdit(item)} 
-            className={`${styles.controlButton} ${styles.editButton} menu-item-control-dark`}
+            className="ds-control-btn ds-control-btn-edit"
             title="Редагувати страву"
           >
-            <PencilIcon className={styles.icon} />
+            <PencilIcon className="ds-control-icon" />
           </button>
           <button 
             onClick={() => onDelete({ _id: item._id, name: item.name })} 
-            className={`${styles.controlButton} ${styles.deleteButton} menu-item-control-dark`}
+            className="ds-control-btn ds-control-btn-delete"
             title="Видалити страву"
           >
-            <TrashIcon className={styles.icon} />
+            <TrashIcon className="ds-control-icon" />
           </button>
         </div>
       </div>

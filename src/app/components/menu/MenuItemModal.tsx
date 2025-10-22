@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import styles from './MenuItemModal.module.css';
 
 interface MenuItemModalProps {
   isOpen: boolean;
@@ -74,87 +73,85 @@ const MenuItemModal = ({ isOpen, onClose, onSave, itemToEdit, restaurantId, cate
   return (
     <>
       {isOpen && (
-        <div className={styles.backdrop} onClick={handleCloseClick}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.modalContent}>
-              <h2 className={styles.title}>
-                {itemToEdit ? 'Редагувати страву' : 'Нова страва'}
-              </h2>
-              
-              <div className={styles.formGroup}>
-                <label htmlFor="image" className={styles.label}>Фото страви:</label>
-                <input
-                  type="file"
-                  id="image"
-                  onChange={handleImageChange}
-                  className={styles.fileInput}
-                  accept="image/*"
-                />
-                {previewImage && (
-                  <div className={styles.imagePreview}>
-                    <img 
-                      src={previewImage} 
-                      alt="Preview" 
-                      className={styles.previewImage}
-                    />
-                  </div>
-                )}
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="name" className={styles.label}>Назва страви:</label>
-                <input
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={handleNameChange}
-                  className={styles.input}
-                  placeholder="Введіть назву страви"
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="description" className={styles.label}>Опис:</label>
-                <textarea
-                  id="description"
-                  value={description}
-                  onChange={handleDescriptionChange}
-                  className={styles.textarea}
-                  placeholder="Опишіть страву (необов'язково)"
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="price" className={styles.label}>Ціна:</label>
-                <div className={styles.priceInput}>
-                  <span className={styles.priceSymbol}>₴</span>
-                  <input
-                    type="number"
-                    id="price"
-                    value={price}
-                    onChange={handlePriceChange}
-                    className={styles.input}
-                    placeholder="0.00"
-                    min="0"
-                    step="0.01"
+        <div className="modal-backdrop ds-fixed ds-inset-0 ds-bg-black ds-bg-opacity-50 ds-flex ds-items-center ds-justify-center ds-z-50" onClick={handleCloseClick}>
+          <div className="ds-card ds-p-8 ds-max-w-lg ds-w-full ds-mx-4 ds-max-h-screen ds-overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <h2 className="ds-text-2xl ds-font-bold ds-text-gray-900 ds-mb-6">
+              {itemToEdit ? 'Редагувати страву' : 'Нова страва'}
+            </h2>
+            
+            <div className="ds-form-group ds-mb-4">
+              <label htmlFor="image" className="ds-form-label">Фото страви:</label>
+              <input
+                type="file"
+                id="image"
+                onChange={handleImageChange}
+                className="ds-form-input"
+                accept="image/*"
+              />
+              {previewImage && (
+                <div className="ds-mt-4">
+                  <img 
+                    src={previewImage} 
+                    alt="Preview" 
+                    className="ds-w-32 ds-h-32 ds-object-cover ds-rounded-lg"
                   />
                 </div>
-              </div>
+              )}
+            </div>
 
-              <div className={styles.buttonGroup}>
-                <button 
-                  onClick={handleCloseClick} 
-                  className={`${styles.button} ${styles.cancelButton}`}
-                >
-                  Скасувати
-                </button>
-                <button 
-                  onClick={handleSaveClick} 
-                  className={`${styles.button} ${styles.saveButton}`}
-                >
-                  {itemToEdit ? 'Оновити страву' : 'Створити страву'}
-                </button>
+            <div className="ds-form-group ds-mb-4">
+              <label htmlFor="name" className="ds-form-label">Назва страви:</label>
+              <input
+                type="text"
+                id="name"
+                value={name}
+                onChange={handleNameChange}
+                className="ds-form-input"
+                placeholder="Введіть назву страви"
+              />
+            </div>
+
+            <div className="ds-form-group ds-mb-4">
+              <label htmlFor="description" className="ds-form-label">Опис:</label>
+              <textarea
+                id="description"
+                value={description}
+                onChange={handleDescriptionChange}
+                className="ds-form-textarea"
+                placeholder="Опишіть страву (необов'язково)"
+              />
+            </div>
+
+            <div className="ds-form-group ds-mb-6">
+              <label htmlFor="price" className="ds-form-label">Ціна:</label>
+              <div className="ds-relative">
+                <span className="ds-absolute ds-left-3 ds-top-1/2 ds-transform ds--translate-y-1/2 ds-text-gray-500">₴</span>
+                <input
+                  type="number"
+                  id="price"
+                  value={price}
+                  onChange={handlePriceChange}
+                  className="ds-form-input ds-pl-8"
+                  placeholder="0.00"
+                  min="0"
+                  step="0.01"
+                />
               </div>
+            </div>
+
+            <div className="ds-flex ds-gap-4 ds-justify-end">
+              <button 
+                onClick={handleCloseClick} 
+                className="ds-btn ds-btn-secondary"
+              >
+                Скасувати
+              </button>
+              <button 
+                onClick={handleSaveClick} 
+                className="ds-btn ds-btn-primary"
+              >
+                {itemToEdit ? 'Оновити страву' : 'Створити страву'}
+              </button>
             </div>
           </div>
         </div>

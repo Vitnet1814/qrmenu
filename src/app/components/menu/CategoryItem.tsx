@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { PencilIcon, TrashIcon, ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
-import styles from './CategoryItem.module.css';
 
 interface CategoryItemProps {
   category: {
@@ -22,48 +21,48 @@ interface CategoryItemProps {
 
 const CategoryItem = ({ category, isActive, onEdit, onDelete, onClick, onMoveLeft, onMoveRight }: CategoryItemProps) => {
   return (
-    <div className={`${styles.categoryItem} category-item-dark`}>
+    <div className="ds-category-item">
       {isActive && (
-        <div className={styles.moveControls}>
+        <div className="ds-category-move-controls">
           <button 
             onClick={onMoveLeft} 
-            className={`${styles.controlButton} ${styles.moveButton} category-item-control-dark`}
+            className="ds-control-btn ds-control-btn-move"
             title="Перемістити вліво"
           >
-            <ArrowLeftIcon className={styles.moveIcon} />
+            <ArrowLeftIcon className="ds-control-icon-sm" />
           </button>
           <button 
             onClick={onMoveRight} 
-            className={`${styles.controlButton} ${styles.moveButton} category-item-control-dark`}
+            className="ds-control-btn ds-control-btn-move"
             title="Перемістити вправо"
           >
-            <ArrowRightIcon className={styles.moveIcon} />
+            <ArrowRightIcon className="ds-control-icon-sm" />
           </button>
         </div>
       )}
       
       <div 
-        className={`${styles.categoryCard} ${isActive ? styles.active : ''} category-item-card-dark`}
+        className={`ds-category-card ${isActive ? 'active' : ''}`}
         onClick={() => onClick(category._id)}
       >
-        <h3 className={`${styles.categoryName} category-item-name-dark`}>{category.name}</h3>
+        <h3 className="ds-category-name">{category.name}</h3>
       </div>
       
       {isActive && (
-        <div className={styles.actionControls}>
+        <div className="ds-category-action-controls">
           <button 
             onClick={() => onEdit(category)} 
-            className={`${styles.controlButton} ${styles.editButton} category-item-control-dark`}
+            className="ds-control-btn ds-control-btn-edit"
             title="Редагувати категорію"
           >
-            <PencilIcon className={styles.icon} />
+            <PencilIcon className="ds-control-icon" />
           </button>
           <button 
             onClick={() => onDelete(category)} 
-            className={`${styles.controlButton} ${styles.deleteButton} category-item-control-dark`}
+            className="ds-control-btn ds-control-btn-delete"
             title="Видалити категорію"
           >
-            <TrashIcon className={styles.icon} />
+            <TrashIcon className="ds-control-icon" />
           </button>
         </div>
       )}
