@@ -281,18 +281,18 @@ const CategoryList = () => {
   }
   
   return (
-    <div className="ds-gradient-bg ds-gradient-overlay min-h-screen">
-      <header className="ds-gradient-header ds-p-6">
-        <div className="container ds-flex ds-items-center ds-justify-between">
-          <div>
-            <h1 className="ds-gradient-title ds-text-3xl ds-font-bold ds-mb-2">Категорії меню</h1>
-            <p className="ds-gradient-subtitle ds-text-lg">
-              Керуйте категоріями вашого меню
-            </p>
+    <div 
+    //   className=" min-h-screen"
+    >
+      <header className="ds-gradient-header">
+        <div  className="container ds-flex ds-items-center ds-justify-between ds-gap-4">
+          <div className="ds-mb-3">
+            <h1 className=" ds-text-2xl ds-font-bold ds-mb-2">Категорії меню</h1>
+            <p className="ds-text-sm ds-text-gray-600"> Керуйте категоріями вашого меню</p>
           </div>
           <button 
-            onClick={handleAddCategoryClick}
-            className="ds-gradient-button ds-flex ds-items-center ds-gap-2"
+            onClick={handleAddCategoryClick}            
+            className="ds-btn ds-btn-success ds-flex ds-items-center ds-gap-2"
           >
             <span className="ds-text-xl ds-font-bold">+</span>
             Додати категорію
@@ -300,9 +300,9 @@ const CategoryList = () => {
         </div>
       </header>
       
-      <main className="ds-gradient-main ds-p-6">
+      <main className="ds-gradient-main ds-mb-6">
         <div 
-          className="ds-flex ds-gap-6 ds-overflow-x-auto ds-pb-4"
+          className="ds-flex ds-gap-6 ds-overflow-x-auto ds-scrollbar-hide "
           ref={categoriesContainerRef}
           onMouseDown={handleMouseDown}
           onMouseLeave={handleMouseLeave}
@@ -329,12 +329,12 @@ const CategoryList = () => {
         </div>
       </main>
 
-      <div className="ds-gradient-main ds-p-6">
+      {/* <div className="ds-gradient-main ds-p-6"> */}
         <MenuList 
           categoryId={activeCategory} 
           restaurantId={restaurantId}
         />
-      </div>
+      {/* </div> */}
 
       {/* Модальні вікна */}
       {isAddCategoryModalOpen && (

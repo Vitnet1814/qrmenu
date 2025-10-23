@@ -272,27 +272,29 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
   }
 
   return (
-    <div className="ds-gradient-main ds-p-6">
-      <header className="ds-flex ds-items-center ds-justify-between ds-mb-6">
-        <h2 className="ds-gradient-title ds-text-2xl ds-font-bold">Страви меню</h2>
+    <>    
+      <header className="ds-gradient-header">
+        <div className="container ds-flex ds-items-center ds-justify-between ds-gap-4">
+        <h2 className="ds-text-2xl ds-font-bold ds-mb-2">Страви меню</h2>
         <button 
           onClick={handleAddItemClick}
-          className="ds-gradient-button ds-flex ds-items-center ds-gap-2"
+          className="ds-btn ds-btn-success ds-flex ds-items-center ds-gap-2"
         >
           <span className="ds-text-xl ds-font-bold">+</span>
           Додати страву
         </button>
+        </div>
       </header>
 
       {!categoryId ? (
-        <div className="ds-card ds-p-8 ds-text-center">
+        <div className="ds-card  ds-text-center ds-mt-4">
           <div className="ds-text-6xl ds-mb-4">🍽️</div>
           <div className="ds-text-lg ds-text-gray-600">
             Оберіть категорію для перегляду страв
           </div>
         </div>
       ) : menuItems.length === 0 ? (
-        <div className="ds-card ds-p-8 ds-text-center">
+        <div className="ds-card  ds-text-center ds-mt-4">
           <div className="ds-text-6xl ds-mb-4">🍴</div>
           <div className="ds-text-xl ds-font-semibold ds-text-gray-900 ds-mb-2">Немає страв у цій категорії</div>
           <div className="ds-text-gray-600">
@@ -300,9 +302,9 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
           </div>
         </div>
       ) : (
-        <div className="ds-grid ds-grid-cols-1 ds-md:grid-cols-2 ds-lg:grid-cols-3 ds-gap-6">
+        <div className="ds-grid ds-grid-cols-1 ds-py-2">
           {menuItems.map((item) => (
-            <div key={item._id}>
+            <div key={item._id} className="ds-mt-1" >
               <MenuItem
                 item={{
                   ...item,
@@ -336,6 +338,7 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
           }
           restaurantId={restaurantId}
           categoryId={categoryId || ''}
+          mode={itemToEdit ? 'edit' : 'add'}
         />
       )}
 
@@ -346,8 +349,8 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
           onConfirm={handleConfirmDeleteItem}
           message={`Ви впевнені, що хочете видалити страву "${itemToDelete?.name}"?`}
         />
-      )}
-    </div>
+      )}    
+  </>
   );
 };
 

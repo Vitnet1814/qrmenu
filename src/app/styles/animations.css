@@ -24,9 +24,9 @@
   }
 }
 
-.ds-card {
+/* .ds-card {
   animation: fadeInUp 0.6s ease-out;
-}
+} */
 
 /* Затримка для кожної картки */
 .ds-card:nth-child(1) { animation-delay: 0.1s; }

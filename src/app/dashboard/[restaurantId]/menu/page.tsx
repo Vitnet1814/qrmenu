@@ -9,7 +9,7 @@ const MenuPage = () => {
   const restaurantId = params?.restaurantId as string;
 
   return (
-    <div className="menu-page-container">
+    <div >
       <MenuBanner restaurantId={restaurantId} />
       <CategoryList />
       {/* <MenuList /> */}

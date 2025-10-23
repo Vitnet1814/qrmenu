@@ -76,9 +76,10 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
       {toasts.length > 0 && (
         <div
           aria-live="assertive"
-          className="fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start z-50"
+          className="ds-toast ds-pointer-events-none"
+          style={{ zIndex: 1080 }}
         >
-          <div className="w-full flex flex-col items-center space-y-4 sm:items-end">
+          <div className="ds-flex ds-flex-col ds-items-end space-y-4">
             {toasts.map((toast) => (
               <ToastComponent
                 key={toast.id}

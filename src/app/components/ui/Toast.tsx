@@ -57,13 +57,25 @@ const ToastComponent: React.FC<ToastProps> = ({ toast, onRemove }) => {
   };
 
   return (
-    <div className={`max-w-sm w-full ${getBackgroundColor()} border rounded-lg shadow-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden`}>
-      <div className="p-4">
-        <div className="flex items-start">
-          <div className="flex-shrink-0">
+    <div 
+    className={`max-w-sm w-full ${getBackgroundColor()} border 
+    rounded-lg shadow-lg pointer-events-auto ring-1 ring-black 
+    ring-opacity-5 overflow-hidden`}
+    >
+      <div
+      className="p-4"
+      >
+        <div 
+        className="flex items-start"
+        >
+          <div 
+          // className="flex-shrink-0"
+          >
             {getIcon()}
           </div>
-          <div className="ml-3 w-0 flex-1 pt-0.5">
+          <div 
+          // className="ml-3 w-0 flex-1 pt-0.5"
+          >
             <p className="text-sm font-medium text-gray-900">
               {toast.title}
             </p>

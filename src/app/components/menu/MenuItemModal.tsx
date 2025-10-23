@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+
+export type MenuItemModalMode = 'add' | 'edit';
 
 interface MenuItemModalProps {
   isOpen: boolean;
@@ -9,9 +12,10 @@ interface MenuItemModalProps {
   itemToEdit: { _id?: string; categoryId: string; name: string; description: string; price: number; image?: string } | null;
   restaurantId: string;
   categoryId: string;
+  mode: MenuItemModalMode;
 }
 
-const MenuItemModal = ({ isOpen, onClose, onSave, itemToEdit, restaurantId, categoryId }: MenuItemModalProps) => {
+const MenuItemModal = ({ isOpen, onClose, onSave, itemToEdit, restaurantId, categoryId, mode }: MenuItemModalProps) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
@@ -73,12 +77,11 @@ const MenuItemModal = ({ isOpen, onClose, onSave, itemToEdit, restaurantId, cate
   return (
     <>
       {isOpen && (
-        <div className="modal-backdrop ds-fixed ds-inset-0 ds-bg-black ds-bg-opacity-50 ds-flex ds-items-center ds-justify-center ds-z-50" onClick={handleCloseClick}>
+        <div className="modal-backdrop ds-inset-0 ds-fixed ds-bg-black ds-bg-opacity-50 ds-items-center ds-justify-center ds-flex ds-z-modal" onClick={handleCloseClick}>
           <div className="ds-card ds-p-8 ds-max-w-lg ds-w-full ds-mx-4 ds-max-h-screen ds-overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <h2 className="ds-text-2xl ds-font-bold ds-text-gray-900 ds-mb-6">
-              {itemToEdit ? 'Редагувати страву' : 'Нова страва'}
-            </h2>
-            
+              {mode === 'edit' ? 'Редагувати страву' : 'Нова страва'}
+            </h2>            
             <div className="ds-form-group ds-mb-4">
               <label htmlFor="image" className="ds-form-label">Фото страви:</label>
               <input
@@ -90,10 +93,13 @@ const MenuItemModal = ({ isOpen, onClose, onSave, itemToEdit, restaurantId, cate
               />
               {previewImage && (
                 <div className="ds-mt-4">
-                  <img 
-                    src={previewImage} 
-                    alt="Preview" 
-                    className="ds-w-32 ds-h-32 ds-object-cover ds-rounded-lg"
+                  <Image
+                    src={previewImage}
+                    alt="Попередній перегляд страви"
+                    width={128}
+                    height={128}
+                    style={{ objectFit: 'cover' }}
+                    className="ds-rounded-lg"
                   />
                 </div>
               )}
@@ -150,7 +156,7 @@ const MenuItemModal = ({ isOpen, onClose, onSave, itemToEdit, restaurantId, cate
                 onClick={handleSaveClick} 
                 className="ds-btn ds-btn-primary"
               >
-                {itemToEdit ? 'Оновити страву' : 'Створити страву'}
+                {mode === 'edit' ? 'Оновити страву' : 'Створити страву'}
               </button>
             </div>
           </div>

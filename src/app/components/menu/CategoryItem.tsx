@@ -21,7 +21,9 @@ interface CategoryItemProps {
 
 const CategoryItem = ({ category, isActive, onEdit, onDelete, onClick, onMoveLeft, onMoveRight }: CategoryItemProps) => {
   return (
-    <div className="ds-category-item">
+    <div
+     className="ds-category-item ds-mb-8"
+     >
       {isActive && (
         <div className="ds-category-move-controls">
           <button 

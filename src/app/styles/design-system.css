@@ -220,6 +220,9 @@ body {
 .ds-flex-initial { flex: 0 1 auto; }
 .ds-flex-none { flex: none; }
 
+.ds-flex-shrink-0 { flex-shrink: 0; }
+.ds-flex-shrink-1 { flex-shrink: 1; }
+
 .ds-gap-1 { gap: var(--spacing-1); }
 .ds-gap-2 { gap: var(--spacing-2); }
 .ds-gap-3 { gap: var(--spacing-3); }
@@ -244,6 +247,36 @@ body {
 .ds-col-span-4 { grid-column: span 4 / span 4; }
 .ds-col-span-6 { grid-column: span 6 / span 6; }
 .ds-col-span-12 { grid-column: span 12 / span 12; }
+
+/* ===========================================
+   УТИЛІТАРНІ КЛАСИ - ПОЗИЦІОНУВАННЯ
+   =========================================== */
+.ds-static { position: static; }
+.ds-fixed { position: fixed; }
+.ds-absolute { position: absolute; }
+.ds-relative { position: relative; }
+.ds-sticky { position: sticky; }
+
+.ds-inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+.ds-inset-x-0 { left: 0; right: 0; }
+.ds-inset-y-0 { top: 0; bottom: 0; }
+.ds-top-0 { top: 0; }
+.ds-right-0 { right: 0; }
+.ds-bottom-0 { bottom: 0; }
+.ds-left-0 { left: 0; }
+
+/* ===========================================
+   УТИЛІТАРНІ КЛАСИ - Z-INDEX
+   =========================================== */
+.ds-z-0 { z-index: 0; }
+.ds-z-10 { z-index: 10; }
+.ds-z-20 { z-index: 20; }
+.ds-z-30 { z-index: 30; }
+.ds-z-40 { z-index: 40; }
+.ds-z-50 { z-index: 50; }
+.ds-z-modal { z-index: var(--z-modal) !important; }
+.ds-z-modal-backdrop { z-index: var(--z-modal-backdrop) !important; }
+.ds-z-toast { z-index: var(--z-toast) !important; }
 
 /* ===========================================
    УТИЛІТАРНІ КЛАСИ - SPACING
@@ -271,6 +304,28 @@ body {
 .ds-py-4 { padding-top: var(--spacing-4); padding-bottom: var(--spacing-4); }
 .ds-py-6 { padding-top: var(--spacing-6); padding-bottom: var(--spacing-6); }
 .ds-py-8 { padding-top: var(--spacing-8); padding-bottom: var(--spacing-8); }
+
+/* Додаткові padding класи */
+.ds-pb-2 { padding-bottom: var(--spacing-2); }
+.ds-pb-4 { padding-bottom: var(--spacing-4); }
+.ds-pb-6 { padding-bottom: var(--spacing-6); }
+.ds-pb-8 { padding-bottom: var(--spacing-8); }
+
+/* Overflow */
+.ds-overflow-hidden { overflow: hidden; }
+.ds-overflow-auto { overflow: auto; }
+.ds-overflow-x-auto { overflow-x: auto; }
+.ds-overflow-y-auto { overflow-y: auto; }
+
+/* Приховання скролу */
+.ds-scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.ds-scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
 
 .ds-m-0 { margin: var(--spacing-0); }
 .ds-m-1 { margin: var(--spacing-1); }
@@ -397,6 +452,7 @@ body {
 .ds-text-gray-400 { color: var(--color-gray-400); }
 
 /* Додаткові відступи */
+.ds-mb-2 { margin-bottom: var(--spacing-2); }
 .ds-mb-3 { margin-bottom: var(--spacing-3); }
 .ds-mb-4 { margin-bottom: var(--spacing-4); }
 .ds-mb-6 { margin-bottom: var(--spacing-6); }
@@ -415,6 +471,25 @@ body {
 .ds-w-8 { width: 2rem; }
 .ds-h-8 { height: 2rem; }
 .ds-w-full { width: 100%; }
+
+/* Максимальна ширина */
+.ds-max-w-xs { max-width: 20rem; }    /* 320px */
+.ds-max-w-sm { max-width: 24rem; }   /* 384px */
+.ds-max-w-md { max-width: 28rem; }   /* 448px */
+.ds-max-w-lg { max-width: 32rem; }   /* 512px */
+.ds-max-w-xl { max-width: 36rem; }   /* 576px */
+.ds-max-w-2xl { max-width: 42rem; }  /* 672px */
+.ds-max-w-3xl { max-width: 48rem; }  /* 768px */
+.ds-max-w-4xl { max-width: 56rem; }  /* 896px */
+.ds-max-w-5xl { max-width: 64rem; }  /* 1024px */
+.ds-max-w-6xl { max-width: 72rem; } /* 1152px */
+.ds-max-w-7xl { max-width: 80rem; }  /* 1280px */
+.ds-max-w-full { max-width: 100%; }
+.ds-max-w-screen { max-width: 100vw; }
+
+/* Максимальна висота */
+.ds-max-h-screen { max-height: 100vh; }
+.ds-max-h-full { max-height: 100%; }
 
 /* Додаткові радіуси */
 .ds-rounded { border-radius: var(--radius-sm); }
@@ -587,6 +662,72 @@ body {
 }
 
 /* ===========================================
+   ДОДАТКОВІ УТИЛІТАРНІ КЛАСИ ДЛЯ TOAST
+   =========================================== */
+
+/* Розміри */
+.max-w-sm { max-width: 24rem; }
+.w-full { width: 100%; }
+.w-0 { width: 0; }
+
+/* Відступи */
+.ml-3 { margin-left: var(--spacing-3); }
+.pt-0\.5 { padding-top: 0.125rem; }
+
+/* Flexbox */
+.items-start { align-items: flex-start; }
+.flex-shrink-0 { flex-shrink: 0; }
+.flex-1 { flex: 1 1 0%; }
+.inline-flex { display: inline-flex; }
+
+/* Кольори фону */
+.bg-green-50 { background-color: #f0fdf4; }
+.bg-red-50 { background-color: #fef2f2; }
+.bg-yellow-50 { background-color: #fefce8; }
+.bg-blue-50 { background-color: #eff6ff; }
+
+/* Кольори тексту */
+.text-green-500 { color: #10b981; }
+.text-red-500 { color: #ef4444; }
+.text-yellow-500 { color: #eab308; }
+.text-blue-500 { color: #3b82f6; }
+.text-gray-400 { color: #9ca3af; }
+.text-gray-500 { color: #6b7280; }
+
+/* Рамки */
+.border { border: 1px solid var(--color-gray-200); }
+.border-green-200 { border-color: #bbf7d0; }
+.border-red-200 { border-color: #fecaca; }
+.border-yellow-200 { border-color: #fef08a; }
+.border-blue-200 { border-color: #bfdbfe; }
+
+/* Радіуси */
+.rounded-md { border-radius: var(--radius-md); }
+
+/* Тіні */
+.shadow-lg { box-shadow: var(--shadow-lg); }
+
+/* Pointer events */
+.pointer-events-auto { pointer-events: auto; }
+
+/* Ring (кільце) */
+.ring-1 { box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05); }
+.ring-black { box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1); }
+.ring-opacity-5 { box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05); }
+
+/* Overflow */
+.overflow-hidden { overflow: hidden; }
+
+/* Hover ефекти */
+.hover\:text-gray-500:hover { color: #6b7280; }
+
+/* Focus ефекти */
+.focus\:outline-none:focus { outline: none; }
+.focus\:ring-2:focus { box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); }
+.focus\:ring-offset-2:focus { box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5), 0 0 0 4px rgba(59, 130, 246, 0.1); }
+.focus\:ring-indigo-500:focus { box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5); }
+
+/* ===========================================
    КОМПОНЕНТИ - КНОПКИ УПРАВЛІННЯ
    =========================================== */
 .ds-control-btn {
@@ -741,6 +882,27 @@ body {
   transform: scale(1.05);
 }
 
+.ds-menu-item-placeholder {
+  width: 80px;
+  height: 80px;
+  background-color: var(--color-gray-200);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.ds-menu-item-placeholder:hover {
+  transform: scale(1.05);
+}
+
+.ds-menu-item-placeholder-icon {
+  font-size: 2rem;
+  opacity: 0.6;
+}
+
 .ds-menu-item-details {
   flex-grow: 1;
   min-width: 0;
@@ -772,11 +934,18 @@ body {
 
 .ds-menu-item-controls {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   flex-shrink: 0;
   position: relative;
   z-index: 2;
+}
+
+.ds-menu-item-center-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* ===========================================
@@ -790,6 +959,7 @@ body {
   animation: slideInFromLeft 0.6s ease-out;
   min-height: 120px;
   user-select: none;
+  top: 38px;
 }
 
 .ds-category-card {

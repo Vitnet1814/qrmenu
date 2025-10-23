@@ -15,15 +15,19 @@ const MenuItem = ({ item, onEdit, onDelete, onMoveUp, onMoveDown }: MenuItemProp
   return (
     <div className="ds-menu-item-card">
       <div className="ds-menu-item-content">
-        {item.image && (
-          <div className="ds-menu-item-image">
+        <div className="ds-menu-item-image">
+          {item.image ? (
             <img 
               src={item.image} 
               alt={item.name} 
               className="ds-menu-item-img"
             />
-          </div>
-        )}
+          ) : (
+            <div className="ds-menu-item-placeholder">
+              <div className="ds-menu-item-placeholder-icon">🍽️</div>
+            </div>
+          )}
+        </div>
         <div className="ds-menu-item-details">
           <h3 className="ds-menu-item-name">{item.name}</h3>
           <div className="ds-menu-item-price">{item.price}</div>
@@ -36,26 +40,28 @@ const MenuItem = ({ item, onEdit, onDelete, onMoveUp, onMoveDown }: MenuItemProp
           >
             <ArrowUpIcon className="ds-control-icon" />
           </button>
+          <div className="ds-menu-item-center-controls">
+            <button 
+              onClick={() => onEdit(item)} 
+              className="ds-control-btn ds-control-btn-edit"
+              title="Редагувати страву"
+            >
+              <PencilIcon className="ds-control-icon" />
+            </button>
+            <button 
+              onClick={() => onDelete({ _id: item._id, name: item.name })} 
+              className="ds-control-btn ds-control-btn-delete"
+              title="Видалити страву"
+            >
+              <TrashIcon className="ds-control-icon" />
+            </button>
+          </div>
           <button 
             onClick={onMoveDown} 
             className="ds-control-btn ds-control-btn-move"
             title="Перемістити вниз"
           >
             <ArrowDownIcon className="ds-control-icon" />
-          </button>
-          <button 
-            onClick={() => onEdit(item)} 
-            className="ds-control-btn ds-control-btn-edit"
-            title="Редагувати страву"
-          >
-            <PencilIcon className="ds-control-icon" />
-          </button>
-          <button 
-            onClick={() => onDelete({ _id: item._id, name: item.name })} 
-            className="ds-control-btn ds-control-btn-delete"
-            title="Видалити страву"
-          >
-            <TrashIcon className="ds-control-icon" />
           </button>
         </div>
       </div>

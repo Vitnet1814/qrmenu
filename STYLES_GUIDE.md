@@ -924,3 +924,60 @@ QR Menu використовує повністю централізовану �
 - **Responsive** - адаптивний дизайн для всіх пристроїв
 
 Використовуйте цей посібник як довідник при розробці нових компонентів та функцій.
+
+Загальний padding (всі сторони):
+.ds-p-0  { padding: var(--spacing-0); }   /* 0px */
+.ds-p-1  { padding: var(--spacing-1); }   /* 4px */
+.ds-p-2  { padding: var(--spacing-2); }   /* 8px */
+.ds-p-3  { padding: var(--spacing-3); }   /* 12px */
+.ds-p-4  { padding: var(--spacing-4); }   /* 16px */
+.ds-p-6  { padding: var(--spacing-6); }   /* 24px */
+.ds-p-8  { padding: var(--spacing-8); }   /* 32px */
+
+Padding по горизонталі (ліво-право):
+.ds-px-0  { padding-left: var(--spacing-0); padding-right: var(--spacing-0); }
+.ds-px-1  { padding-left: var(--spacing-1); padding-right: var(--spacing-1); }
+.ds-px-2  { padding-left: var(--spacing-2); padding-right: var(--spacing-2); }
+.ds-px-3  { padding-left: var(--spacing-3); padding-right: var(--spacing-3); }
+.ds-px-4  { padding-left: var(--spacing-4); padding-right: var(--spacing-4); }
+.ds-px-6  { padding-left: var(--spacing-6); padding-right: var(--spacing-6); }
+.ds-px-8  { padding-left: var(--spacing-8); padding-right: var(--spacing-8); }
+
+Padding по вертикалі (верх-низ):
+.ds-py-0  { padding-top: var(--spacing-0); padding-bottom: var(--spacing-0); }
+.ds-py-1  { padding-top: var(--spacing-1); padding-bottom: var(--spacing-1); }
+.ds-py-2  { padding-top: var(--spacing-2); padding-bottom: var(--spacing-2); }
+.ds-py-3  { padding-top: var(--spacing-3); padding-bottom: var(--spacing-3); }
+.ds-py-4  { padding-top: var(--spacing-4); padding-bottom: var(--spacing-4); }
+.ds-py-6  { padding-top: var(--spacing-6); padding-bottom: var(--spacing-6); }
+.ds-py-8  { padding-top: var(--spacing-8); padding-bottom: var(--spacing-8); }
+
+Загальний margin (всі сторони):
+.ds-m-0  { margin: var(--spacing-0); }    /* 0px */
+.ds-m-1  { margin: var(--spacing-1); }    /* 4px */
+.ds-m-2  { margin: var(--spacing-2); }    /* 8px */
+.ds-m-3  { margin: var(--spacing-3); }    /* 12px */
+.ds-m-4  { margin: var(--spacing-4); }    /* 16px */
+.ds-m-6  { margin: var(--spacing-6); }    /* 24px */
+.ds-m-8  { margin: var(--spacing-8); }    /* 32px */
+Спеціальні margin класи:
+.ds-mx-auto { margin-left: auto; margin-right: auto; }  /* Центрування */
+Margin зверху (top):
+.ds-mt-1  { margin-top: var(--spacing-1); }   /* 4px */
+.ds-mt-2  { margin-top: var(--spacing-2); }   /* 8px */
+.ds-mt-4  { margin-top: var(--spacing-4); }   /* 16px */
+Margin знизу (bottom):
+.ds-mb-3  { margin-bottom: var(--spacing-3); }   /* 12px */
+.ds-mb-4  { margin-bottom: var(--spacing-4); }   /* 16px */
+.ds-mb-6  { margin-bottom: var(--spacing-6); }   /* 24px */
+.ds-mb-8  { margin-bottom: var(--spacing-8); }   /* 32px */
+GAP класи (відстань між елементами):
+.ds-gap-1  { gap: var(--spacing-1); }   /* 4px */
+.ds-gap-2  { gap: var(--spacing-2); }   /* 8px */
+.ds-gap-3  { gap: var(--spacing-3); }   /* 12px */
+.ds-gap-4  { gap: var(--spacing-4); }   /* 16px */
+.ds-gap-6  { gap: var(--spacing-6); }   /* 24px */
+.ds-gap-8  { gap: var(--spacing-8); }   /* 32px */
+
+SPACE класи (відстань між дочірніми елементами):
+.ds-space-y-8 > * + * { margin-top: var(--spacing-8); }   /* 32px між елементами по вертикалі */

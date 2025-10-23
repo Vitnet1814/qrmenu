@@ -352,7 +352,7 @@ const styles: { [key: string]: CSSProperties } = {
     bottom: 0,
     left: '50%',
     transform: 'translateX(-50%)',
-    zIndex: 900,
+    zIndex: 1000,
   },
   navList: {
     display: 'flex',

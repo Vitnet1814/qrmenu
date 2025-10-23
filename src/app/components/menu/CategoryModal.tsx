@@ -195,8 +195,8 @@ const convertToBase64 = (file: File): Promise<string> => {
   return (
     <>
       {isOpen && (
-      <div className="modal-backdrop ds-fixed ds-inset-0 ds-bg-black ds-bg-opacity-50 ds-flex ds-items-center ds-justify-center ds-z-50" onClick={handleCloseClick}>
-        <div className="ds-card ds-p-8 ds-max-w-md ds-w-full ds-mx-4" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-backdrop ds-fixed ds-inset-0 ds-bg-black ds-bg-opacity-50 ds-flex ds-items-center ds-justify-center ds-z-modal" onClick={handleCloseClick}>
+        <div className="ds-card ds-p-8 ds-max-w-lg ds-w-full ds-mx-4" onClick={(e) => e.stopPropagation()}>
           <h2 className="ds-text-2xl ds-font-bold ds-text-gray-900 ds-mb-6">{categoryToEdit ? 'Редагувати категорію' : 'Додати нову категорію'}</h2>
 
           <div className="ds-form-group ds-mb-4">
