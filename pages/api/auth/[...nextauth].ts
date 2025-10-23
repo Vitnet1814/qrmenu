@@ -49,14 +49,11 @@ export const authOptions: AuthOptions = { // Використовуємо без
   session: {
     strategy: 'jwt' as SessionStrategy, // Явне приведення типу до SessionStrategy
   },
-  debug: process.env.NODE_ENV === 'development', // Додаємо debug режим для розробки
+  debug: false, // Вимкнено debug режим
   callbacks: {
     async signIn({ account, profile, user }: { account: Account | null; profile?: Profile | undefined; user: User }) {
-      console.log('SignIn callback:', { account: account?.provider, profile: profile?.email });
-      
       if (account?.provider === 'google') {
         if (!profile?.email) {
-          console.error('No email in Google profile');
           return false; // Відхилити вхід, якщо немає email у профілі
         }
 
@@ -68,7 +65,6 @@ export const authOptions: AuthOptions = { // Використовуємо без
 
           if (!existingUser) {
             // Автоматична реєстрація нового користувача Google
-            console.log('Creating new Google user:', profile.email);
             const result = await usersCollection.insertOne({
               email: profile.email,
               name: profile.name,
@@ -77,7 +73,6 @@ export const authOptions: AuthOptions = { // Використовуємо без
             });
             user.id = result.insertedId.toString(); // Оновлюємо ID користувача для подальших колбеків
           } else {
-            console.log('Existing Google user found:', profile.email);
             user.id = existingUser._id.toString(); // Встановлюємо ID існуючого користувача
           }
           return true;

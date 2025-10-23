@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { LoadingSpinner } from '../components/ui/LoadingStates';
 
 
 const DashboardPage: React.FC = () => {
@@ -100,10 +101,11 @@ const DashboardPage: React.FC = () => {
   if (isLoading) {
     return (
       <div className="ds-gradient-bg ds-gradient-overlay dashboard-light-theme min-h-screen ds-flex ds-items-center ds-justify-center">
-        <div className="ds-card ds-p-8 ds-text-center">
-          <div className="animate-spin ds-w-8 ds-h-8 ds-border-4 ds-border-primary ds-border-t-transparent ds-rounded-full ds-mx-auto ds-mb-4"></div>
-          <div className="ds-text-lg ds-text-gray-600">Завантаження...</div>
-        </div>
+        <LoadingSpinner 
+          size="lg" 
+          text="Завантаження даних ресторану..." 
+          transparentBg={true}
+        />
       </div>
     );
   }

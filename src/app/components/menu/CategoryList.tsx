@@ -260,9 +260,13 @@ const CategoryList = () => {
   
   if (isLoading) {
     return (
-      <div className="ds-gradient-bg ds-gradient-overlay min-h-screen ds-p-6">
+      <div className=" min-h-screen ds-p-6">
         <div className="ds-flex ds-items-center ds-justify-center h-64">
-          <LoadingSpinner size="lg" text="Завантаження категорій..." />
+          <LoadingSpinner 
+            size="lg" 
+            text="Завантаження категорій..." 
+            transparentBg={true}
+          />
         </div>
       </div>
     );

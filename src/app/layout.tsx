@@ -12,7 +12,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="uk">
+    <html lang="uk" data-scroll-behavior="smooth">
       <body className={inter.className}>
         <div className="app-container">
           <div className="app-content">

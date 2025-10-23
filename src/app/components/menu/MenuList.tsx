@@ -253,7 +253,11 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
     return (
       <div className="ds-gradient-main ds-p-6">
         <div className="ds-flex ds-items-center ds-justify-center h-64">
-          <LoadingSpinner size="lg" text="Завантаження страв..." />
+          <LoadingSpinner 
+            size="lg" 
+            text="Завантаження страв..." 
+            transparentBg={true}
+          />
         </div>
       </div>
     );

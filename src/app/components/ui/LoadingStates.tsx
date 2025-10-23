@@ -5,12 +5,14 @@ interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg';
   text?: string;
   className?: string;
+  transparentBg?: boolean;
 }
 
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ 
   size = 'md', 
   text = 'Завантаження...', 
-  className = '' 
+  className = '',
+  transparentBg = false
 }) => {
   const sizeClasses = {
     sm: 'w-4 h-4',
@@ -18,8 +20,10 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     lg: 'w-12 h-12'
   };
 
+  const bgClass = transparentBg ? 'ds-spinner-bg ds-rounded-lg ds-p-6' : '';
+
   return (
-    <div className={`flex flex-col items-center justify-center ${className}`}>
+    <div className={`flex flex-col items-center justify-center ${bgClass} ${className}`}>
       <div className={`ds-spinner ${sizeClasses[size]} mb-2`}></div>
       {text && <p className="text-gray-600 text-sm">{text}</p>}
     </div>
