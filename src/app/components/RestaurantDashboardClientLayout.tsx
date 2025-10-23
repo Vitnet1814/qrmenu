@@ -227,7 +227,7 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
               ) : (
                 <Link
                   href={item.href!}
-                  style={pathname === item.href ? { ...styles.navLink, color: '#60a5fa', backgroundColor: '#1e3a8a' } : styles.navLink}
+                  style={pathname === item.href ? { ...styles.navLink, color: '#bdfff8', backgroundColor: '#60a5fa' } : styles.navLink}
                 >
                   <item.icon style={styles.navIcon} />
                   <span style={styles.navText}>{item.name}</span>
