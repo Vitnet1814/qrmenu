@@ -94,7 +94,7 @@ a {
 
 .app-content {
   width: 100%;
-  max-width: 600px;
+  max-width: 1200px;
   min-height: 100vh;
   background-color: transparent;
   position: relative;
@@ -119,7 +119,7 @@ a {
 
 @media (min-width: 641px) and (max-width: 1024px) {
   .app-content {
-    max-width: 600px;
+    max-width: 1200px;
   }
   
   .dashboard-content {
@@ -129,7 +129,7 @@ a {
 
 @media (min-width: 1025px) {
   .app-content {
-    max-width: 600px;
+    max-width: 1200px;
   }
   
   .dashboard-content {

@@ -109,9 +109,9 @@ const DashboardPage: React.FC = () => {
       </div>
     );
   }
-//ds-gradient-bg ds-gradient-overlay dashboard-light-theme 
+//
   return (
-    <div className="min-h-screen">
+    <div className="ds-gradient-bg ds-gradient-overlay dashboard-light-theme min-h-screen">
       <header className="ds-gradient-header ds-p-6">
         <div className="container ds-flex ds-items-center ds-justify-between">
           <div className="ds-flex ds-items-center ds-gap-3">
