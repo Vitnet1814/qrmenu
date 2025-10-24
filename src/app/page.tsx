@@ -3,14 +3,14 @@ import Link from 'next/link';
 export default function HomePage() {
   return (
     <div className="ds-gradient-bg ds-gradient-overlay homepage-light-theme">
-      <header className="ds-gradient-header px-5 py-6">
+      <header className="ds-gradient-header ds-px-4 ds-md:px-5 ds-py-4 ds-md:py-6">
         <div className="container ds-flex ds-items-center ds-justify-between">
-          <Link href="/" className="ds-flex ds-items-center ds-gap-3 text-white text-2xl font-bold">
+          <Link href="/" className="ds-flex ds-items-center ds-gap-2 ds-md:gap-3 text-white ds-text-xl ds-md:text-2xl font-bold">
             <div className="ds-auth-logo-icon">QR</div>
             <span>QR Menu</span>
           </Link>
           <Link href="/dashboard">
-            <button className="ds-gradient-button-secondary px-6 py-3 text-white border-2 border-white/30 rounded-xl font-semibold transition-all hover:bg-white/30 hover:border-white/50 hover:-translate-y-1 hover:shadow-lg backdrop-blur-sm">
+            <button className="ds-gradient-button-secondary ds-px-4 ds-md:px-6 ds-py-2 ds-md:py-3 text-white border-2 border-white/30 rounded-xl font-semibold transition-all hover:bg-white/30 hover:border-white/50 hover:-translate-y-1 hover:shadow-lg backdrop-blur-sm ds-text-sm ds-md:text-base">
               Вхід
             </button>
           </Link>
@@ -18,53 +18,45 @@ export default function HomePage() {
       </header>
       
       <main className="ds-gradient-main flex-grow" >
-        <section className="ds-gradient-section-white" style={{height: '600px'}}>
-          <div className="ds-gradient-content" style={{height: '100%'}}>
-            <div className="ds-flex ds-flex-col" style={{height: '100%'}}>
+        <section className="ds-gradient-section-white ds-py-12 ds-md:py-16">
+          <div className="ds-gradient-content">
+            <div className="ds-flex ds-flex-col ds-gap-8 ds-md:gap-12">
               {/* Основний контент */}
-              <div className="ds-flex ds-items-center ds-gap-8 ds-flex-wrap ds-flex-1">
+              <div className="ds-flex ds-flex-col ds-md:flex-row ds-items-center ds-gap-8 ds-md:gap-12">
                 {/* Текстова частина */}
-                <div className="ds-flex-1 min-w-0">
-                  <h1 className="ds-gradient-title-white animate-fade-up">QR-меню для вашого закладу за 5 хвилин. Безкоштовно</h1>
-                  <p className="ds-gradient-subtitle-white animate-fade-up">Створіть сучасне меню, отримайте QR-код і дозвольте клієнтам переглядати ваші страви зі свого телефону</p>
+                <div className="ds-flex-1 ds-text-center ds-md:text-left">
+                  <h1 className="ds-gradient-title-white animate-fade-up ds-text-3xl ds-md:text-4xl ds-lg:text-5xl">QR-меню для вашого закладу за 5 хвилин. Безкоштовно</h1>
+                  <p className="ds-gradient-subtitle-white animate-fade-up ds-mt-4 ds-text-lg ds-md:text-xl">Створіть сучасне меню, отримайте QR-код і дозвольте клієнтам переглядати ваші страви зі свого телефону</p>
                 </div>
                 
                 {/* Картинка */}
-                <div className="flex-shrink-0">
-                  <div className="w-[600px] h-[300px] bg-gray-200 rounded-lg ds-flex ds-items-center ds-justify-center border-2 border-dashed border-gray-400 animate-fade-up">
-                    <div className="text-center text-gray-500">
-                      <div className="text-6xl mb-4">
+                <div className="ds-flex-shrink-0 ds-w-full ds-md:w-auto">
+                  <div className="ds-w-full ds-max-w-[600px] ds-mx-auto ds-md:mx-0 ds-aspect-[2/1] ds-bg-gray-200 ds-rounded-lg ds-flex ds-items-center ds-justify-center ds-border-2 ds-border-dashed ds-border-gray-400 animate-fade-up">
+                    <div className="ds-text-center ds-text-gray-500">
                       <img 
-                      src="https://optim.tildacdn.com/tild6264-6239-4437-a535-303232656266/-/format/webp/Two_columns_in_a_row.png.webp"
-                      width={600}
-                      height={300}
-                      alt="QR Menu Mockup" 
-                      className="w-[600px] h-[300px] rounded-lg animate-fade-up" />
-                      </div>
-                      {/* <p className="text-lg font-semibold">Мокап телефону</p>
-                      <p className="text-sm">600x300px</p> 
-                      src="https://optim.tildacdn.com/tild6264-6239-4437-a535-303232656266/-/format/webp/Two_columns_in_a_row.png.webp"
-                      */}
+                        src="https://optim.tildacdn.com/tild6264-6239-4437-a535-303232656266/-/format/webp/Two_columns_in_a_row.png.webp"
+                        alt="QR Menu Mockup" 
+                        className="ds-w-full ds-h-full ds-object-contain ds-rounded-lg animate-fade-up" />
                     </div>
                   </div>
                 </div>
               </div>
               
               {/* Кнопка внизу посередині */}
-              <div className="ds-flex ds-justify-center ds-items-end pb-8">
+              <div className="ds-flex ds-justify-center ds-items-center">
                 <Link href="/auth/login">
-                  <button className="ds-gradient-button">Спробувати безкоштовно</button>
+                  <button className="ds-gradient-button ds-text-lg ds-px-8 ds-py-4">Спробувати безкоштовно</button>
                 </Link>
               </div>
             </div>
           </div>
         </section>
         
-        <section className="ds-gradient-section">
+        <section className="ds-gradient-section ds-py-12 ds-md:py-16">
           <div className="ds-gradient-content">
-            <h2 className="ds-gradient-title">Як це працює</h2>
-            <p className="ds-gradient-subtitle">Всего 3 прості кроки до сучасного меню</p>
-            <div className="ds-grid ds-grid-cols-1 ds-md:grid-cols-3 ds-gap-6 mt-10">
+            <h2 className="ds-gradient-title ds-text-2xl ds-md:text-3xl ds-lg:text-4xl">Як це працює</h2>
+            <p className="ds-gradient-subtitle ds-mt-4 ds-text-lg ds-md:text-xl">Всего 3 прості кроки до сучасного меню</p>
+            <div className="ds-grid ds-grid-cols-1 ds-md:grid-cols-3 ds-gap-6 ds-mt-8 ds-md:mt-10">
               <div className="ds-card ds-p-8 text-center transition-all hover:-translate-y-2 hover:shadow-xl">
                 <div className="w-16 h-16 ds-gradient-button rounded-2xl ds-flex ds-items-center ds-justify-center font-bold text-white mx-auto mb-5" style={{fontSize: '3rem', padding: '0px'}}>🔐</div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">Зареєструйтесь</h3>
@@ -73,7 +65,7 @@ export default function HomePage() {
               <div className="ds-card ds-p-8 text-center transition-all hover:-translate-y-2 hover:shadow-xl">
                 <div className="w-16 h-16 ds-gradient-button rounded-2xl ds-flex ds-items-center ds-justify-center font-bold text-white mx-auto mb-5" style={{fontSize: '3rem', padding: '0px'}}>📝</div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">Додайте меню</h3>
-                <p className="text-gray-600">Простий конструктор з перетягуванням</p>
+                <p className="text-gray-600">Простий конструктор</p>
               </div>
               <div className="ds-card ds-p-8 text-center transition-all hover:-translate-y-2 hover:shadow-xl">
                 <div className="w-16 h-16 ds-gradient-button rounded-2xl ds-flex ds-items-center ds-justify-center font-bold text-white mx-auto mb-5" style={{fontSize: '3rem', padding: '0px'}}>🖨️</div>
@@ -84,12 +76,12 @@ export default function HomePage() {
           </div>
         </section>
         
-        <section className="ds-gradient-section-white">
+        <section className="ds-gradient-section-white ds-py-12 ds-md:py-16">
           <div className="ds-gradient-content">
-            <h2 className="ds-gradient-title-white">Чому обирають нас</h2>
-            <p className="ds-gradient-subtitle-white">Переваги, які роблять наш сервіс найкращим вибором</p>
+            <h2 className="ds-gradient-title-white ds-text-2xl ds-md:text-3xl ds-lg:text-4xl">Чому обирають нас</h2>
+            <p className="ds-gradient-subtitle-white ds-mt-4 ds-text-lg ds-md:text-xl">Переваги, які роблять наш сервіс найкращим вибором</p>
             
-            <div className="ds-grid ds-grid-cols-1 ds-md:grid-cols-2 ds-gap-8 mt-10">
+            <div className="ds-grid ds-grid-cols-1 ds-md:grid-cols-2 ds-gap-6 ds-md:gap-8 ds-mt-8 ds-md:mt-10">
               {/* Безкоштовність */}
               <div className="ds-card ds-p-8 text-center transition-all hover:-translate-y-2 hover:shadow-xl">
                 <div className="w-16 h-16 ds-gradient-button rounded-2xl ds-flex ds-items-center ds-justify-center font-bold text-white mx-auto mb-5" style={{fontSize: '3rem', padding: '0px'}}>💰</div>
@@ -123,21 +115,21 @@ export default function HomePage() {
           </div>
         </section>
         
-        <section className="ds-gradient-section-white">
+        <section className="ds-gradient-section-white ds-py-12 ds-md:py-16">
           <div className="ds-gradient-content">
-            <h2 className="ds-gradient-title-white">Почніть зараз безкоштовно</h2>
-            <p className="ds-gradient-subtitle-white">Приєднуйтесь до тисяч ресторанів, які вже використовують QR-меню</p>
-            <div className="text-center">
+            <h2 className="ds-gradient-title-white ds-text-2xl ds-md:text-3xl ds-lg:text-4xl">Почніть зараз безкоштовно</h2>
+            <p className="ds-gradient-subtitle-white ds-mt-4 ds-text-lg ds-md:text-xl">Приєднуйтесь до тисяч ресторанів, які вже використовують QR-меню</p>
+            <div className="ds-text-center ds-mt-8 ds-md:mt-10">
               <Link href="/auth/login">
-                <button className="ds-gradient-button text-lg px-8 py-4">Створити моє меню</button>
+                <button className="ds-gradient-button ds-text-lg ds-px-8 ds-py-4">Створити моє меню</button>
               </Link>
             </div>
           </div>
         </section>
       </main>
       
-      <footer className="ds-gradient-footer">
-        <p>&copy; 2025 QR Menu. Всі права захищено</p>
+      <footer className="ds-gradient-footer ds-px-4 ds-md:px-5 ds-py-4 ds-md:py-6">
+        <p className="ds-text-sm ds-md:text-base">&copy; 2025 QR Menu. Всі права захищено</p>
       </footer>
     </div>
   );
