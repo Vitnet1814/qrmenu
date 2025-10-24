@@ -956,7 +956,7 @@ body {
   position: relative;
   min-height: 100px;
   user-select: none;
-  margin-top: 40px;
+  /* margin-top: 40px; */
 }
 
 .ds-category-card {

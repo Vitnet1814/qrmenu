@@ -12,6 +12,8 @@ interface CategoryItemProps {
     order?: number;
   };
   isActive: boolean;
+  isFirst: boolean;
+  isLast: boolean;
   onEdit: (category: { _id: string; name: string; order?: number }) => void;
   onDelete: (category: { _id: string; name: string; order?: number }) => void;
   onClick: (categoryId: string) => void;
@@ -19,12 +21,12 @@ interface CategoryItemProps {
   onMoveRight: () => void;
 }
 
-const CategoryItem = ({ category, isActive, onEdit, onDelete, onClick, onMoveLeft, onMoveRight }: CategoryItemProps) => {
+const CategoryItem = ({ category, isActive, isFirst, isLast, onEdit, onDelete, onClick, onMoveLeft, onMoveRight }: CategoryItemProps) => {
   return (
     <div
      className="ds-category-item ds-mb-8"
      >
-      {isActive && (
+      {/* {isActive && (
         <div className="ds-category-move-controls">
           <button 
             onClick={onMoveLeft} 
@@ -41,7 +43,7 @@ const CategoryItem = ({ category, isActive, onEdit, onDelete, onClick, onMoveLef
             <ArrowRightIcon className="ds-control-icon-sm" />
           </button>
         </div>
-      )}
+      )} */}
       
       <div 
         className={`ds-category-card ${isActive ? 'active' : ''}`}
@@ -52,6 +54,15 @@ const CategoryItem = ({ category, isActive, onEdit, onDelete, onClick, onMoveLef
       
       {isActive && (
         <div className="ds-category-action-controls">
+          {!isFirst && (
+            <button 
+              onClick={onMoveLeft} 
+              className="ds-control-btn ds-control-btn-move"
+              title="Перемістити вліво"
+            >
+              <ArrowLeftIcon className="ds-control-icon-sm" />
+            </button>
+          )}
           <button 
             onClick={() => onEdit(category)} 
             className="ds-control-btn ds-control-btn-edit"
@@ -66,6 +77,15 @@ const CategoryItem = ({ category, isActive, onEdit, onDelete, onClick, onMoveLef
           >
             <TrashIcon className="ds-control-icon" />
           </button>
+          {!isLast && (
+            <button 
+              onClick={onMoveRight} 
+              className="ds-control-btn ds-control-btn-move"
+              title="Перемістити вправо"
+            >
+              <ArrowRightIcon className="ds-control-icon-sm" />
+            </button>
+          )}
         </div>
       )}
     </div>

@@ -314,7 +314,7 @@ const CategoryList = () => {
           onMouseMove={handleMouseMove}
           style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
         >
-          {categories.map((category) => (
+          {categories.map((category, index) => (
             <div
               key={category._id}
               className="ds-flex-shrink-0"
@@ -322,6 +322,8 @@ const CategoryList = () => {
               <CategoryItem
                 category={category}
                 isActive={category._id === activeCategory}
+                isFirst={index === 0}
+                isLast={index === categories.length - 1}
                 onEdit={handleEditCategoryClick}
                 onDelete={handleDeleteCategoryClick}
                 onClick={handleCategoryClick}

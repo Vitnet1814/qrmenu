@@ -3,6 +3,7 @@
 
 import React, { ReactNode, CSSProperties, useEffect, useState } from 'react';
 import { usePathname} from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import {
   SquaresPlusIcon,
   PaintBrushIcon,
@@ -37,7 +38,7 @@ interface NavItem {
 const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInfo }: RestaurantDashboardClientLayoutProps) => {
   const pathname = usePathname();
   const [showScrollToTop, setShowScrollToTop] = useState(false);
-  
+  const { data: session, status } = useSession();
   const navigation: NavItem[] = [
     { name: 'Меню', href: `/dashboard/${restaurantId}/menu`, icon: SquaresPlusIcon },
     { name: 'Дизайн', href: `/dashboard/${restaurantId}/design`, icon: PaintBrushIcon },
@@ -184,7 +185,11 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
               Панель управління
             </p> </Link>
           </div>
-          <div style={styles.headerRight} className="header-right-responsive">
+          <div className="ds-w-8 ds-h-8 ds-bg-success ds-bg-opacity-20 ds-rounded-full ds-flex ds-items-center ds-justify-center ds-text-white ds-font-bold">
+                {session?.user?.name?.charAt(0) || 'U'}
+              </div>
+          <span className="ds-text-base ds-font-medium">{session?.user?.name || 'Користувач'}</span>
+          {/* <div style={styles.headerRight} className="header-right-responsive">
             <Link
               href={`/menu/${restaurantInfo?.slug}`}
               target="_blank"
@@ -193,7 +198,7 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
               <EyeIcon style={styles.buttonIcon} className="button-icon-mobile" />   <span style={styles.buttonText}>Попередній перегляд</span>
               
             </Link>
-          </div>
+          </div> */}
         </div>
       </header>
 
@@ -227,7 +232,7 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
               ) : (
                 <Link
                   href={item.href!}
-                  style={pathname === item.href ? { ...styles.navLink, color: '#bdfff8', backgroundColor: '#60a5fa' } : styles.navLink}
+                  style={pathname === item.href ? { ...styles.navLink, color: '#683636', backgroundColor: '#60a5fa' } : styles.navLink}
                 >
                   <item.icon style={styles.navIcon} />
                   <span style={styles.navText}>{item.name}</span>

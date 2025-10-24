@@ -5,13 +5,15 @@ import { PencilIcon, TrashIcon, ArrowUpIcon, ArrowDownIcon } from '@heroicons/re
 
 interface MenuItemProps {
   item: { _id: string; name: string; price: number; image?: string };
+  isFirst: boolean;
+  isLast: boolean;
   onEdit: (item: { _id: string; name: string; price: number; image?: string }) => void;
   onDelete: (item: { _id: string; name: string }) => void;
   onMoveUp: () => void;
   onMoveDown: () => void;
 }
 
-const MenuItem = ({ item, onEdit, onDelete, onMoveUp, onMoveDown }: MenuItemProps) => {
+const MenuItem = ({ item, isFirst, isLast, onEdit, onDelete, onMoveUp, onMoveDown }: MenuItemProps) => {
   return (
     <div className="ds-menu-item-card">
       <div className="ds-menu-item-content">
@@ -33,13 +35,15 @@ const MenuItem = ({ item, onEdit, onDelete, onMoveUp, onMoveDown }: MenuItemProp
           <div className="ds-menu-item-price">{item.price}</div>
         </div>
         <div className="ds-menu-item-controls">
-          <button 
-            onClick={onMoveUp} 
-            className="ds-control-btn ds-control-btn-move"
-            title="Перемістити вгору"
-          >
-            <ArrowUpIcon className="ds-control-icon" />
-          </button>
+          {!isFirst && (
+            <button 
+              onClick={onMoveUp} 
+              className="ds-control-btn ds-control-btn-move"
+              title="Перемістити вгору"
+            >
+              <ArrowUpIcon className="ds-control-icon" />
+            </button>
+          )}
           <div className="ds-menu-item-center-controls">
             <button 
               onClick={() => onEdit(item)} 
@@ -56,13 +60,15 @@ const MenuItem = ({ item, onEdit, onDelete, onMoveUp, onMoveDown }: MenuItemProp
               <TrashIcon className="ds-control-icon" />
             </button>
           </div>
-          <button 
-            onClick={onMoveDown} 
-            className="ds-control-btn ds-control-btn-move"
-            title="Перемістити вниз"
-          >
-            <ArrowDownIcon className="ds-control-icon" />
-          </button>
+          {!isLast && (
+            <button 
+              onClick={onMoveDown} 
+              className="ds-control-btn ds-control-btn-move"
+              title="Перемістити вниз"
+            >
+              <ArrowDownIcon className="ds-control-icon" />
+            </button>
+          )}
         </div>
       </div>
     </div>

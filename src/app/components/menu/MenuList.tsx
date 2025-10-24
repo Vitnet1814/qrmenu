@@ -307,13 +307,15 @@ const MenuList: React.FC<MenuListProps> = ({ categoryId, restaurantId }) => {
         </div>
       ) : (
         <div className="ds-grid ds-grid-cols-1 ds-py-2">
-          {menuItems.map((item) => (
+          {menuItems.map((item, index) => (
             <div key={item._id} className="ds-mt-1" >
               <MenuItem
                 item={{
                   ...item,
                   image: typeof item.image === 'string' ? item.image : undefined,
                 }}
+                isFirst={index === 0}
+                isLast={index === menuItems.length - 1}
                 onEdit={() => handleEditItemClick(item)}
                 onDelete={() => handleDeleteItemClick(item)}
                 onMoveUp={() => handleMoveMenuItem(item._id, 'up')}
