@@ -100,7 +100,7 @@ const DashboardPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="ds-gradient-bg ds-gradient-overlay dashboard-light-theme min-h-screen ds-flex ds-items-center ds-justify-center">
+      <div className="min-h-screen ds-flex ds-items-center ds-justify-center">
         <LoadingSpinner 
           size="lg" 
           text="Завантаження даних ресторану..." 
@@ -109,9 +109,9 @@ const DashboardPage: React.FC = () => {
       </div>
     );
   }
-
+//ds-gradient-bg ds-gradient-overlay dashboard-light-theme 
   return (
-    <div className="ds-gradient-bg ds-gradient-overlay dashboard-light-theme min-h-screen">
+    <div className="min-h-screen">
       <header className="ds-gradient-header ds-p-6">
         <div className="container ds-flex ds-items-center ds-justify-between">
           <div className="ds-flex ds-items-center ds-gap-3">
