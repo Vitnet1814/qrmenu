@@ -261,9 +261,14 @@ body {
 .ds-inset-x-0 { left: 0; right: 0; }
 .ds-inset-y-0 { top: 0; bottom: 0; }
 .ds-top-0 { top: 0; }
+.ds-top-1\/2 { top: 50%; }
 .ds-right-0 { right: 0; }
 .ds-bottom-0 { bottom: 0; }
 .ds-left-0 { left: 0; }
+.ds-left-1 { left: var(--spacing-1); }
+.ds-left-2 { left: var(--spacing-2); }
+.ds-left-3 { left: var(--spacing-3); }
+.ds-left-4 { left: var(--spacing-4); }
 
 /* ===========================================
    УТИЛІТАРНІ КЛАСИ - Z-INDEX
@@ -418,6 +423,14 @@ body {
 .ds-transition-all { transition: all var(--transition-normal); }
 .ds-duration-300 { transition-duration: 300ms; }
 
+/* Transform utilities */
+.ds-transform { transform: translateZ(0); }
+.ds-transform-none { transform: none; }
+.ds--translate-y-1\/2 { transform: translateY(-50%); }
+.ds-translate-y-1\/2 { transform: translateY(50%); }
+.ds-translate-x-1\/2 { transform: translateX(50%); }
+.ds--translate-x-1\/2 { transform: translateX(-50%); }
+
 .ds-hover-scale:hover { transform: scale(1.05); }
 .ds-hover-lift:hover { transform: translateY(-2px); }
 .ds-hover-shadow:hover { box-shadow: var(--shadow-lg); }
@@ -500,6 +513,7 @@ body {
 .ds-line-clamp-2 { 
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -560,6 +574,23 @@ body {
   .ds-lg\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .ds-lg\:text-2xl { font-size: var(--font-size-2xl); }
   .ds-gradient-content { max-width: 1200px !important; }
+}
+
+/* ===========================================
+   МОБІЛЬНІ СТИЛІ ДЛЯ МОДАЛЬНИХ ВІКОН
+   =========================================== */
+@media (max-width: 768px) {
+  .ds-modal-responsive {
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    margin: 0;
+    max-width: 100%;
+  }
+  
+  .ds-modal-backdrop {
+    padding: 0;
+  }
 }
 
 /* ===========================================
@@ -2052,6 +2083,34 @@ body {
   z-index: var(--z-modal);
 }
 
+/* Адаптивна модалка з flexbox структурою */
+.ds-modal-responsive {
+  background-color: var(--color-white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-2xl);
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  z-index: var(--z-modal);
+}
+
+/* Скролований контент модалки */
+.ds-modal-content {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0; /* Важливо для flexbox */
+}
+
+/* Sticky кнопки модалки */
+.ds-modal-footer {
+  flex-shrink: 0; /* Не стискається */
+  background: var(--color-white);
+  border-top: 1px solid var(--color-gray-200);
+  z-index: 10;
+}
+
 .ds-modal-header {
   padding: var(--spacing-6);
   border-bottom: 1px solid var(--color-gray-200);
@@ -2304,9 +2363,6 @@ body {
 /* ===========================================
    ГОЛОВНА СТОРІНКА - ЗАВЖДИ СВІТЛА ТЕМА
    =========================================== */
-.homepage-light-theme {
-  /* Перевизначаємо всі темні стилі для головної сторінки */
-}
 
 .homepage-light-theme .ds-card {
   background-color: #ffffff !important;
@@ -2362,9 +2418,6 @@ body {
 /* ===========================================
    DASHBOARD СТОРІНКА - ЗАВЖДИ СВІТЛА ТЕМА
    =========================================== */
-.dashboard-light-theme {
-  /* Перевизначаємо всі темні стилі для dashboard сторінки */
-}
 
 .dashboard-light-theme .ds-card {
   background-color: #ffffff !important;
@@ -2405,8 +2458,121 @@ body {
   border-bottom-color: #e5e7eb !important;
 }
 
-.dashboard-light-theme .ds-shadow-sm {
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+/* ===========================================
+   МЕДІА-ЗАПИТИ ДЛЯ МОБІЛЬНИХ ПРИСТРОЇВ
+   =========================================== */
+@media (max-width: 480px) {
+  /* Зменшуємо заголовки h1 з ds-text-2xl на ds-text-xl */
+  .ds-text-2xl {
+    font-size: 1.25rem !important; /* ds-text-xl */
+    line-height: 1.75rem !important;
+  }
+  
+  /* Зменшуємо кнопки додавання на 20% */
+  .ds-btn {
+    font-size: 0.8rem !important; /* зменшуємо на 20% */
+    padding: 0.4rem 0.8rem !important; /* зменшуємо на 20% */
+  }
+  
+  .ds-btn-success {
+    font-size: 0.8rem !important;
+    padding: 0.4rem 0.8rem !important;
+  }
+  
+  /* Зменшуємо елементи категорій */
+  .ds-category-item {
+    margin-bottom: 1rem !important; /* зменшуємо ds-mb-8 */
+  }
+  
+  .ds-category-card {
+    padding: 0.75rem !important; /* зменшуємо padding */
+    font-size: 0.9rem !important; /* зменшуємо розмір шрифту */
+  }
+  
+  .ds-category-name {
+    font-size: 0.9rem !important; /* зменшуємо розмір шрифту назви */
+  }
+  
+  .ds-category-action-controls {
+    gap: 0.25rem !important; /* зменшуємо відступи між кнопками */
+  }
+  
+  .ds-control-btn {
+    padding: 0.25rem !important; /* зменшуємо padding кнопок */
+    width: 1.75rem !important; /* зменшуємо розмір кнопок */
+    height: 1.75rem !important;
+  }
+  
+  .ds-control-icon {
+    width: 0.875rem !important; /* зменшуємо іконки */
+    height: 0.875rem !important;
+  }
+  
+  .ds-control-icon-sm {
+    width: 0.75rem !important; /* зменшуємо малі іконки */
+    height: 0.75rem !important;
+  }
+  
+  /* Зменшуємо елементи меню */
+  .ds-menu-item-card {
+    padding: 0.75rem !important; /* зменшуємо padding карток */
+  }
+  
+  .ds-menu-item-content {
+    gap: 0.5rem !important; /* зменшуємо відступи */
+  }
+  
+  .ds-menu-item-image {
+    width: 3rem !important; /* зменшуємо розмір зображень */
+    height: 3rem !important;
+  }
+  
+  .ds-menu-item-img {
+    width: 3rem !important;
+    height: 3rem !important;
+  }
+  
+  .ds-menu-item-placeholder {
+    width: 3rem !important;
+    height: 3rem !important;
+  }
+  
+  .ds-menu-item-placeholder-icon {
+    font-size: 1rem !important; /* зменшуємо іконку */
+  }
+  
+  .ds-menu-item-name {
+    font-size: 0.9rem !important; /* зменшуємо назву страви */
+  }
+  
+  .ds-menu-item-price {
+    font-size: 0.85rem !important; /* зменшуємо ціну */
+  }
+  
+  .ds-menu-item-controls {
+    gap: 0.25rem !important; /* зменшуємо відступи між кнопками */
+  }
+  
+  .ds-menu-item-center-controls {
+    gap: 0.25rem !important;
+  }
+  
+  /* Приховуємо зображення в картках страв на мобільних пристроях */
+  .ds-menu-item-image {
+    display: none !important;
+  }
+  
+  /* Зменшуємо заголовки h2 */
+  h2.ds-text-2xl {
+    font-size: 1.25rem !important; /* ds-text-xl */
+    line-height: 1.75rem !important;
+  }
+  
+  /* Зменшуємо заголовки h3 */
+  h3.ds-text-2xl {
+    font-size: 1.25rem !important; /* ds-text-xl */
+    line-height: 1.75rem !important;
+  }
 }
 
 /* ===========================================

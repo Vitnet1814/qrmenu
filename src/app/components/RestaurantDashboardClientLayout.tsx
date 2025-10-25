@@ -143,6 +143,17 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
           }
         }
         
+        /* Медіа-запит для пристроїв менше 480px */
+        @media (max-width: 480px) {
+          .header-content-responsive {
+            padding: 10px 10px !important;
+          }
+          
+          .header-title-responsive {
+            font-size: 1.5rem !important;
+          }
+        }
+        
         /* Hover ефект для заголовка */
         .header-title-link:hover {
           opacity: 0.7;
@@ -177,7 +188,7 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
         <div style={styles.headerContent} className="header-content-responsive">
           <div style={styles.headerLeft}>
             <Link href="/dashboard" style={styles.headerTitleLink} className="header-title-link">
-              <h1 style={styles.headerTitle}>
+              <h1 style={styles.headerTitle} className="header-title-responsive">
                 {restaurantInfo?.name || 'Ресторан'}
               </h1>
            

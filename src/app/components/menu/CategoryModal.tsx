@@ -30,6 +30,7 @@ const CategoryModal = ({ isOpen, onClose, onSave, categoryToEdit, restaurantId, 
   const [description, setDescription] = useState('');
   const [image, setImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [isImageViewerOpen, setIsImageViewerOpen] = useState(false); // Стан для модального вікна перегляду фото
 
   useEffect(() => {
     if (categoryToEdit) {
@@ -78,6 +79,21 @@ const CategoryModal = ({ isOpen, onClose, onSave, categoryToEdit, restaurantId, 
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleDeleteImage = () => {
+    setImage(null);
+    setPreviewImage(null);
+  };
+
+  const handleImageClick = () => {
+    if (previewImage) {
+      setIsImageViewerOpen(true);
+    }
+  };
+
+  const handleCloseImageViewer = () => {
+    setIsImageViewerOpen(false);
   };
 
   const handleSaveClick = async () => {
@@ -229,17 +245,31 @@ const convertToBase64 = (file: File): Promise<string> => {
               id="image"
               accept="image/*"
               onChange={handleImageChange}
-              className="ds-form-input"
+              style={{ display: 'none' }}
             />
+            <button
+              onClick={() => document.getElementById('image')?.click()}
+              className="ds-btn ds-btn-secondary ds-mt-2"
+            >
+              Вибрати файл
+            </button>
            {previewImage && (
-              <div className="ds-mt-4">
+              <div className="ds-mt-4 ds-flex ds-items-start ds-gap-4">
                 <Image
                   src={previewImage}
                   alt="Попередній перегляд"
                   width={120}
                   height={120}
                   style={{ objectFit: 'cover' }}
+                  className="ds-rounded-lg ds-cursor-pointer hover:ds-opacity-80 ds-transition-opacity"
+                  onClick={handleImageClick}
                 />
+                <button
+                  onClick={handleDeleteImage}
+                  className="ds-btn ds-btn-secondary ds-mt-2"
+                >
+                  Видалити фото
+                </button>
               </div>
             )}
           </div>
@@ -254,6 +284,32 @@ const convertToBase64 = (file: File): Promise<string> => {
           </div>
         </div>
       </div>
+      )}
+
+      {/* Модальне вікно для перегляду фото */}
+      {isImageViewerOpen && previewImage && (
+        <div 
+          className="ds-fixed ds-inset-0 ds-bg-black ds-bg-opacity-90 ds-flex ds-items-center ds-justify-center ds-z-50"
+          onClick={handleCloseImageViewer}
+        >
+          <div className="ds-relative ds-max-w-4xl ds-max-h-full ds-p-4" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={handleCloseImageViewer}
+              className="ds-absolute ds-top-4 ds-right-4 ds-bg-red-500 hover:ds-bg-red-600 ds-text-white ds-rounded-full ds-w-8 ds-h-8 ds-flex ds-items-center ds-justify-center ds-text-lg ds-font-bold ds-transition-colors ds-z-10"
+              title="Закрити"
+            >
+              ×
+            </button>
+            <Image
+              src={previewImage}
+              alt="Перегляд фото категорії"
+              width={800}
+              height={600}
+              style={{ objectFit: 'contain', maxWidth: '100%', maxHeight: '100%' }}
+              className="ds-rounded-lg"
+            />
+          </div>
+        </div>
       )}
     </>
   );

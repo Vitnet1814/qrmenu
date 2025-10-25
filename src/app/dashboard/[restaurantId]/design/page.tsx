@@ -6,10 +6,10 @@ import {
   themes, 
   Theme, 
   LayoutSettings, 
-  ColorPicker, 
   LayoutSettings as LayoutSettingsComponent, 
   LivePreview
 } from '../../../components/DesignSystem';
+import { Card, CardHeader, CardBody, CardTitle, CardSubtitle } from '../../../components/design-system';
 import { LoadingSpinner, ErrorState } from '../../../components/ui/LoadingStates';
 
 interface Params {
@@ -37,7 +37,6 @@ const DesignSettingsPage = () => {
   });
 
   const [selectedThemeId, setSelectedThemeId] = useState<string>('modern');
-  const [showCustomTheme, setShowCustomTheme] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -74,14 +73,9 @@ const DesignSettingsPage = () => {
 
   const handleThemeSelectChange = (themeId: string) => {
     setSelectedThemeId(themeId);
-    if (themeId === 'custom') {
-      setShowCustomTheme(true);
-    } else {
-      setShowCustomTheme(false);
-      const selectedTheme = themes.find(t => t.id === themeId);
-      if (selectedTheme) {
-        handleThemeChange(selectedTheme);
-      }
+    const selectedTheme = themes.find(t => t.id === themeId);
+    if (selectedTheme) {
+      handleThemeChange(selectedTheme);
     }
   };
 
@@ -110,16 +104,6 @@ const DesignSettingsPage = () => {
     } catch (error) {
       console.error('Помилка збереження:', error);
     }
-  };
-
-  const handleColorChange = (colors: Theme['colors']) => {
-    const newSettings = {
-      ...settings,
-      theme: { ...settings.theme, colors }
-    };
-    setSettings(newSettings);
-    // Автозбереження при зміні кольорів
-    saveSettings(newSettings);
   };
 
   const handleLayoutChange = (layout: LayoutSettings) => {
@@ -162,45 +146,37 @@ const DesignSettingsPage = () => {
             Налаштування дизайну
           </h1>
         </div>
-        {/* Селект тем */}
-        <div className="ds-mb-8">
-          <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 ds-mb-4">
-            Готові теми
-          </h2>
-          <select
-            value={selectedThemeId}
-            onChange={(e) => handleThemeSelectChange(e.target.value)}
-            className="ds-w-full ds-px-4 ds-py-3 ds-border ds-border-gray-300 ds-rounded-lg ds-bg-white ds-text-gray-900 ds-focus:outline-none ds-focus:ring-2 ds-focus:ring-blue-500 ds-focus:border-transparent"
-          >
-            {themes.map((theme) => (
-              <option key={theme.id} value={theme.id}>
-                {theme.name}
-              </option>
-            ))}
-            <option value="custom">Своя тема - &quot;Зроби сам&quot;</option>
-          </select>
-        </div>
+        {/* Готові теми */}
+        <Card className="ds-mb-8">
+          <CardHeader>
+            <CardTitle>🎨 Готові теми</CardTitle>
+            <CardSubtitle>Оберіть тему для вашого меню</CardSubtitle>
+          </CardHeader>
+          <CardBody>
+            <div className="ds-flex ds-flex-wrap ds-gap-3">
+              {themes.map((theme) => (
+                <button
+                  key={theme.id}
+                  onClick={() => handleThemeSelectChange(theme.id)}
+                  className={`ds-btn ds-btn-sm ds-flex ds-items-center ds-gap-2 ${
+                    selectedThemeId === theme.id 
+                      ? 'ds-btn-primary' 
+                      : 'ds-btn-outline'
+                  }`}
+                >
+                  <span>{theme.preview}</span>
+                  {theme.name}
+                </button>
+              ))}
+            </div>
+          </CardBody>
+        </Card>
 
-        {/* Кастомізація кольорів (тільки для своєї теми) */}
-        {showCustomTheme && (
-          <div className="ds-mb-8">
-            <ColorPicker
-              colors={settings.theme.colors}
-              onChange={handleColorChange}
-            />
-          </div>
-        )}
 
         {/* Основні налаштування */}
         <div className="ds-grid ds-grid-cols-1 ds-gap-8">
           {/* Ліва колонка - Налаштування */}
           <div className="ds-space-y-8">
-
-            {/* Налаштування макету */}
-            <LayoutSettingsComponent
-              settings={settings.layout}
-              onChange={handleLayoutChange}
-            />
           </div>
 
           {/* Права колонка - Попередній перегляд */}
@@ -219,6 +195,12 @@ const DesignSettingsPage = () => {
             <LivePreview
               theme={settings.theme}
               layoutSettings={settings.layout}
+            />
+
+            {/* Налаштування макету */}
+            <LayoutSettingsComponent
+              settings={settings.layout}
+              onChange={handleLayoutChange}
             />
 
             {/* Загальні рекомендації */}
