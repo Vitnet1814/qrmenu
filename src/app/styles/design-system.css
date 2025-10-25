@@ -2479,6 +2479,13 @@ body {
     padding: 0.4rem 0.8rem !important;
   }
   
+  /* Перенос тексту в кнопках на мобільних */
+  .ds-btn {
+    white-space: normal !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+  }
+  
   /* Зменшуємо елементи категорій */
   .ds-category-item {
     margin-bottom: 1rem !important; /* зменшуємо ds-mb-8 */

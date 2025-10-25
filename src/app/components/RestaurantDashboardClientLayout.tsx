@@ -152,6 +152,10 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
           .header-title-responsive {
             font-size: 1.5rem !important;
           }
+          
+          .main-content-responsive {
+            padding-top: 60px !important;
+          }
         }
         
         /* Hover ефект для заголовка */
@@ -213,7 +217,7 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
         </div>
       </header>
 
-      <main style={styles.mainContent}>{children}</main>
+      <main style={styles.mainContent} className="main-content-responsive">{children}</main>
 
       <nav style={styles.bottomNav}>
         <ul style={styles.navList}>
