@@ -11,6 +11,7 @@ import {
   ArrowRightStartOnRectangleIcon,
   EyeIcon,
   ChevronUpIcon,
+  HomeIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
@@ -153,8 +154,49 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
             font-size: 1.5rem !important;
           }
           
+          .home-icon-responsive {
+            width: 20px !important;
+            height: 20px !important;
+            margin-top: 0 !important;
+            align-self: auto !important;
+          }
+          
+          /* Зменшуємо user info на 15% і відцентровуємо */
+          .user-info-responsive {
+            justify-content: center !important;
+          }
+          
+          .user-avatar-responsive {
+            width: 27.2px !important;
+            height: 27.2px !important;
+            font-size: 0.85em !important;
+          }
+          
+          .user-name-responsive {
+            font-size: 0.85em !important;
+          }
+          
           .main-content-responsive {
             padding-top: 60px !important;
+          }
+          
+          /* Зменшуємо висоту футера на 15% */
+          .bottom-nav-responsive {
+            padding: 8.5px 0 !important;
+          }
+          
+          /* Зменшуємо кнопки на 20% */
+          .nav-link-responsive {
+            padding: 6.4px !important;
+          }
+          
+          .nav-icon-responsive {
+            width: 19.2px !important;
+            height: 19.2px !important;
+          }
+          
+          .nav-text-responsive {
+            font-size: 0.64rem !important;
           }
         }
         
@@ -192,18 +234,24 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
         <div style={styles.headerContent} className="header-content-responsive">
           <div style={styles.headerLeft}>
             <Link href="/dashboard" style={styles.headerTitleLink} className="header-title-link">
-              <h1 style={styles.headerTitle} className="header-title-responsive">
-                {restaurantInfo?.name || 'Ресторан'}
-              </h1>
-           
-            <p style={styles.headerSubtitle} className="header-subtitle-responsive">
-              Панель управління
-            </p> </Link>
-          </div>
-          <div className="ds-w-8 ds-h-8 ds-bg-success ds-bg-opacity-20 ds-rounded-full ds-flex ds-items-center ds-justify-center ds-text-white ds-font-bold">
-                {session?.user?.name?.charAt(0) || 'U'}
+              <HomeIcon style={styles.homeIcon} className="home-icon-responsive" />
+              <div>
+                <h1 style={styles.headerTitle} className="header-title-responsive">
+                  {restaurantInfo?.name || 'Ресторан'}
+                </h1>
+             
+                <p style={styles.headerSubtitle} className="header-subtitle-responsive">
+                  Панель управління
+                </p>
               </div>
-          <span className="ds-text-base ds-font-medium">{session?.user?.name || 'Користувач'}</span>
+            </Link>
+          </div>
+          <div style={styles.userInfo} className="user-info-responsive">
+            <div className="ds-w-8 ds-h-8 ds-bg-success ds-bg-opacity-20 ds-rounded-full ds-flex ds-items-center ds-justify-center ds-text-white ds-font-bold user-avatar-responsive">
+              {session?.user?.name?.charAt(0) || 'U'}
+            </div>
+            <span className="ds-text-base ds-font-medium user-name-responsive">{session?.user?.name || 'Користувач'}</span>
+          </div>
           {/* <div style={styles.headerRight} className="header-right-responsive">
             <Link
               href={`/menu/${restaurantInfo?.slug}`}
@@ -219,7 +267,7 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
 
       <main style={styles.mainContent} className="main-content-responsive">{children}</main>
 
-      <nav style={styles.bottomNav}>
+      <nav style={styles.bottomNav} className="bottom-nav-responsive">
         <ul style={styles.navList}>
           {navigation.map((item) => (
             <li key={item.name} style={styles.navItem}>
@@ -232,6 +280,7 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
                     border: 'none',
                     width: '100%',
                   }}
+                  className="nav-link-responsive"
                   onMouseEnter={(e) => {
                     e.currentTarget.style.backgroundColor = '#e5e7eb';
                     e.currentTarget.style.color = '#374151';
@@ -241,16 +290,17 @@ const RestaurantDashboardClientLayout = ({ children, restaurantId, restaurantInf
                     e.currentTarget.style.color = '#6b7280';
                   }}
                 >
-                  <item.icon style={styles.navIcon} />
-                  <span style={styles.navText}>{item.name}</span>
+                  <item.icon style={styles.navIcon} className="nav-icon-responsive" />
+                  <span style={styles.navText} className="nav-text-responsive">{item.name}</span>
                 </button>
               ) : (
                 <Link
                   href={item.href!}
                   style={pathname === item.href ? { ...styles.navLink, color: '#683636', backgroundColor: '#60a5fa' } : styles.navLink}
+                  className="nav-link-responsive"
                 >
-                  <item.icon style={styles.navIcon} />
-                  <span style={styles.navText}>{item.name}</span>
+                  <item.icon style={styles.navIcon} className="nav-icon-responsive" />
+                  <span style={styles.navText} className="nav-text-responsive">{item.name}</span>
                 </Link>
               )}
             </li>
@@ -307,6 +357,17 @@ const styles: { [key: string]: CSSProperties } = {
     color: 'inherit',
     cursor: 'pointer',
     transition: 'opacity 0.2s ease',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+  },
+  homeIcon: {
+    width: '30px',
+    height: '30px',
+    color: '#111827',
+    flexShrink: 0,
+    alignSelf: 'flex-start',
+    marginTop: '2px',
   },
   headerTitle: {
     fontSize: '1.875rem', // text-3xl
@@ -319,6 +380,11 @@ const styles: { [key: string]: CSSProperties } = {
     fontSize: '0.875rem',
     color: '#6b7280',
     margin: '4px 0 0 0',
+  },
+  userInfo: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
   },
   headerRight: {
     display: 'flex',

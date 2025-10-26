@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { 
   themes, 
   Theme, 
@@ -11,6 +12,7 @@ import {
 } from '../../../components/DesignSystem';
 import { Card, CardHeader, CardBody, CardTitle, CardSubtitle } from '../../../components/design-system';
 import { LoadingSpinner, ErrorState } from '../../../components/ui/LoadingStates';
+import { useToast } from '../../../contexts/ToastContext';
 
 interface Params {
   restaurantId: string;
@@ -24,7 +26,9 @@ interface DesignSettings {
 
 const DesignSettingsPage = () => {
   const params = useParams<Params>();
+  const router = useRouter();
   const restaurantId = params?.restaurantId;
+  const { showToast } = useToast();
 
   const [settings, setSettings] = useState<DesignSettings>({
     theme: themes[0], // За замовчуванням
@@ -36,7 +40,11 @@ const DesignSettingsPage = () => {
     }
   });
 
+  const [initialSettings, setInitialSettings] = useState<DesignSettings | null>(null);
   const [selectedThemeId, setSelectedThemeId] = useState<string>('default');
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [showUnsavedModal, setShowUnsavedModal] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -49,10 +57,12 @@ const DesignSettingsPage = () => {
         const response = await fetch(`/api/restaurants/${restaurantId}/design-settings`);
         if (response.ok) {
           const data = await response.json();
-          setSettings({
+          const loadedSettings = {
             theme: themes.find(t => t.id === data.theme.id) || themes[0],
             layout: data.layout
-          });
+          };
+          setSettings(loadedSettings);
+          setInitialSettings(JSON.parse(JSON.stringify(loadedSettings))); // Глибока копія
         }
       } catch (error) {
         console.error('Помилка завантаження налаштувань:', error);
@@ -64,11 +74,29 @@ const DesignSettingsPage = () => {
     loadSettings();
   }, [restaurantId]);
 
+  // Відстеження змін
+  useEffect(() => {
+    if (initialSettings) {
+      const hasChanges = JSON.stringify(settings) !== JSON.stringify(initialSettings);
+      setHasUnsavedChanges(hasChanges);
+    }
+  }, [settings, initialSettings]);
+
+  // Попередження при закритті вкладки
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasUnsavedChanges]);
 
   const handleThemeChange = (theme: Theme) => {
     setSettings(prev => ({ ...prev, theme }));
-    // Автозбереження при виборі теми
-    saveSettings({ ...settings, theme });
   };
 
   const handleThemeSelectChange = (themeId: string) => {
@@ -79,9 +107,11 @@ const DesignSettingsPage = () => {
     }
   };
 
-  const saveSettings = async (newSettings: DesignSettings) => {
+  // Збереження налаштувань
+  const handleSave = async () => {
     if (!restaurantId) return;
     
+    setIsSaving(true);
     try {
       const response = await fetch(`/api/restaurants/${restaurantId}/design-settings`, {
         method: 'PUT',
@@ -90,27 +120,48 @@ const DesignSettingsPage = () => {
         },
         body: JSON.stringify({
           theme: {
-            id: newSettings.theme.id,
-            name: newSettings.theme.name,
-            colors: newSettings.theme.colors
+            id: settings.theme.id,
+            name: settings.theme.name,
+            colors: settings.theme.colors
           },
-          layout: newSettings.layout
+          layout: settings.layout
         }),
       });
 
       if (response.ok) {
-        console.log('Налаштування збережено');
+        setInitialSettings(JSON.parse(JSON.stringify(settings)));
+        setHasUnsavedChanges(false);
+        showToast({ type: 'success', title: 'Налаштування успішно збережено' });
+      } else {
+        throw new Error('Помилка збереження');
       }
     } catch (error) {
       console.error('Помилка збереження:', error);
+      showToast({ type: 'error', title: 'Помилка збереження налаштувань' });
+    } finally {
+      setIsSaving(false);
     }
   };
 
-  const handleLayoutChange = (layout: LayoutSettings) => {
-    const newSettings = { ...settings, layout };
-    setSettings(newSettings);
-    // Автозбереження при зміні макету
-    saveSettings(newSettings);
+  // Скасування змін
+  const handleCancel = () => {
+    if (initialSettings) {
+      setSettings(JSON.parse(JSON.stringify(initialSettings)));
+      setHasUnsavedChanges(false);
+      showToast({ type: 'info', title: 'Зміни скасовано' });
+    }
+  };
+
+  // Зберегти перед навігацією
+  const handleSaveAndNavigate = async () => {
+    await handleSave();
+    setShowUnsavedModal(false);
+  };
+
+  // Продовжити без збереження
+  const handleDiscardAndNavigate = () => {
+    setShowUnsavedModal(false);
+    setHasUnsavedChanges(false);
   };
 
 
@@ -203,7 +254,7 @@ const DesignSettingsPage = () => {
             {/* Налаштування макету */}
             <LayoutSettingsComponent
               settings={settings.layout}
-              onChange={handleLayoutChange}
+              onChange={(layout: LayoutSettings) => setSettings(prev => ({ ...prev, layout }))}
             />
 
             {/* Загальні рекомендації 
@@ -222,6 +273,75 @@ const DesignSettingsPage = () => {
           </div>
         </div>
       </div>
+
+      {/* SaveBar - панель збереження/скасування */}
+      {hasUnsavedChanges && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
+          <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+              <span className="text-sm font-medium text-gray-700">
+                У вас є незбережені зміни
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleCancel}
+                disabled={isSaving}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Скасувати
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={isSaving}
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {isSaving ? 'Збереження...' : 'Зберегти'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Модалка попередження про незбережені дані */}
+      {showUnsavedModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div className="p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Незбережені зміни
+              </h3>
+              <p className="text-sm text-gray-600 mb-6">
+                У вас є незбережені зміни. Що ви хочете зробити?
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={handleSaveAndNavigate}
+                  disabled={isSaving}
+                  className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Зберегти
+                </button>
+                <button
+                  onClick={handleDiscardAndNavigate}
+                  disabled={isSaving}
+                  className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Не зберігати
+                </button>
+                <button
+                  onClick={() => setShowUnsavedModal(false)}
+                  disabled={isSaving}
+                  className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Скасувати
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

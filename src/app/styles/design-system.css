@@ -322,6 +322,10 @@ body {
 .ds-overflow-x-auto { overflow-x: auto; }
 .ds-overflow-y-auto { overflow-y: auto; }
 
+/* Pointer Events */
+.ds-pointer-events-none { pointer-events: none; }
+.ds-pointer-events-auto { pointer-events: auto; }
+
 /* Приховання скролу */
 .ds-scrollbar-hide {
   scrollbar-width: none; /* Firefox */
@@ -484,6 +488,8 @@ body {
 .ds-w-8 { width: 2rem; }
 .ds-h-8 { height: 2rem; }
 .ds-w-full { width: 100%; }
+.ds-h-full { height: 100%; }
+.ds-min-h-full { min-height: 100%; }
 .ds-h-48 { height: 12rem; } /* 192px - для банера */
 
 /* Фонові зображення */

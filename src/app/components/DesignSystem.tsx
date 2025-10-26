@@ -519,7 +519,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
   } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Завантаження даних ресторану з API
+  // Завантаження даних ресторану з оптимізованого API
   useEffect(() => {
     const loadRestaurantData = async () => {
       if (!restaurantId) {
@@ -543,93 +543,38 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
 
       setIsLoading(true);
       try {
-        // Спочатку отримуємо основну інформацію про ресторан
-        const restaurantResponse = await fetch(`/api/restaurants/id/${restaurantId}`);
-        if (restaurantResponse.ok) {
-          const restaurantData = await restaurantResponse.json();
-          
-          // Отримуємо банер ресторану
-          let banner = undefined;
-          try {
-            const bannerResponse = await fetch(`/api/restaurants/${restaurantId}/banner`);
-            if (bannerResponse.ok) {
-              const bannerData = await bannerResponse.json();
-              // console.log('Дані банера:', bannerData);
-              banner = bannerData.banner?.data?.image;
-              //  console.log('Дані банера banner :', banner);
-            }
-          } catch (bannerError) {
-            console.log('Помилка завантаження банера:', bannerError);
-          }
-          
-          // Отримуємо категорії
-          let categories = [];
-          try {
-            const categoriesResponse = await fetch(`/api/categories/restaurant/${restaurantId}`);
-            if (categoriesResponse.ok) {
-              const categoriesData = await categoriesResponse.json();
-              console.log('Отримані категорії:', categoriesData);
-              console.log('Кількість категорій:', categoriesData.length);
-              
-              // Завантажуємо страви для кожної категорії
-              const categoriesWithItems = await Promise.all(
-                categoriesData.map(async (category: any) => {
-                  try {
-                    const itemsResponse = await fetch(`/api/menu-items/category/${category._id}`);
-                    console.log(`Запит страв для категорії ${category.name} (${category._id}):`, itemsResponse.status);
-                    if (itemsResponse.ok) {
-                      const itemsData = await itemsResponse.json();
-                      console.log(`Страви для категорії ${category.name}:`, itemsData);
-                      console.log(`Кількість страв в категорії ${category.name}:`, itemsData.length);
-                      return {
-                        name: category.name,
-                        items: itemsData.map((item: any) => ({
-                          name: item.name,
-                          price: item.price,
-                          description: item.description,
-                          image: item.image
-                        }))
-                      };
-                    } else {
-                      console.log(`Помилка HTTP для категорії ${category.name}:`, itemsResponse.status);
-                    }
-                  } catch (itemsError) {
-                    console.log(`Помилка завантаження страв для категорії ${category.name}:`, itemsError);
-                  }
-                  return {
-                    name: category.name,
-                    items: []
-                  };
-                })
-              );
-              
-              console.log('Категорії перед фільтрацією:', categoriesWithItems);
-              // Тимчасово прибираємо фільтрацію, щоб побачити всі категорії
-              categories = categoriesWithItems; // .filter(cat => cat.items.length > 0);
-              console.log('Фінальні категорії зі стравами:', categories);
-              console.log('Кількість категорій після фільтрації:', categories.length);
-            }
-          } catch (categoriesError) {
-            console.log('Категорії не завантажені, використовуємо мок дані');
-          }
-          
-          setRestaurantData({
-            name: restaurantData.name || 'Назва ресторану',
-            description: 'Ресторан української кухні', // Поки що статичний
-            banner: banner,
-            categories: categories.length > 0 ? categories : [
-              {
-                name: 'Гарячі страви',
-                items: [
-                  { name: 'Борщ український', price: 120, description: 'Традиційний український борщ зі сметаною та зеленню' },
-                  { name: 'Вареники з картоплею', price: 95, description: 'Домашні вареники з картоплею та цибулею' }
-                ]
-              }
-            ]
-          });
-        } else {
+        // Завантажуємо всі дані одним API запитом
+        const response = await fetch(`/api/menu-preview/${restaurantId}`);
+        
+        if (!response.ok) {
           throw new Error('Помилка завантаження даних ресторану');
         }
+
+        const data = await response.json();
+        
+        // Форматуємо дані для компонента
+        setRestaurantData({
+          name: data.restaurant?.name || 'Назва ресторану',
+          description: 'Ресторан української кухні',
+          banner: data.banner?.image,
+          categories: data.categories?.length > 0 ? data.categories.map((cat: any) => ({
+            name: cat.name,
+            items: cat.items?.map((item: any) => ({
+              name: item.name,
+              price: item.price,
+              description: item.description,
+              image: item.image
+            })) || []
+          })) : [
+            {
+              name: 'Гарячі страви',
+              items: [
+                { name: 'Борщ український', price: 120, description: 'Традиційний український борщ зі сметаною та зеленню' },
+                { name: 'Вареники з картоплею', price: 95, description: 'Домашні вареники з картоплею та цибулею' }
+              ]
+            }
+          ]
+        });
       } catch (error) {
         console.error('Помилка завантаження даних ресторану:', error);
         // Fallback до мок даних при помилці
@@ -719,185 +664,242 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
   }
 
   return (
-    <div className={`ds-card  ${fontFamilyClass}`}>
-      {/* Повноширинний попередній перегляд */}
-      <div className={`ds-w-full ds-bg-white ds-rounded-xl ds-overflow-hidden ${shadowClass}`}>
-        {/* Банер ресторану */}
-        {restaurantData?.banner && (
-          <div 
-            className="ds-w-full ds-h-48 ds-bg-cover ds-bg-center"
-            style={{backgroundImage: `url(${restaurantData.banner})`}}
-          />
-        )}
+    <div className={`ds-card ds-flex ds-justify-center ds-items-start ds-py-8 ${fontFamilyClass}`}>
+      {/* Контейнер з емуляцією телефону */}
+      <div 
+        className="ds-relative"
+        style={{
+          width: '350px',
+          height: '700px',
+          minWidth: '350px'
+        }}
+      >
+        {/* Зображення frame поверх всього */}
+        <img 
+          src="/phone-frame.png" 
+          alt="Phone frame" 
+          className="ds-absolute ds-top-0 ds-left-0 ds-w-full ds-h-full ds-pointer-events-none ds-z-10"
+          draggable={false}
+          style={{ objectFit: 'contain' }}
+        />
         
+        {/* Контент всередині екрану телефону */}
+        <div 
+          className="ds-absolute ds-flex ds-flex-col"
+          style={{
+            top: '50px',    // підгонка під розташування екрану в frame
+            left: '20px',
+            width: '310px',
+            height: '600px',
+            zIndex: 1
+          }}
+        >
+          {/* Скролований контент */}
+          <div 
+            className="ds-flex-1 ds-overflow-y-auto"
+            style={{
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              WebkitScrollbar: { display: 'none' }
+            } as React.CSSProperties}
+          >
+            <style jsx>{`
+              div::-webkit-scrollbar {
+                display: none;
+              }
+            `}</style>
+            <div 
+              className={`ds-w-full ds-min-h-full ${shadowClass}`}
+              style={{ backgroundColor: theme.colors.background }}
+            >
+          {/* Банер ресторану */}
+          {restaurantData?.banner && (
+            <div 
+              className="ds-w-full ds-h-48 ds-bg-cover ds-bg-center"
+              style={{backgroundImage: `url(${restaurantData.banner})`}}
+            />
+          )}
+          
         {/* Назва ресторану */}
         <div 
           className={`ds-text-center ds-py-6 ds-px-4`}
           style={{ 
-            backgroundColor: restaurantData?.banner 
+            background: restaurantData?.banner 
               ? theme.colors.surface
               : `linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.secondary} 100%)`,
             color: restaurantData?.banner ? theme.colors.text : '#ffffff'
           }}
         >
-          <h1 className="ds-text-xl ds-font-bold ds-mb-1">
-            {restaurantData?.name || 'Назва ресторану'}
-          </h1>
-        </div>
+            <h1 className="ds-text-xl ds-font-bold ds-mb-1">
+              {restaurantData?.name || 'Назва ресторану'}
+            </h1>
+          </div>
 
-        {/* Категорії */}
-        <div className={`${paddingClass}`} style={{ backgroundColor: theme.colors.background }}>
-          {restaurantData?.categories && restaurantData.categories.length > 0 && (
-            <div 
-              className="ds-flex ds-gap-2 ds-mb-4 ds-overflow-x-auto" 
-              style={{ 
-                scrollbarWidth: 'none', 
-                msOverflowStyle: 'none',
-                WebkitScrollbar: 'none'
-              } as React.CSSProperties}
-            >
-              
-              {restaurantData.categories.map((category, index) => (
-                <div 
-                  key={category.name}
-                  className={`ds-px-4 ds-py-2 ds-text-sm ds-font-medium ds-whitespace-nowrap ${borderRadiusClass} ${shadowClass}`}
-                  style={{ 
-                    backgroundColor: index === 0 ? theme.colors.primary : theme.colors.surface,
-                    color: index === 0 ? '#ffffff' : theme.colors.text,
-                    border: index === 0 ? 'none' : `1px solid ${theme.colors.primary}20`
-                  }}
-                >
-                  {category.name}
-                </div>
-              ))}
-            </div>
-          )}
+          {/* Категорії */}
+          <div className={`${paddingClass}`} style={{ backgroundColor: theme.colors.background }}>
+            {restaurantData?.categories && restaurantData.categories.length > 0 && (
+              <div 
+                className="ds-flex ds-gap-2 ds-mb-4 ds-overflow-x-auto" 
+                style={{ 
+                  scrollbarWidth: 'none', 
+                  msOverflowStyle: 'none',
+                  WebkitScrollbar: 'none'
+                } as React.CSSProperties}
+              >
+                
+                {restaurantData.categories.map((category, index) => (
+                  <div 
+                    key={category.name}
+                    className={`ds-px-4 ds-py-2 ds-text-sm ds-font-medium ds-whitespace-nowrap ${borderRadiusClass} ${shadowClass}`}
+                    style={{ 
+                      backgroundColor: index === 0 ? theme.colors.primary : theme.colors.surface,
+                      color: index === 0 ? '#ffffff' : theme.colors.text,
+                      border: index === 0 ? 'none' : `1px solid ${theme.colors.primary}20`
+                    }}
+                  >
+                    {category.name}
+                  </div>
+                ))}
+              </div>
+            )}
 
-          {/* Страви */}
-          <div className="ds-space-y-4">
-            {restaurantData?.categories && restaurantData.categories.length > 0 ? (
-              restaurantData.categories.map((category, categoryIndex) => (
-                <div key={category.name} className="ds-space-y-3">
-                  {/* Назва категорії */}
+            {/* Страви */}
+            <div className="ds-space-y-4">
+              {restaurantData?.categories && restaurantData.categories.length > 0 ? (
+                restaurantData.categories.map((category, categoryIndex) => (
+                  <div key={category.name} className="ds-space-y-3">
+                    {/* Назва категорії */}
+                    <h3 
+                      className="ds-text-lg ds-font-semibold ds-text-center"
+                      style={{ color: theme.colors.text }}
+                    >
+                      {category.name}
+                    </h3>
+                    
+                    {/* Страви категорії */}
+                    {category.items && category.items.length > 0 ? (
+                      category.items.map((item, itemIndex) => (
+                      <div 
+                        key={`${category.name}-${item.name}`}
+                        className={`${borderRadiusClass} ${shadowClass} ds-overflow-hidden`}
+                        style={{ 
+                          backgroundColor: theme.colors.surface,
+                          border: `1px solid ${theme.colors.primary}10` 
+                        }}
+                      >
+                        {/* Фото страви на всю ширину */}
+                        {item.image && (
+                          <img 
+                            src={item.image} 
+                            alt={item.name}
+                            className="ds-w-full ds-h-32 ds-object-cover"
+                          />
+                        )}
+                        
+                        {/* Інформація про страву */}
+                        <div className={paddingClass}>
+                          <div className="ds-flex ds-justify-between ds-items-start ds-mb-2">
+                            <h4 
+                              className="ds-text-base ds-font-semibold ds-flex-1"
+                              style={{ color: theme.colors.text }}
+                            >
+                              {item.name}
+                            </h4>
+                            <div 
+                              className="ds-text-lg ds-font-bold ds-ml-2"
+                              style={{ color: theme.colors.primary }}
+                            >
+                              {item.price}₴
+                            </div>
+                          </div>
+                          {item.description && (
+                            <p 
+                              className="ds-text-sm"
+                              style={{ color: theme.colors.text, opacity: 0.7 }}
+                            >
+                              {item.description}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      ))
+                    ) : (
+                      <div 
+                        className={`${borderRadiusClass} ${paddingClass}`}
+                        style={{ 
+                          backgroundColor: theme.colors.background,
+                          border: `1px solid ${theme.colors.primary}10` 
+                        }}
+                      >
+                        <p 
+                          className="ds-text-sm ds-text-center"
+                          style={{ color: theme.colors.text, opacity: 0.6 }}
+                        >
+                          Немає страв в цій категорії
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                ))
+              ) : (
+                // Fallback мок дані
+                <div className="ds-space-y-3">
                   <h3 
                     className="ds-text-lg ds-font-semibold ds-text-center"
                     style={{ color: theme.colors.text }}
                   >
-                    {category.name}
+                    Гарячі страви
                   </h3>
-                  
-                  {/* Страви категорії */}
-                  {category.items && category.items.length > 0 ? (
-                    category.items.map((item, itemIndex) => (
-                    <div 
-                      key={`${category.name}-${item.name}`}
-                      className={`ds-bg-white ${borderRadiusClass} ${shadowClass} ds-overflow-hidden`}
-                      style={{ border: `1px solid ${theme.colors.primary}10` }}
-                    >
-                      {/* Фото страви на всю ширину */}
-                      {item.image && (
-                        <img 
-                          src={item.image} 
-                          alt={item.name}
-                          className="ds-w-full ds-h-32 ds-object-cover"
-                        />
-                      )}
-                      
-                      {/* Інформація про страву */}
-                      <div className={paddingClass}>
-                        <div className="ds-flex ds-justify-between ds-items-start ds-mb-2">
-                          <h4 
-                            className="ds-text-base ds-font-semibold ds-flex-1"
-                            style={{ color: theme.colors.text }}
-                          >
-                            {item.name}
-                          </h4>
-                          <div 
-                            className="ds-text-lg ds-font-bold ds-ml-2"
-                            style={{ color: theme.colors.primary }}
-                          >
-                            {item.price}₴
-                          </div>
-                        </div>
-                        {item.description && (
-                          <p 
-                            className="ds-text-sm"
-                            style={{ color: theme.colors.text, opacity: 0.7 }}
-                          >
-                            {item.description}
-                          </p>
-                        )}
+                  <div 
+                    className={`${borderRadiusClass} ${paddingClass} ${shadowClass}`}
+                    style={{ 
+                      backgroundColor: theme.colors.surface,
+                      border: `1px solid ${theme.colors.primary}10` 
+                    }}
+                  >
+                    <div className="ds-flex ds-justify-between ds-items-start ds-mb-2">
+                      <div className="ds-flex-1">
+                        <h4 
+                          className="ds-text-base ds-font-semibold ds-mb-1"
+                          style={{ color: theme.colors.text }}
+                        >
+                          Борщ український
+                        </h4>
+                        <p 
+                          className="ds-text-sm ds-mb-2"
+                          style={{ color: theme.colors.text, opacity: 0.7 }}
+                        >
+                          Традиційний український борщ зі сметаною та зеленню
+                        </p>
                       </div>
-                    </div>
-                    ))
-                  ) : (
-                    <div 
-                      className={`ds-bg-gray-50 ${borderRadiusClass} ${paddingClass}`}
-                      style={{ border: `1px solid ${theme.colors.primary}10` }}
-                    >
-                      <p 
-                        className="ds-text-sm ds-text-center"
-                        style={{ color: theme.colors.text, opacity: 0.6 }}
+                      <div 
+                        className="ds-text-lg ds-font-bold ds-ml-2"
+                        style={{ color: theme.colors.primary }}
                       >
-                        Немає страв в цій категорії
-                      </p>
-                    </div>
-                  )}
-                </div>
-              ))
-            ) : (
-              // Fallback мок дані
-              <div className="ds-space-y-3">
-                <h3 
-                  className="ds-text-lg ds-font-semibold ds-text-center"
-                  style={{ color: theme.colors.text }}
-                >
-                  Гарячі страви
-                </h3>
-                <div 
-                  className={`ds-bg-white ${borderRadiusClass} ${paddingClass} ${shadowClass}`}
-                  style={{ border: `1px solid ${theme.colors.primary}10` }}
-                >
-                  <div className="ds-flex ds-justify-between ds-items-start ds-mb-2">
-                    <div className="ds-flex-1">
-                      <h4 
-                        className="ds-text-base ds-font-semibold ds-mb-1"
-                        style={{ color: theme.colors.text }}
-                      >
-                        Борщ український
-                      </h4>
-                      <p 
-                        className="ds-text-sm ds-mb-2"
-                        style={{ color: theme.colors.text, opacity: 0.7 }}
-                      >
-                        Традиційний український борщ зі сметаною та зеленню
-                      </p>
-                    </div>
-                    <div 
-                      className="ds-text-lg ds-font-bold ds-ml-2"
-                      style={{ color: theme.colors.primary }}
-                    >
-                      120₴
+                        120₴
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
-        </div>
 
-        {/* Футер */}
-        <div 
-          className="ds-text-center ds-py-3 ds-px-4"
-          style={{ 
-            backgroundColor: theme.colors.surface,
-            color: theme.colors.text,
-            borderTop: `1px solid ${theme.colors.primary}20`
-          }}
-        >
-          <p className="ds-text-xs ds-opacity-70">
-            Скануйте QR-код для перегляду повного меню
-          </p>
+          {/* Футер */}
+          <div 
+            className="ds-flex-shrink-0 ds-text-center ds-py-3 ds-px-4"
+            style={{ 
+              backgroundColor: theme.colors.surface,
+              color: theme.colors.text,
+              borderTop: `1px solid ${theme.colors.primary}20`
+            }}
+          >
+            {/* <p className="ds-text-xs ds-opacity-70">
+              Скануйте QR-код для перегляду повного меню
+            </p> */}
+          </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
