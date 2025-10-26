@@ -222,6 +222,7 @@ body {
 
 .ds-flex-shrink-0 { flex-shrink: 0; }
 .ds-flex-shrink-1 { flex-shrink: 1; }
+.ds-ring-0 { box-shadow: none; }
 
 .ds-gap-1 { gap: var(--spacing-1); }
 .ds-gap-2 { gap: var(--spacing-2); }
@@ -425,7 +426,11 @@ body {
 .ds-transition-fast { transition: all var(--transition-fast); }
 .ds-transition-slow { transition: all var(--transition-slow); }
 .ds-transition-all { transition: all var(--transition-normal); }
+.ds-transition-colors { transition-property: background-color, border-color; transition-timing-function: ease-in-out; transition-duration: 150ms; }
+.ds-transition-transform { transition-property: transform; transition-timing-function: ease-in-out; transition-duration: 150ms; }
+.ds-duration-200 { transition-duration: 200ms; }
 .ds-duration-300 { transition-duration: 300ms; }
+.ds-ease-in-out { transition-timing-function: ease-in-out; }
 
 /* Transform utilities */
 .ds-transform { transform: translateZ(0); }
@@ -434,6 +439,10 @@ body {
 .ds-translate-y-1\/2 { transform: translateY(50%); }
 .ds-translate-x-1\/2 { transform: translateX(50%); }
 .ds--translate-x-1\/2 { transform: translateX(-50%); }
+.ds-translate-x-0 { transform: translateX(0); }
+.ds-translate-x-1 { transform: translateX(0.25rem); }
+.ds-translate-x-5 { transform: translateX(1.25rem); }
+.ds-translate-x-7 { transform: translateX(1.75rem); }
 
 .ds-hover-scale:hover { transform: scale(1.05); }
 .ds-hover-lift:hover { transform: translateY(-2px); }
@@ -447,9 +456,17 @@ body {
 .ds-cursor-not-allowed { cursor: not-allowed; }
 .ds-min-w-32 { min-width: 8rem; }
 .ds-border-transparent { border-color: transparent; }
+.ds-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
+.ds-text-blue-600 { color: #2563eb; }
+.ds-w-11 { width: 2.75rem; }
+.ds-h-6 { height: 1.5rem; }
+.ds-w-14 { width: 3.5rem; }
+.ds-h-7 { height: 1.75rem; }
+.ds-bg-gray-300 { background-color: var(--color-gray-300); }
 .ds-ring-2 { box-shadow: 0 0 0 2px var(--color-primary); }
 .ds-ring-blue-500 { box-shadow: 0 0 0 2px #3b82f6; }
 .ds-ring-offset-2 { box-shadow: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-primary); }
+.ds-border { border: 1px solid currentColor; }
 .ds-border-blue-500 { border-color: #3b82f6; }
 .ds-border-gray-200 { border-color: var(--color-gray-200); }
 .ds-border-gray-300 { border-color: var(--color-gray-300); }
@@ -488,6 +505,7 @@ body {
 .ds-w-8 { width: 2rem; }
 .ds-h-8 { height: 2rem; }
 .ds-w-full { width: 100%; }
+.ds-w-1\/2 { width: 50%; }
 .ds-h-full { height: 100%; }
 .ds-min-h-full { min-height: 100%; }
 .ds-h-48 { height: 12rem; } /* 192px - для банера */
@@ -521,6 +539,7 @@ body {
 /* Додаткові ефекти */
 .ds-opacity-50 { opacity: 0.5; }
 .ds-capitalize { text-transform: capitalize; }
+.ds-break-words { overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; }
 .ds-line-clamp-2 { 
   display: -webkit-box;
   -webkit-line-clamp: 2;

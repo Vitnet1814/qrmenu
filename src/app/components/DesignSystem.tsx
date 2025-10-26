@@ -19,10 +19,10 @@ export interface Theme {
 }
 
 export interface LayoutSettings {
-  borderRadius: 'minimal' | 'medium' | 'large';
+  borderRadius: 'minimal' | 'medium' | 'extra-large';
   padding: 'compact' | 'normal' | 'spacious';
-  shadow: 'minimal' | 'normal' | 'dramatic';
-  fontFamily: 'inter' | 'roboto' | 'opensans' | 'lato' | 'montserrat' | 'poppins' | 'nunito' | 'playfair' | 'merriweather' | 'crimson' | 'libre' | 'source';
+  shadow: boolean; // false = minimal, true = dramatic
+  fontFamily: 'inter' | 'playfair' | 'inconsolata' | 'times-new-roman';
 }
 
 export interface ColorPickerProps {
@@ -392,8 +392,8 @@ export const LayoutSettings: React.FC<LayoutSettingsProps> = ({ settings, onChan
 
   const borderRadiusOptions = [
     { value: 'minimal' as const, label: 'Мінімальне' },
-    { value: 'medium' as const, label: 'Середнє' },
-    { value: 'large' as const, label: 'Велике' }
+    { value: 'medium' as const, label: 'Велике' },
+    { value: 'extra-large' as const, label: 'Дуже велике' }
   ];
 
   const paddingOptions = [
@@ -402,25 +402,11 @@ export const LayoutSettings: React.FC<LayoutSettingsProps> = ({ settings, onChan
     { value: 'spacious' as const, label: 'Великі' }
   ];
 
-  const shadowOptions = [
-    { value: 'minimal' as const, label: 'Мінімальні' },
-    { value: 'normal' as const, label: 'Звичайні' },
-    { value: 'dramatic' as const, label: 'Драматичні' }
-  ];
-
   const fontOptions = [
-    { value: 'inter' as const, label: 'Inter' },
-    { value: 'roboto' as const, label: 'Roboto' },
-    { value: 'opensans' as const, label: 'Open Sans' },
-    { value: 'lato' as const, label: 'Lato' },
-    { value: 'montserrat' as const, label: 'Montserrat' },
-    { value: 'poppins' as const, label: 'Poppins' },
-    { value: 'nunito' as const, label: 'Nunito' },
-    { value: 'playfair' as const, label: 'Playfair Display' },
-    { value: 'merriweather' as const, label: 'Merriweather' },
-    { value: 'crimson' as const, label: 'Crimson Text' },
-    { value: 'libre' as const, label: 'Libre Baskerville' },
-    { value: 'source' as const, label: 'Source Serif Pro' }
+    { value: 'inter' as const, label: 'Inter — Sans-serif' },
+    { value: 'playfair' as const, label: 'Playfair Display — Serif' },
+    { value: 'inconsolata' as const, label: 'Inconsolata — Monospace' },
+    { value: 'times-new-roman' as const, label: 'Times New Roman — Serif (System Font)' }
   ];
 
 
@@ -429,16 +415,29 @@ export const LayoutSettings: React.FC<LayoutSettingsProps> = ({ settings, onChan
       <h3 className="ds-text-lg ds-font-semibold ds-text-gray-900 ds-mb-4">
         Налаштування макету
       </h3>
-
-      {/* Закруглення кутів */}
+        {/* Тіні */}
       <div className="ds-flex ds-items-center ds-justify-between ds-gap-4">
         <h4 className="ds-text-sm ds-font-medium ds-text-gray-700 ds-flex-shrink-0">
+          Тіні:
+        </h4>
+        <div className="ds-w-1/2 ds-flex ds-justify-start">
+          <input
+            type="checkbox"
+            checked={localSettings.shadow}
+            onChange={(e) => handleSettingChange('shadow', e.target.checked)}
+            className="ds-w-5 ds-h-5 ds-text-blue-600 ds-border-gray-300 ds-rounded focus:ds-ring-blue-500"
+          />
+        </div>
+      </div>
+      {/* Закруглення кутів */}
+      <div className="ds-flex ds-items-center ds-justify-between ds-gap-4">
+        <h4 className="ds-text-sm ds-font-medium ds-text-gray-700 ds-break-words" style={{ maxWidth: '40%' }}>
           Закруглення кутів:
         </h4>
         <select
           value={localSettings.borderRadius}
           onChange={(e) => handleSettingChange('borderRadius', e.target.value as LayoutSettings['borderRadius'])}
-          className="ds-flex-1 ds-px-4 ds-py-3 ds-border ds-border-gray-300 ds-rounded-lg ds-bg-white ds-text-gray-900 ds-focus:outline-none ds-focus:ring-2 ds-focus:ring-blue-500 ds-focus:border-transparent"
+          className="ds-w-1/2 ds-px-4 ds-py-3 ds-border ds-border-gray-300 ds-rounded-lg ds-bg-white ds-text-gray-900 ds-focus:outline-none ds-focus:ring-2 ds-focus:ring-blue-500 ds-focus:border-transparent"
         >
           {borderRadiusOptions.map((option) => (
             <option key={option.value} value={option.value}>
@@ -456,27 +455,9 @@ export const LayoutSettings: React.FC<LayoutSettingsProps> = ({ settings, onChan
         <select
           value={localSettings.padding}
           onChange={(e) => handleSettingChange('padding', e.target.value as LayoutSettings['padding'])}
-          className="ds-flex-1 ds-px-4 ds-py-3 ds-border ds-border-gray-300 ds-rounded-lg ds-bg-white ds-text-gray-900 ds-focus:outline-none ds-focus:ring-2 ds-focus:ring-blue-500 ds-focus:border-transparent"
+          className="ds-w-1/2 ds-px-4 ds-py-3 ds-border ds-border-gray-300 ds-rounded-lg ds-bg-white ds-text-gray-900 ds-focus:outline-none ds-focus:ring-2 ds-focus:ring-blue-500 ds-focus:border-transparent"
         >
           {paddingOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Тіні */}
-      <div className="ds-flex ds-items-center ds-justify-between ds-gap-4">
-        <h4 className="ds-text-sm ds-font-medium ds-text-gray-700 ds-flex-shrink-0">
-          Тіні:
-        </h4>
-        <select
-          value={localSettings.shadow}
-          onChange={(e) => handleSettingChange('shadow', e.target.value as LayoutSettings['shadow'])}
-          className="ds-flex-1 ds-px-4 ds-py-3 ds-border ds-border-gray-300 ds-rounded-lg ds-bg-white ds-text-gray-900 ds-focus:outline-none ds-focus:ring-2 ds-focus:ring-blue-500 ds-focus:border-transparent"
-        >
-          {shadowOptions.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
@@ -492,7 +473,7 @@ export const LayoutSettings: React.FC<LayoutSettingsProps> = ({ settings, onChan
         <select
           value={localSettings.fontFamily}
           onChange={(e) => handleSettingChange('fontFamily', e.target.value as LayoutSettings['fontFamily'])}
-          className="ds-flex-1 ds-px-4 ds-py-3 ds-border ds-border-gray-300 ds-rounded-lg ds-bg-white ds-text-gray-900 ds-focus:outline-none ds-focus:ring-2 ds-focus:ring-blue-500 ds-focus:border-transparent"
+          className="ds-w-1/2 ds-px-4 ds-py-3 ds-border ds-border-gray-300 ds-rounded-lg ds-bg-white ds-text-gray-900 ds-focus:outline-none ds-focus:ring-2 ds-focus:ring-blue-500 ds-focus:border-transparent"
         >
           {fontOptions.map((option) => (
             <option key={option.value} value={option.value}>
@@ -501,6 +482,8 @@ export const LayoutSettings: React.FC<LayoutSettingsProps> = ({ settings, onChan
           ))}
         </select>
       </div>
+
+     
     </div>
   );
 };
@@ -603,8 +586,8 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
   const getBorderRadiusClass = (value: LayoutSettings['borderRadius']) => {
     switch (value) {
       case 'minimal': return 'ds-rounded-sm';
-      case 'medium': return 'ds-rounded-md';
-      case 'large': return 'ds-rounded-lg';
+      case 'medium': return 'ds-rounded-lg';
+      case 'extra-large': return 'ds-rounded-2xl';
       default: return 'ds-rounded-md';
     }
   };
@@ -618,29 +601,16 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
     }
   };
 
-  const getShadowClass = (value: LayoutSettings['shadow']) => {
-    switch (value) {
-      case 'minimal': return 'ds-shadow-sm';
-      case 'normal': return 'ds-shadow-md';
-      case 'dramatic': return 'ds-shadow-lg';
-      default: return 'ds-shadow-md';
-    }
+  const getShadowClass = (value: boolean) => {
+    return value ? 'ds-shadow-lg' : 'ds-shadow-sm';
   };
 
   const getFontFamilyClass = (value: LayoutSettings['fontFamily']) => {
     switch (value) {
       case 'inter': return 'font-inter';
-      case 'roboto': return 'font-roboto';
-      case 'opensans': return 'font-open-sans';
-      case 'lato': return 'font-lato';
-      case 'montserrat': return 'font-montserrat';
-      case 'poppins': return 'font-poppins';
-      case 'nunito': return 'font-nunito';
       case 'playfair': return 'font-playfair';
-      case 'merriweather': return 'font-merriweather';
-      case 'crimson': return 'font-crimson';
-      case 'libre': return 'font-libre';
-      case 'source': return 'font-source';
+      case 'inconsolata': return 'font-inconsolata';
+      case 'times-new-roman': return 'font-times-new-roman';
       default: return 'font-inter';
     }
   };
@@ -790,7 +760,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
               }
             `}</style>
             <div 
-              className={`ds-w-full ds-min-h-full ${shadowClass}`}
+              className={`ds-w-full ds-min-h-full ${shadowClass} ${fontFamilyClass}`}
               style={{ backgroundColor: theme.colors.background }}
             >
           {/* Банер ресторану */}

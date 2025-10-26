@@ -35,7 +35,7 @@ const DesignSettingsPage = () => {
     layout: {
       borderRadius: 'medium',
       padding: 'normal',
-      shadow: 'normal',
+      shadow: false,
       fontFamily: 'inter'
     }
   });
@@ -274,28 +274,43 @@ const DesignSettingsPage = () => {
         </div>
       </div>
 
-      {/* SaveBar - панель збереження/скасування */}
+      {/* SaveBar - панель збереження/скасування*/}
       {hasUnsavedChanges && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
-          <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium text-gray-700">
-                У вас є незбережені зміни
+        <div className="ds-fixed ds-bottom-0 ds-left-0 ds-right-0 ds-flex ds-justify-center ds-z-50 save-bar-container">
+          <div className="ds-bg-white ds-shadow-lg ds-rounded-lg ds-px-4 ds-py-4 ds-flex ds-items-center ds-justify-between save-bar-content" style={{ borderTop: '1px solid var(--color-gray-200)' }}>
+            <div className="ds-flex ds-items-center ds-gap-3">
+              <div className="ds-rounded-full animate-pulse" style={{ width: '0.5rem', height: '0.5rem', backgroundColor: '#f97316' }}></div>
+              <span className="ds-text-sm ds-font-medium" style={{ color: 'var(--color-gray-700)' }}>
+                У вас є зміни
               </span>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="ds-flex ds-items-center ds-gap-3">
               <button
                 onClick={handleCancel}
                 disabled={isSaving}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="ds-px-4 ds-py-2 ds-text-sm ds-font-medium ds-bg-white ds-rounded-lg ds-transition-all"
+                style={{
+                  color: 'var(--color-gray-700)',
+                  border: '1px solid var(--color-gray-300)',
+                  opacity: isSaving ? 0.5 : 1,
+                  cursor: isSaving ? 'not-allowed' : 'pointer'
+                }}
+                onMouseEnter={(e) => !isSaving && (e.currentTarget.style.backgroundColor = 'var(--color-gray-50)')}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--color-white)'}
               >
                 Скасувати
               </button>
               <button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="ds-px-4 ds-py-2 ds-text-sm ds-font-medium ds-text-white ds-rounded-lg ds-transition-all"
+                style={{
+                  backgroundColor: '#2563eb',
+                  opacity: isSaving ? 0.5 : 1,
+                  cursor: isSaving ? 'not-allowed' : 'pointer'
+                }}
+                onMouseEnter={(e) => !isSaving && (e.currentTarget.style.backgroundColor = '#1d4ed8')}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
               >
                 {isSaving ? 'Збереження...' : 'Зберегти'}
               </button>
@@ -306,34 +321,57 @@ const DesignSettingsPage = () => {
 
       {/* Модалка попередження про незбережені дані */}
       {showUnsavedModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-            <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+        <div className="ds-fixed ds-inset-0 ds-z-50 ds-flex ds-items-center ds-justify-center" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+          <div className="ds-bg-white ds-rounded-lg ds-shadow-xl ds-max-w-md ds-w-full ds-mx-4">
+            <div className="ds-p-6">
+              <h3 className="ds-text-lg ds-font-semibold ds-mb-2" style={{ color: 'var(--color-gray-900)' }}>
                 Незбережені зміни
               </h3>
-              <p className="text-sm text-gray-600 mb-6">
+              <p className="ds-text-sm ds-mb-6" style={{ color: 'var(--color-gray-600)' }}>
                 У вас є незбережені зміни. Що ви хочете зробити?
               </p>
-              <div className="flex gap-3">
+              <div className="ds-flex ds-gap-3">
                 <button
                   onClick={handleSaveAndNavigate}
                   disabled={isSaving}
-                  className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="ds-flex-1 ds-px-4 ds-py-2 ds-text-sm ds-font-medium ds-text-white ds-rounded-lg ds-transition-all"
+                  style={{
+                    backgroundColor: '#2563eb',
+                    opacity: isSaving ? 0.5 : 1,
+                    cursor: isSaving ? 'not-allowed' : 'pointer'
+                  }}
+                  onMouseEnter={(e) => !isSaving && (e.currentTarget.style.backgroundColor = '#1d4ed8')}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
                 >
                   Зберегти
                 </button>
                 <button
                   onClick={handleDiscardAndNavigate}
                   disabled={isSaving}
-                  className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="ds-flex-1 ds-px-4 ds-py-2 ds-text-sm ds-font-medium ds-rounded-lg ds-transition-all"
+                  style={{
+                    color: 'var(--color-gray-700)',
+                    backgroundColor: 'var(--color-gray-100)',
+                    opacity: isSaving ? 0.5 : 1,
+                    cursor: isSaving ? 'not-allowed' : 'pointer'
+                  }}
+                  onMouseEnter={(e) => !isSaving && (e.currentTarget.style.backgroundColor = 'var(--color-gray-200)')}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--color-gray-100)'}
                 >
                   Не зберігати
                 </button>
                 <button
                   onClick={() => setShowUnsavedModal(false)}
                   disabled={isSaving}
-                  className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="ds-flex-1 ds-px-4 ds-py-2 ds-text-sm ds-font-medium ds-bg-white ds-rounded-lg ds-transition-all"
+                  style={{
+                    color: 'var(--color-gray-700)',
+                    border: '1px solid var(--color-gray-300)',
+                    opacity: isSaving ? 0.5 : 1,
+                    cursor: isSaving ? 'not-allowed' : 'pointer'
+                  }}
+                  onMouseEnter={(e) => !isSaving && (e.currentTarget.style.backgroundColor = 'var(--color-gray-50)')}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--color-white)'}
                 >
                   Скасувати
                 </button>

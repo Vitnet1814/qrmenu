@@ -16,10 +16,10 @@ export interface DesignSettings extends Record<string, unknown> {
     };
   };
   layout: {
-    borderRadius: 'minimal' | 'medium' | 'large';
+    borderRadius: 'minimal' | 'medium' | 'extra-large';
     padding: 'compact' | 'normal' | 'spacious';
-    shadow: 'minimal' | 'normal' | 'dramatic';
-    fontFamily: 'inter' | 'roboto' | 'opensans' | 'lato' | 'montserrat' | 'poppins' | 'nunito' | 'playfair' | 'merriweather' | 'crimson' | 'libre' | 'source';
+    shadow: boolean;
+    fontFamily: 'inter' | 'playfair' | 'inconsolata' | 'times-new-roman';
   };
   updatedAt: string;
 }
@@ -55,7 +55,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             layout: {
               borderRadius: 'medium',
               padding: 'normal',
-              shadow: 'normal',
+              shadow: false,
               fontFamily: 'inter'
             },
             updatedAt: new Date().toISOString()

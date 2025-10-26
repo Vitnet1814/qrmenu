@@ -92,7 +92,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         layout: {
           borderRadius: 'medium',
           padding: 'normal',
-          shadow: 'normal',
+          shadow: false,
           fontFamily: 'inter'
         }
       },

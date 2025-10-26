@@ -633,6 +633,50 @@ export default function TestPageStyles() {
                 </div>
               </CardBody>
             </Card>
+
+            {/* Демонстрація шрифтів */}
+            <Card>
+              <CardHeader>
+                <CardTitle>🔤 Сімейства шрифтів</CardTitle>
+                <CardSubtitle>Всі доступні шрифти для меню</CardSubtitle>
+              </CardHeader>
+              <CardBody>
+                <div className="ds-space-y-6">
+                  <div className="font-inter">
+                    <h3 className="ds-text-xl ds-text-gray-900 ds-mb-2 ds-font-normal">Inter</h3>
+                    <p className="ds-text-lg ds-text-gray-700 ds-mb-2">QR menu for your restaurant in 5 minutes. Free. Create a modern menu, get a QR code and let customers view your dishes from their phone</p>
+                    <p className="ds-text-lg ds-text-gray-700 ds-mb-1">QR-меню для її закладу за 5 хвилин. Безкоштовно
+Створіть сучасне меню, є QR-код і дозвольте клієнтам переглядати ваші страви зі свого телефону</p>
+                    <div className="ds-text-xs ds-text-gray-500 ds-mt-1">Сімейство: Sans-serif</div>
+                  </div>
+
+                  <div className="font-playfair">
+                    <h3 className="ds-text-xl ds-text-gray-900 ds-mb-2 ds-font-normal">Playfair Display</h3>
+                    <p className="ds-text-lg ds-text-gray-700 ds-mb-2">QR menu for your restaurant in 5 minutes. Free. Create a modern menu, get a QR code and let customers view your dishes from their phone</p>
+                    <p className="ds-text-lg ds-text-gray-700 ds-mb-1">QR-меню для її закладу за 5 хвилин. Безкоштовно
+Створіть сучасне меню, є QR-код і дозвольте клієнтам переглядати ваші страви зі свого телефону</p>
+                    <div className="ds-text-xs ds-text-gray-500 ds-mt-1">Сімейство: Serif</div>
+                  </div>
+
+                  <div className="font-inconsolata">
+                    <h3 className="ds-text-xl ds-text-gray-900 ds-mb-2 ds-font-normal">Inconsolata</h3>
+                    <p className="ds-text-lg ds-text-gray-700 ds-mb-2">QR menu for your restaurant in 5 minutes. Free. Create a modern menu, get a QR code and let customers view your dishes from their phone</p>
+                    <p className="ds-text-lg ds-text-gray-700 ds-mb-1">QR-меню для її закладу за 5 хвилин. Безкоштовно
+Створіть сучасне меню, є QR-код і дозвольте клієнтам переглядати ваші страви зі свого телефону</p>
+                    <div className="ds-text-xs ds-text-gray-500 ds-mt-1">Сімейство: Monospace</div>
+                  </div>
+
+
+                  <div className="font-times">
+                    <h3 className="ds-text-xl ds-text-gray-900 ds-mb-2 ds-font-normal">Times New Roman</h3>
+                    <p className="ds-text-lg ds-text-gray-700 ds-mb-2">QR menu for your restaurant in 5 minutes. Free. Create a modern menu, get a QR code and let customers view your dishes from their phone</p>
+                    <p className="ds-text-lg ds-text-gray-700 ds-mb-1">QR-меню для її закладу за 5 хвилин. Безкоштовно
+Створіть сучасне меню, є QR-код і дозвольте клієнтам переглядати ваші страви зі свого телефону</p>
+                    <div className="ds-text-xs ds-text-gray-500 ds-mt-1">Сімейство: Serif (System Font)</div>
+                  </div>
+                </div>
+              </CardBody>
+            </Card>
           </div>
         )}
 
