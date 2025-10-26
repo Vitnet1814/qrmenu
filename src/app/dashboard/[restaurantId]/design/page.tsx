@@ -27,7 +27,7 @@ const DesignSettingsPage = () => {
   const restaurantId = params?.restaurantId;
 
   const [settings, setSettings] = useState<DesignSettings>({
-    theme: themes[5], // Модерн за замовчуванням
+    theme: themes[0], // За замовчуванням
     layout: {
       borderRadius: 'medium',
       padding: 'normal',
@@ -36,7 +36,7 @@ const DesignSettingsPage = () => {
     }
   });
 
-  const [selectedThemeId, setSelectedThemeId] = useState<string>('modern');
+  const [selectedThemeId, setSelectedThemeId] = useState<string>('default');
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -50,7 +50,7 @@ const DesignSettingsPage = () => {
         if (response.ok) {
           const data = await response.json();
           setSettings({
-            theme: themes.find(t => t.id === data.theme.id) || themes[5],
+            theme: themes.find(t => t.id === data.theme.id) || themes[0],
             layout: data.layout
           });
         }
@@ -153,25 +153,44 @@ const DesignSettingsPage = () => {
             <CardSubtitle>Оберіть тему для вашого меню</CardSubtitle>
           </CardHeader>
           <CardBody>
-            <div className="ds-flex ds-flex-wrap ds-gap-3">
+            <div className="ds-grid ds-grid-cols-2 ds-md:grid-cols-3 ds-lg:grid-cols-5 ds-gap-4">
               {themes.map((theme) => (
                 <button
                   key={theme.id}
                   onClick={() => handleThemeSelectChange(theme.id)}
-                  className={`ds-btn ds-btn-sm ds-flex ds-items-center ds-gap-2 ${
+                  className={`ds-p-4 ds-rounded-lg ds-border-2 ds-transition-all ds-text-center ${
                     selectedThemeId === theme.id 
-                      ? 'ds-btn-primary' 
-                      : 'ds-btn-outline'
+                      ? 'ds-border-primary ds-bg-primary ds-bg-opacity-10' 
+                      : 'ds-border-gray-200 ds-bg-white hover:ds-border-gray-300'
                   }`}
                 >
-                  <span>{theme.preview}</span>
-                  {theme.name}
+                  <div className="ds-text-2xl ds-mb-2">{theme.preview}</div>
+                  <div className="ds-text-sm ds-font-medium ds-text-gray-900">
+                    {theme.name}
+                  </div>
                 </button>
               ))}
             </div>
           </CardBody>
         </Card>
 
+        {/* Live попередній перегляд */}
+        <div className="ds-mb-8">
+          <div className="ds-mb-6">
+            <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 ds-mb-2">
+              Попередній перегляд меню
+            </h2>
+            <p className="ds-text-gray-600">
+              Як виглядатиме ваше меню з поточними налаштуваннями
+            </p>
+          </div>
+          
+          <LivePreview
+            theme={settings.theme}
+            layoutSettings={settings.layout}
+            restaurantId={restaurantId}
+          />
+        </div>
 
         {/* Основні налаштування */}
         <div className="ds-grid ds-grid-cols-1 ds-gap-8">
@@ -179,31 +198,15 @@ const DesignSettingsPage = () => {
           <div className="ds-space-y-8">
           </div>
 
-          {/* Права колонка - Попередній перегляд */}
+          {/* Права колонка - Налаштування макету та рекомендації */}
           <div className="ds-space-y-8">
-            {/* Заголовок попереднього перегляду */}
-            <div>
-              <h2 className="ds-text-xl ds-font-semibold ds-text-gray-900 ds-mb-2">
-                Попередній перегляд меню
-              </h2>
-              <p className="ds-text-gray-600 ds-mb-6">
-                Як виглядатиме ваше меню з поточними налаштуваннями
-              </p>
-            </div>
-            
-            {/* Live попередній перегляд */}
-            <LivePreview
-              theme={settings.theme}
-              layoutSettings={settings.layout}
-            />
-
             {/* Налаштування макету */}
             <LayoutSettingsComponent
               settings={settings.layout}
               onChange={handleLayoutChange}
             />
 
-            {/* Загальні рекомендації */}
+            {/* Загальні рекомендації 
             <div className="ds-card ds-card-body">
               <h3 className="ds-text-lg ds-font-semibold ds-text-gray-900 ds-mb-4">
                 Загальні рекомендації
@@ -215,7 +218,7 @@ const DesignSettingsPage = () => {
                 <p>• Зберігайте консистентність у дизайні</p>
                 <p>• Використовуйте якісні зображення страв</p>
               </div>
-            </div>
+            </div>*/}
           </div>
         </div>
       </div>
