@@ -197,6 +197,8 @@ body {
    =========================================== */
 .ds-flex { display: flex; }
 .ds-inline-flex { display: inline-flex; }
+.ds-block { display: block; }
+.ds-inline-block { display: inline-block; }
 .ds-flex-col { flex-direction: column; }
 .ds-flex-row { flex-direction: row; }
 .ds-flex-wrap { flex-wrap: wrap; }
@@ -230,6 +232,10 @@ body {
 .ds-gap-4 { gap: var(--spacing-4); }
 .ds-gap-6 { gap: var(--spacing-6); }
 .ds-gap-8 { gap: var(--spacing-8); }
+
+.ds-space-y-2 > * + * { margin-top: var(--spacing-2); }
+.ds-space-y-4 > * + * { margin-top: var(--spacing-4); }
+.ds-space-y-6 > * + * { margin-top: var(--spacing-6); }
 
 /* ===========================================
    УТИЛІТАРНІ КЛАСИ - GRID
@@ -468,22 +474,32 @@ body {
 .ds-ring-offset-2 { box-shadow: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-primary); }
 .ds-border { border: 1px solid currentColor; }
 .ds-border-blue-500 { border-color: #3b82f6; }
+.ds-border-2 { border-width: 2px; }
+.ds-border-dashed { border-style: dashed; }
 .ds-border-gray-200 { border-color: var(--color-gray-200); }
 .ds-border-gray-300 { border-color: var(--color-gray-300); }
 .ds-border-gray-600 { border-color: var(--color-gray-600); }
 .ds-border-gray-700 { border-color: var(--color-gray-700); }
 
 /* Додаткові кольори */
+.ds-bg-blue-50 { background-color: #eff6ff; }
+.ds-bg-blue-500 { background-color: #3b82f6; }
 .ds-bg-blue-600 { background-color: #2563eb; }
 .ds-bg-blue-700 { background-color: #1d4ed8; }
-.ds-bg-blue-500 { background-color: #3b82f6; }
+.ds-bg-green-600 { background-color: #16a34a; }
+.ds-bg-green-700 { background-color: #15803d; }
 .ds-bg-gray-100 { background-color: var(--color-gray-100); }
 .ds-bg-gray-700 { background-color: var(--color-gray-700); }
 .ds-bg-gray-800 { background-color: var(--color-gray-800); }
 
+.ds-text-blue-50 { color: #eff6ff; }
+.ds-text-blue-600 { color: #2563eb; }
+.ds-text-blue-800 { color: #1e40af; }
+.ds-text-blue-900 { color: #1e3a8a; }
 .ds-text-gray-100 { color: var(--color-gray-100); }
 .ds-text-gray-300 { color: var(--color-gray-300); }
 .ds-text-gray-400 { color: var(--color-gray-400); }
+.ds-text-gray-500 { color: var(--color-gray-500); }
 
 /* Додаткові відступи */
 .ds-mb-2 { margin-bottom: var(--spacing-2); }
@@ -494,6 +510,7 @@ body {
 .ds-mt-1 { margin-top: var(--spacing-1); }
 .ds-mt-2 { margin-top: var(--spacing-2); }
 .ds-mt-4 { margin-top: var(--spacing-4); }
+.ds-mr-2 { margin-right: var(--spacing-2); }
 
 .ds-px-3 { padding-left: var(--spacing-3); padding-right: var(--spacing-3); }
 .ds-py-1 { padding-top: var(--spacing-1); padding-bottom: var(--spacing-1); }
@@ -502,12 +519,16 @@ body {
 /* Додаткові розміри */
 .ds-w-4 { width: 1rem; }
 .ds-h-4 { height: 1rem; }
+.ds-w-5 { width: 1.25rem; }
+.ds-h-5 { height: 1.25rem; }
 .ds-w-8 { width: 2rem; }
 .ds-h-8 { height: 2rem; }
 .ds-w-full { width: 100%; }
 .ds-w-1\/2 { width: 50%; }
 .ds-h-full { height: 100%; }
+.ds-h-10 { height: 2.5rem; }
 .ds-min-h-full { min-height: 100%; }
+.ds-min-h-screen { min-height: 100vh; }
 .ds-h-48 { height: 12rem; } /* 192px - для банера */
 
 /* Фонові зображення */
@@ -557,7 +578,9 @@ body {
 /* Додаткові hover ефекти */
 .ds-hover\:bg-gray-200:hover { background-color: var(--color-gray-200); }
 .ds-hover\:bg-gray-600:hover { background-color: var(--color-gray-600); }
+.ds-hover\:bg-gray-700:hover { background-color: var(--color-gray-700); }
 .ds-hover\:bg-blue-700:hover { background-color: #1d4ed8; }
+.ds-hover\:bg-green-700:hover { background-color: #15803d; }
 
 /* Додаткові disabled стани */
 .ds-disabled\:opacity-50:disabled { opacity: 0.5; }
@@ -565,6 +588,11 @@ body {
 
 /* Додаткові анімації */
 .ds-animate-spin { animation: ds-spin 1s linear infinite; }
+
+/* Print media queries */
+@media print {
+  .print\:hidden { display: none !important; }
+}
 
 /* Додаткові розміри шрифтів */
 .ds-text-xs { font-size: var(--font-size-xs); }
@@ -685,7 +713,9 @@ body {
 .justify-center { justify-content: center; }
 .text-center { text-align: center; }
 .space-x-3 > * + * { margin-left: var(--spacing-3); }
+.space-y-2 > * + * { margin-top: var(--spacing-2); }
 .space-y-4 > * + * { margin-top: var(--spacing-4); }
+.space-y-6 > * + * { margin-top: var(--spacing-6); }
 
 .w-5 { width: 1.25rem; }
 .h-5 { height: 1.25rem; }
@@ -758,6 +788,8 @@ body {
 
 /* Рамки */
 .border { border: 1px solid var(--color-gray-200); }
+.border-2 { border-width: 2px; }
+.border-dashed { border-style: dashed; }
 .border-green-200 { border-color: #bbf7d0; }
 .border-red-200 { border-color: #fecaca; }
 .border-yellow-200 { border-color: #fef08a; }
