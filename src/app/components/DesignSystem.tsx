@@ -667,11 +667,12 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
     <div className={`ds-card ds-flex ds-justify-center ds-items-start ds-py-8 ${fontFamilyClass}`}>
       {/* Контейнер з емуляцією телефону */}
       <div 
-        className="ds-relative"
+        className="ds-relative phone-container"
         style={{
           width: '350px',
           height: '700px',
-          minWidth: '350px'
+          minWidth: '350px',
+          maxWidth: '100%'
         }}
       >
         {/* Зображення frame поверх всього */}
@@ -685,7 +686,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
         
         {/* Контент всередині екрану телефону */}
         <div 
-          className="ds-absolute ds-flex ds-flex-col"
+          className="ds-absolute ds-flex ds-flex-col phone-content"
           style={{
             top: '50px',    // підгонка під розташування екрану в frame
             left: '20px',
@@ -706,6 +707,32 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
             <style jsx>{`
               div::-webkit-scrollbar {
                 display: none;
+              }
+              @media (max-width: 420px) {
+                :global(.phone-container) {
+                  width: 280px !important;
+                  height: 560px !important;
+                  min-width: 280px !important;
+                }
+                :global(.phone-content) {
+                  top: 40px !important;
+                  left: 16px !important;
+                  width: 248px !important;
+                  height: 480px !important;
+                }
+              }
+              @media (max-width: 360px) {
+                :global(.phone-container) {
+                  width: 240px !important;
+                  height: 480px !important;
+                  min-width: 240px !important;
+                }
+                :global(.phone-content) {
+                  top: 34px !important;
+                  left: 14px !important;
+                  width: 212px !important;
+                  height: 410px !important;
+                }
               }
             `}</style>
             <div 
