@@ -720,6 +720,30 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
                   width: 248px !important;
                   height: 480px !important;
                 }
+                :global(.phone-content h1) {
+                  font-size: 1rem !important;
+                }
+                :global(.phone-content h3) {
+                  font-size: 0.875rem !important;
+                }
+                :global(.phone-content h4) {
+                  font-size: 0.75rem !important;
+                }
+                :global(.phone-content p) {
+                  font-size: 0.625rem !important;
+                }
+                :global(.phone-content .ds-text-sm) {
+                  font-size: 0.625rem !important;
+                }
+                :global(.phone-content .ds-text-base) {
+                  font-size: 0.75rem !important;
+                }
+                :global(.phone-content .ds-text-lg) {
+                  font-size: 0.875rem !important;
+                }
+                :global(.phone-content .ds-text-xl) {
+                  font-size: 1rem !important;
+                }
               }
               @media (max-width: 360px) {
                 :global(.phone-container) {
@@ -732,6 +756,30 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
                   left: 14px !important;
                   width: 212px !important;
                   height: 410px !important;
+                }
+                :global(.phone-content h1) {
+                  font-size: 0.875rem !important;
+                }
+                :global(.phone-content h3) {
+                  font-size: 0.75rem !important;
+                }
+                :global(.phone-content h4) {
+                  font-size: 0.625rem !important;
+                }
+                :global(.phone-content p) {
+                  font-size: 0.5rem !important;
+                }
+                :global(.phone-content .ds-text-sm) {
+                  font-size: 0.5rem !important;
+                }
+                :global(.phone-content .ds-text-base) {
+                  font-size: 0.625rem !important;
+                }
+                :global(.phone-content .ds-text-lg) {
+                  font-size: 0.75rem !important;
+                }
+                :global(.phone-content .ds-text-xl) {
+                  font-size: 0.875rem !important;
                 }
               }
             `}</style>
