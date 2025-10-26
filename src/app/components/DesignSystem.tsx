@@ -744,6 +744,9 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
                 :global(.phone-content .ds-text-xl) {
                   font-size: 1rem !important;
                 }
+                :global(.phone-content .restaurant-name) {
+                  padding: 1rem 0.75rem !important;
+                }
               }
               @media (max-width: 360px) {
                 :global(.phone-container) {
@@ -781,6 +784,9 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
                 :global(.phone-content .ds-text-xl) {
                   font-size: 0.875rem !important;
                 }
+                :global(.phone-content .restaurant-name) {
+                  padding: 0.75rem 0.5rem !important;
+                }
               }
             `}</style>
             <div 
@@ -790,14 +796,17 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
           {/* Банер ресторану */}
           {restaurantData?.banner && (
             <div 
-              className="ds-w-full ds-h-48 ds-bg-cover ds-bg-center"
-              style={{backgroundImage: `url(${restaurantData.banner})`}}
+              className="ds-w-full ds-bg-cover ds-bg-center"
+              style={{
+                backgroundImage: `url(${restaurantData.banner})`,
+                aspectRatio: '2 / 1'
+              }}
             />
           )}
           
         {/* Назва ресторану */}
         <div 
-          className={`ds-text-center ds-py-6 ds-px-4`}
+          className={`ds-text-center ds-py-5 ds-px-4 restaurant-name`}
           style={{ 
             background: restaurantData?.banner 
               ? theme.colors.surface
@@ -805,7 +814,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
             color: restaurantData?.banner ? theme.colors.text : '#ffffff'
           }}
         >
-            <h1 className="ds-text-xl ds-font-bold ds-mb-1">
+            <h1 className="ds-text-4xl ds-font-bold ds-mb-1">
               {restaurantData?.name || 'Назва ресторану'}
             </h1>
           </div>
@@ -825,7 +834,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
                 {restaurantData.categories.map((category, index) => (
                   <div 
                     key={category.name}
-                    className={`ds-px-4 ds-py-2 ds-text-sm ds-font-medium ds-whitespace-nowrap ${borderRadiusClass} ${shadowClass}`}
+                    className={`ds-px-4 ds-py-1 ds-text-sm ds-font-medium ds-whitespace-nowrap ${borderRadiusClass} ${shadowClass}`}
                     style={{ 
                       backgroundColor: index === 0 ? theme.colors.primary : theme.colors.surface,
                       color: index === 0 ? '#ffffff' : theme.colors.text,
@@ -845,7 +854,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
                   <div key={category.name} className="ds-space-y-3">
                     {/* Назва категорії */}
                     <h3 
-                      className="ds-text-lg ds-font-semibold ds-text-center"
+                      className="ds-text-2xl ds-font-semibold ds-text-center"
                       style={{ color: theme.colors.text }}
                     >
                       {category.name}
