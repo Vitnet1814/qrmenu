@@ -121,6 +121,34 @@ const PublicMenuPage = () => {
     }
   }, [menuData]);
 
+  // Функції для отримання класів налаштувань макету
+  const getBorderRadiusClass = (value: string) => {
+    switch (value) {
+      case 'minimal': return 'ds-rounded-sm';
+      case 'medium': return 'ds-rounded-lg';
+      case 'extra-large': return 'ds-rounded-2xl';
+      default: return 'ds-rounded-lg';
+    }
+  };
+
+  const getPaddingClass = (value: string) => {
+    switch (value) {
+      case 'compact': return 'ds-p-2';
+      case 'normal': return 'ds-p-4';
+      case 'spacious': return 'ds-p-6';
+      default: return 'ds-p-4';
+    }
+  };
+
+  const getShadowClass = (value: boolean | string) => {
+    if (typeof value === 'boolean') {
+      return value ? 'ds-shadow-lg' : 'ds-shadow-sm';
+    }
+    // Якщо value це string, конвертуємо
+    const booleanValue = value === 'true' || value === 'dramatic';
+    return booleanValue ? 'ds-shadow-lg' : 'ds-shadow-sm';
+  };
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('uk-UA', {
       style: 'currency',
@@ -132,7 +160,7 @@ const PublicMenuPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="ds-min-h-screen ds-bg-gray-50 ds-flex ds-items-center ds-justify-center">
         <LoadingSpinner 
           size="lg" 
           text="Завантаження меню..." 
@@ -143,7 +171,7 @@ const PublicMenuPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="ds-min-h-screen ds-bg-gray-50 ds-flex ds-items-center ds-justify-center ds-p-4">
         <ErrorState 
           title="Помилка завантаження"
           message={error}
@@ -155,10 +183,10 @@ const PublicMenuPage = () => {
 
   if (!menuData) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Меню не знайдено</h1>
-          <p className="text-gray-600">Спробуйте перевірити посилання</p>
+      <div className="ds-min-h-screen ds-bg-gray-50 ds-flex ds-items-center ds-justify-center">
+        <div className="ds-text-center">
+          <h1 className="ds-text-2xl ds-font-bold ds-text-gray-900 ds-mb-4">Меню не знайдено</h1>
+          <p className="ds-text-gray-600">Спробуйте перевірити посилання</p>
         </div>
       </div>
     );
@@ -167,12 +195,12 @@ const PublicMenuPage = () => {
   const activeCategoryData = menuData.categories.find(cat => cat._id === activeCategory);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: menuData.designSettings.theme.colors.background }}>
+    <div className="ds-min-h-screen" style={{ backgroundColor: menuData.designSettings.theme.colors.background }}>
       {/* Header з фоновим зображенням */}
-      <header className="relative overflow-hidden">
+      <header className="ds-relative ds-overflow-hidden">
         {/* Фонове зображення */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="ds-absolute ds-inset-0 ds-bg-cover ds-bg-center ds-bg-no-repeat"
           style={{
             backgroundImage: menuData.banner?.image 
               ? `url(${menuData.banner.image})` 
@@ -182,34 +210,37 @@ const PublicMenuPage = () => {
         />
         
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-30" />
+        <div className="ds-absolute ds-inset-0" style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }} />
         
         {/* Контент шапки */}
-        <div className="relative z-10">
+        <div className="ds-relative ds-z-10">
           {/* Навігаційні іконки */}
-          <div className="flex justify-between items-center p-4">
-            <button className="text-white hover:text-gray-200 transition-colors">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="ds-flex ds-justify-between ds-items-center ds-p-4">
+            <button className="ds-text-white ds-hover:text-gray-200 ds-transition-colors">
+              <svg className="ds-w-6 ds-h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
             
-            <button className="text-white hover:text-gray-200 transition-colors">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button className="ds-text-white ds-hover:text-gray-200 ds-transition-colors">
+              <svg className="ds-w-6 ds-h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </button>
           </div>
           
           {/* Назва ресторану */}
-          <div className="text-center py-8 px-4">
+          <div className="ds-text-center ds-py-8 ds-px-4">
             <h1 
-              className="text-4xl md:text-5xl font-bold mb-2 text-white drop-shadow-lg"
-              style={{ fontFamily: menuData.designSettings.layout.fontFamily }}
+              className="ds-text-4xl ds-font-bold ds-mb-2 ds-text-white"
+              style={{ 
+                fontFamily: menuData.designSettings.layout.fontFamily,
+                textShadow: '0 4px 6px rgba(0, 0, 0, 0.25)'
+              }}
             >
               {menuData.restaurant.name}
             </h1>
-            <p className="text-white text-opacity-90 text-lg">
+            <p className="ds-text-white ds-text-lg" style={{ opacity: 0.9 }}>
               Переглядів: {menuData.restaurant.viewsCount}
             </p>
           </div>
@@ -218,26 +249,26 @@ const PublicMenuPage = () => {
 
 
       {/* Горизонтальна навігація категорій */}
-      <div className="bg-white shadow-sm border-b sticky top-0 z-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between py-3">
+      <div className="ds-bg-white ds-shadow-sm ds-border-b ds-sticky ds-top-0 ds-z-20">
+        <div className="ds-max-w-7xl ds-mx-auto ds-px-4">
+          <div className="ds-flex ds-items-center ds-justify-between ds-py-3">
             {/* Стрілка вгору/вниз */}
-            <button className="text-gray-600 hover:text-gray-800 transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button className="ds-text-gray-600 ds-hover:text-gray-800 ds-transition-colors">
+              <svg className="ds-w-5 ds-h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
               </svg>
             </button>
             
             {/* Категорії */}
-            <div className="flex-1 flex justify-center space-x-1 mx-4">
+            <div className="ds-flex-1 ds-flex ds-justify-center ds-gap-1 ds-mx-4">
               {menuData.categories.map((category) => (
                 <button
                   key={category._id}
                   onClick={() => setActiveCategory(category._id)}
-                  className={`px-4 py-2 rounded-full font-medium transition-all duration-200 text-sm ${
+                  className={`ds-px-4 ds-py-2 ds-rounded-full ds-font-medium ds-transition-all ds-text-sm ${
                     activeCategory === category._id
-                      ? 'text-white shadow-md'
-                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                      ? 'ds-text-white ds-shadow-md'
+                      : 'ds-text-gray-600 ds-hover:text-gray-800 ds-hover:bg-gray-100'
                   }`}
                   style={{
                     backgroundColor: activeCategory === category._id 
@@ -251,52 +282,55 @@ const PublicMenuPage = () => {
             </div>
             
             {/* Пустий простір для балансу */}
-            <div className="w-5"></div>
+            <div className="ds-w-5"></div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="ds-max-w-7xl ds-mx-auto ds-px-4 ds-py-8">
 
         {/* Menu Items */}
         {activeCategoryData && (
-          <div className="space-y-8">
+          <div className="ds-space-y-8">
             {activeCategoryData.items.length === 0 ? (
-              <div className="text-center py-16">
-                <div className="text-8xl mb-6">🍽️</div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              <div className="ds-text-center ds-py-16">
+                <div className="ds-text-8xl ds-mb-6">🍽️</div>
+                <h3 className="ds-text-2xl ds-font-bold ds-text-gray-900 ds-mb-3">
                   Немає страв у цій категорії
                 </h3>
-                <p className="text-gray-600 text-lg">
+                <p className="ds-text-gray-600 ds-text-lg">
                   Спробуйте обрати іншу категорію
                 </p>
               </div>
             ) : (
-              <div className="space-y-8">
-                {activeCategoryData.items.map((item) => (
+              <div className="ds-space-y-8">
+                {activeCategoryData.items.map((item) => {
+                  const borderRadiusClass = getBorderRadiusClass(menuData.designSettings.layout.borderRadius);
+                  const shadowClass = getShadowClass(menuData.designSettings.layout.shadow);
+                  
+                  return (
                   <div
                     key={item._id}
-                    className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
-                    style={{ borderRadius: menuData.designSettings.layout.borderRadius }}
+                    className={`ds-bg-white ds-overflow-hidden ds-hover:shadow-xl ds-transition-all ds-hover:scale-[1.02] ${borderRadiusClass} ${shadowClass}`}
                   >
-                    <div className="flex flex-col md:flex-row">
+                    <div className="ds-flex ds-flex-col ds-md:flex-row">
                       {/* Зображення страви */}
                       {item.image && (
-                        <div className="md:w-1/3 h-64 md:h-auto">
+                        <div className="ds-md:w-1\/3 ds-h-64 ds-md:h-auto">
                           <img
                             src={item.image}
                             alt={item.name}
-                            className="w-full h-full object-cover"
+                            className="ds-w-full ds-h-full ds-object-cover"
                           />
                         </div>
                       )}
                       
                       {/* Контент страви */}
-                      <div className={`flex-1 p-8 ${!item.image ? 'md:p-12' : ''}`}>
-                        <div className="space-y-4">
+                      <div className={`ds-flex-1 ds-p-8 ${!item.image ? 'ds-md:p-12' : ''}`}>
+                        <div className={`ds-space-y-4 ${getPaddingClass(menuData.designSettings.layout.padding)}`}>
                           {/* Назва страви */}
                           <h3 
-                            className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight"
+                            className="ds-text-2xl ds-font-bold ds-text-gray-900 ds-leading-tight"
                             style={{ fontFamily: menuData.designSettings.layout.fontFamily }}
                           >
                             {item.name}
@@ -304,35 +338,35 @@ const PublicMenuPage = () => {
                           
                           {/* Опис страви */}
                           {item.description && (
-                            <p className="text-gray-600 text-lg leading-relaxed">
+                            <p className="ds-text-gray-600 ds-text-lg ds-leading-relaxed">
                               {item.description}
                             </p>
                           )}
                           
                           {/* Ціна та об'єм */}
-                          <div className="flex items-center justify-between pt-4">
-                            <div className="flex items-center space-x-4">
+                          <div className="ds-flex ds-items-center ds-justify-between ds-pt-4">
+                            <div className="ds-flex ds-items-center ds-gap-4">
                               <span 
-                                className="text-3xl font-bold"
+                                className="ds-text-3xl ds-font-bold"
                                 style={{ color: menuData.designSettings.theme.colors.primary }}
                               >
                                 {formatPrice(item.price)}
                               </span>
                               {/* Додаємо інформацію про об'єм/вагу якщо є */}
-                              <span className="text-gray-500 text-lg font-medium">
+                              <span className="ds-text-gray-500 ds-text-lg ds-font-medium">
                                 250 мл
                               </span>
                             </div>
                             
                             {/* Іконка додавання в кошик */}
                             <button 
-                              className="p-3 rounded-full hover:bg-gray-100 transition-colors"
+                              className="ds-p-3 ds-rounded-full ds-hover:bg-gray-100 ds-transition-colors"
                               style={{ 
                                 backgroundColor: menuData.designSettings.theme.colors.primary + '20',
                                 color: menuData.designSettings.theme.colors.primary
                               }}
                             >
-                              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <svg className="ds-w-6 ds-h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                               </svg>
                             </button>
@@ -341,7 +375,8 @@ const PublicMenuPage = () => {
                       </div>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
@@ -349,21 +384,21 @@ const PublicMenuPage = () => {
       </div>
 
       {/* Footer */}
-      <footer className="mt-20">
+      <footer className="ds-mt-20">
         <div 
-          className="py-12 px-4"
+          className="ds-py-12 ds-px-4"
           style={{ backgroundColor: menuData.designSettings.theme.colors.background }}
         >
-          <div className="max-w-7xl mx-auto text-center">
+          <div className="ds-max-w-7xl ds-mx-auto ds-text-center">
             <div 
-              className="text-lg font-medium mb-2"
+              className="ds-text-lg ds-font-medium ds-mb-2"
               style={{ color: menuData.designSettings.theme.colors.text }}
             >
               © 2025 QR Menu
             </div>
             <p 
-              className="text-sm opacity-75"
-              style={{ color: menuData.designSettings.theme.colors.text }}
+              className="ds-text-sm"
+              style={{ color: menuData.designSettings.theme.colors.text, opacity: 0.75 }}
             >
               Створено з ❤️ для {menuData.restaurant.name}
             </p>
