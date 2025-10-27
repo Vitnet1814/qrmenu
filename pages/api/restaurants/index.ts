@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const { db } = await connectDatabase();
       const restaurantsCollection = db.collection('restaurants');
       
-      const existingRestaurant = await restaurantsCollection.findOne({ userId: new ObjectId(userId) });
+      const existingRestaurant = await restaurantsCollection.findOne({ userId: ObjectId.createFromHexString(userId) });
       
       if (existingRestaurant) {
         return res.status(409).json({ 
