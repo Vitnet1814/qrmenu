@@ -31,14 +31,12 @@ export class RestaurantDatabase {
   async create(type: RestaurantData['type'], data: Record<string, unknown>, order?: number) {
     const collection = this.getCollection();
     
-    // Оптимізуємо зображення для категорій та страв меню
+    // Оптимізуємо зображення для страв меню
     let processedData = { ...data };
     if (data.image && typeof data.image === 'string') {
       try {
         let optimizedImage: string;
-        if (type === 'category') {
-          optimizedImage = await this.optimizeCategoryImage(data.image as string);
-        } else if (type === 'menu-item') {
+        if (type === 'menu-item') {
           optimizedImage = await this.optimizeMenuItemImage(data.image as string);
         } else {
           optimizedImage = data.image as string;
@@ -91,14 +89,12 @@ export class RestaurantDatabase {
       throw new Error('Запис не знайдено');
     }
     
-    // Оптимізуємо зображення для категорій та страв меню
+    // Оптимізуємо зображення для страв меню
     let processedData = { ...data };
     if (data.image && typeof data.image === 'string') {
       try {
         let optimizedImage: string;
-        if (existingItem.type === 'category') {
-          optimizedImage = await this.optimizeCategoryImage(data.image as string);
-        } else if (existingItem.type === 'menu-item') {
+        if (existingItem.type === 'menu-item') {
           optimizedImage = await this.optimizeMenuItemImage(data.image as string);
         } else {
           optimizedImage = data.image as string;
@@ -204,33 +200,6 @@ export class RestaurantDatabase {
     }
   }
 
-  // Оптимізувати зображення для категорій (квадратний формат)
-  private async optimizeCategoryImage(base64Image: string): Promise<string> {
-    try {
-      // Витягуємо Base64 без префіксу
-      const base64Data = base64Image.replace(/^data:image\/[a-z]+;base64,/, '');
-      const buffer = Buffer.from(base64Data, 'base64');
-      
-      // Оптимізуємо зображення для категорій (квадратний формат)
-      const webpBuffer = await sharp(buffer)
-        .resize(400, 400, { 
-          fit: 'cover',        // Обрізаємо до квадрата
-          position: 'center'   // Центруємо обрізку
-        })
-        .webp({ 
-          quality: 85,          // Трохи вища якість для категорій
-          lossless: false,     // Втратне стиснення для меншого розміру
-          nearLossless: false
-        })
-        .toBuffer();
-      
-      // Повертаємо оптимізоване WebP зображення як Base64
-      return `data:image/webp;base64,${webpBuffer.toString('base64')}`;
-    } catch (error) {
-      console.error('Помилка оптимізації зображення категорії:', error);
-      throw new Error('Не вдалося оптимізувати зображення категорії');
-    }
-  }
 
   // Оптимізувати зображення для страв меню (прямокутний формат)
   private async optimizeMenuItemImage(base64Image: string): Promise<string> {

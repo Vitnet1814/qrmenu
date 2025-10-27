@@ -16,7 +16,6 @@ interface Category {
   _id: string; // робимо необов'язковим
   name: string;
   description?: string;
-  image?: string ; // додаємо null
   order?: number;
   restaurantId?: string; // робимо необов'язковим
   createdAt?: Date;

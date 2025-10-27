@@ -36,7 +36,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           _id: foundCategory._id?.toString(),
           name: foundCategory.data.name,
           description: foundCategory.data.description,
-          image: foundCategory.data.image,
           order: foundCategory.order,
           createdAt: foundCategory.createdAt,
           updatedAt: foundCategory.updatedAt

@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'PUT') {
     try {
-      const { name, description, image, restaurantId } = req.body;
+      const { name, description, restaurantId } = req.body;
 
       if (!name) {
         return res.status(400).json({ error: 'Назва категорії обов\'язкова' });
@@ -26,7 +26,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const updateData = {
         name,
         description: description || '',
-        image: image || null,
       };
 
       const updateResult = await restaurantDb.update(categoryId, updateData);
@@ -43,7 +42,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             _id: updatedCategory._id?.toString(),
             name: updatedCategory.data.name || '',
             description: updatedCategory.data.description || '',
-            image: updatedCategory.data.image || null,
             order: updatedCategory.order,
             createdAt: updatedCategory.createdAt,
             updatedAt: updatedCategory.updatedAt

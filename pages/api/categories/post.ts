@@ -3,7 +3,7 @@ import { RestaurantManager } from '../../../src/app/lib/restaurantDatabase';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { restaurantId, name, description, image } = req.body;
+    const { restaurantId, name, description } = req.body;
 
     if (!restaurantId || typeof restaurantId !== 'string') {
       return res.status(400).json({ error: 'Невірний ID закладу' });
@@ -19,7 +19,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const categoryData = {
         name,
         description: description || '',
-        image: image || null,
       };
 
       const result = await restaurantDb.create('category', categoryData);
@@ -29,7 +28,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         _id: result._id?.toString(),
         name: result.data.name,
         description: result.data.description,
-        image: result.data.image,
         order: result.order,
         createdAt: result.createdAt,
         updatedAt: result.updatedAt

@@ -8,7 +8,6 @@ interface CategoryItemProps {
     _id: string;
     name: string;
     description?: string;
-    image?: string;
     order?: number;
   };
   isActive: boolean;
